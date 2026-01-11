@@ -1,0 +1,1665 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UNDRA-ENGINE v1.5 – Seite 2 – Identität & Chronik</title>
+
+  <style>
+  /* --- TEXTAREAS NICHT MEHR GEQUETSCHT --- */
+.id-input,
+.id-textarea,
+.id-textarea-long {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Linke Spalte breiter, verhindert Quetschen */
+.top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) 220px;
+  gap: 18px;
+}
+
+/* Luftigere Textareas */
+.id-textarea {
+  min-height: 90px;
+  padding: 10px 12px;
+  line-height: 1.45;
+}
+
+.id-textarea-long {
+  min-height: 180px;
+  padding: 12px 14px;
+  line-height: 1.5;
+}
+
+/* Portrait-Frame stabilisieren */
+.preview-portrait-frame {
+  width: 180px;
+  height: 180px;
+  min-width: 160px;
+  min-height: 160px;
+}
+    :root {
+      --bg-main: #050307;
+      --bg-panel: #120814;
+      --bg-panel-alt: #1b0d24;
+      --bg-header: linear-gradient(135deg, #4a0a2f, #1a0b22);
+      --bg-header-soft: linear-gradient(135deg, #3a071f, #120614);
+      --gold: #d4af37;
+      --gold-bright: #f8e7b0;
+      --gold-soft: rgba(212,175,55,0.55);
+      --text-main: #f5efe6;
+      --text-muted: #a6938a;
+      --accent-purple: #b46cff;
+      --accent-deep: #4a165a;
+      --danger: #ff4b5c;
+      --marble-overlay: radial-gradient(circle at top, rgba(120, 40, 160, 0.35), transparent 55%);
+      --font-header: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      --font-body: "Georgia", serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        var(--marble-overlay),
+        url("dark-marmor-texture.png") center/cover fixed no-repeat,
+        radial-gradient(circle at bottom, #050307 0%, #020107 35%, #000 100%);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    #app-shell {
+      width: 100%;
+      max-width: 950px;
+      background:
+        linear-gradient(145deg, rgba(8,2,12,0.98), rgba(4,1,7,0.98));
+      border-radius: 12px;
+      border: 2px solid var(--gold-soft);
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.9),
+        0 0 24px rgba(40,0,60,0.65);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 32px);
+    }
+
+    header {
+      padding: 14px 16px 10px;
+      background: var(--bg-header);
+      border-bottom: 1px solid var(--gold-soft);
+      position: relative;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-family: var(--font-header);
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      font-size: 16px;
+    }
+
+    #sub-title {
+      margin-top: 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    #engine-tag {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: var(--gold-bright);
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(248,231,176,0.5);
+      background: linear-gradient(135deg, rgba(40,8,40,0.9), rgba(12,3,20,0.9));
+      box-shadow: 0 0 8px rgba(120,0,160,0.6);
+    }
+
+    #page-indicator {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    #content {
+      flex: 1;
+      padding: 10px 12px 8px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .panel {
+      background:
+        linear-gradient(145deg, rgba(26,10,32,0.96), rgba(10,4,16,0.98));
+      border-radius: 10px;
+      border: 1px solid rgba(212,175,55,0.45);
+      box-shadow:
+        inset 0 0 18px rgba(0,0,0,0.7),
+        0 0 10px rgba(60,0,90,0.55);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      background: var(--bg-header-soft);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(212,175,55,0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .panel-title {
+      font-family: var(--font-header);
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+    }
+
+    .panel-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* GRID oben: linke Spalte jetzt breiter */
+    .top-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) 220px;
+      gap: 16px;
+      padding: 10px 12px 12px;
+    }
+
+    @media (max-width: 820px) {
+      .top-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .id-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .id-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .id-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .id-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .id-input {
+      border-radius: 6px;
+      border: 1px solid rgba(212,175,55,0.35);
+      background: rgba(8,4,12,0.9);
+      color: var(--text-main);
+      padding: 4px 6px;
+      font-size: 12px;
+    }
+
+    .id-input:focus {
+      outline: none;
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 10px rgba(180,108,255,0.8);
+      background: rgba(18,8,28,0.96);
+    }
+
+    .id-textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 260px;
+      padding: 8px 10px;
+      line-height: 1.35;
+    }
+
+    .id-textarea-long {
+      resize: vertical;
+      min-height: 140px;
+      max-height: 380px;
+      padding: 8px 10px;
+      line-height: 1.35;
+    }
+
+    .id-headline {
+      margin-top: 10px;
+      margin-bottom: 2px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-bright);
+      border-top: 1px solid rgba(212,175,55,0.3);
+      padding-top: 6px;
+    }
+
+    .preview-card {
+      border-radius: 8px;
+      border: 1px solid rgba(212,175,55,0.4);
+      background:
+        radial-gradient(circle at top, rgba(80,0,80,0.4), transparent 60%),
+        rgba(0,0,0,0.6);
+      padding: 8px;
+      font-size: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .preview-card b {
+      color: var(--gold-bright);
+    }
+
+    .preview-name {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* Portrait jetzt quadratisch */
+    .preview-portrait-frame {
+      width: 220px;
+      height: 300px;
+      border-radius: 10px;
+      border: 2px solid rgba(212,175,55,0.7);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 55%),
+        url("stone-noise.png");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 24px rgba(0,0,0,0.8),
+        0 0 14px rgba(0,0,0,0.9);
+      margin-bottom: 6px;
+    }
+
+    .preview-portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-placeholder {
+      color: #4b374a;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+
+    .traits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px 12px 12px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .traits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .traits-col h4 {
+      margin: 0 0 6px;
+      font-family: var(--font-header);
+      color: var(--gold-bright);
+      font-size: 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(212,175,55,0.3);
+      padding-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .traits-col-inner {
+      display: flex;
+      flex-direction: column;
+      height: 230px;
+      border-radius: 8px;
+      border: 1px solid rgba(212,175,55,0.35);
+      background:
+        radial-gradient(circle at top, rgba(80,0,80,0.25), transparent 60%),
+        rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+
+    .traits-search-bar {
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(212,175,55,0.3);
+      background: rgba(10,4,16,0.95);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .traits-search-bar input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.4);
+      background: rgba(5,2,10,0.9);
+      color: var(--text-main);
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+
+    .traits-search-bar input:focus {
+      outline: none;
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 8px rgba(180,108,255,0.7);
+    }
+
+    .check-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 4px 4px 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) #000;
+    }
+
+    .trait-item {
+      display: block;
+      padding: 4px 6px;
+      margin-bottom: 3px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, opacity 0.1s ease;
+      font-size: 12px;
+    }
+
+    .trait-item:hover {
+      background: rgba(212,175,55,0.12);
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 0 10px rgba(180,108,255,0.5);
+      transform: translateY(-1px);
+    }
+
+    .trait-item.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .trait-item input {
+      margin-right: 6px;
+    }
+
+    .traits-footer {
+      grid-column: 1 / -1;
+      padding: 6px 10px 8px;
+      border-top: 1px solid rgba(212,175,55,0.3);
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .traits-footer span {
+      color: var(--text-muted);
+    }
+
+    .traits-footer b {
+      color: var(--gold-bright);
+    }
+
+    .btn-reset {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.6);
+      background: linear-gradient(135deg, #221427, #0d050f);
+      color: var(--text-muted);
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .btn-reset:hover {
+      color: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(160,80,240,0.9);
+    }
+
+    .chronik-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.4fr;
+      gap: 10px;
+      padding: 10px 12px 12px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .chronik-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chronik-text {
+      border-radius: 8px;
+      border: 1px solid rgba(212,175,55,0.4);
+      background:
+        radial-gradient(circle at top, rgba(80,0,80,0.4), transparent 60%),
+        rgba(0,0,0,0.6);
+      padding: 8px 10px;
+      max-height: 260px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) #000;
+    }
+
+    .chronik-text p {
+      margin: 0 0 6px;
+    }
+
+    .chronik-grid-small {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 10px;
+      border-top: 1px solid #444;
+      padding-top: 6px;
+      margin-top: 6px;
+      font-size: 11px;
+    }
+
+    .chronik-grid-small span {
+      color: var(--text-muted);
+    }
+
+    .chronik-right {
+      border-radius: 8px;
+      border: 1px solid rgba(212,175,55,0.4);
+      background:
+        radial-gradient(circle at top, rgba(80,0,80,0.4), transparent 60%),
+        rgba(0,0,0,0.6);
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    @media (max-width: 720px) {
+      .chronik-right {
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+      }
+    }
+
+    .chronik-radar-box {
+      width: 180px;
+      height: 180px;
+      border-radius: 10px;
+      border: 1px solid rgba(212,175,55,0.5);
+      background: rgba(0,0,0,0.7);
+      box-shadow:
+        inset 0 0 18px rgba(0,0,0,0.8),
+        0 0 12px rgba(120,0,160,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chronikRadar {
+      width: 180px;
+      height: 180px;
+      display: block;
+    }
+
+    .chronik-abilities {
+      font-size: 11px;
+    }
+
+    .chronik-abilities-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+    }
+
+    .chronik-abilities-row {
+      margin-bottom: 4px;
+    }
+
+    .chronik-abilities-row b {
+      color: var(--gold-bright);
+    }
+
+    .chronik-abilities-row span {
+      color: var(--text-main);
+    }
+
+    footer {
+      padding: 8px 10px;
+      border-top: 1px solid var(--gold-soft);
+      background: linear-gradient(180deg, rgba(10,2,14,0.9), rgba(4,0,8,0.98));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .footer-left,
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-center {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .footer-center span {
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .btn-main {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.7);
+      background: linear-gradient(135deg, #4a0a2f, #1a0b22);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 12px rgba(180,0,60,0.7);
+      text-shadow: 0 0 6px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(255,215,120,0.9);
+      background: linear-gradient(135deg, #7d1638, #2a1034);
+    }
+
+    .btn-main:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-ghost {
+      background: linear-gradient(135deg, #241329, #100613);
+      color: var(--text-muted);
+      box-shadow: 0 0 8px rgba(0,0,0,0.8);
+    }
+
+    .btn-ghost:hover {
+      box-shadow: 0 0 12px rgba(160,100,240,0.7);
+      color: var(--gold-bright);
+    }
+
+    #transient-msg {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #2a102f, #130814);
+      color: var(--gold-bright);
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.6);
+      box-shadow: 0 0 18px rgba(0,0,0,0.9);
+      font-size: 11px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 2000;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-box {
+      width: 320px;
+      max-width: calc(100% - 40px);
+      background:
+        linear-gradient(145deg, rgba(16,6,26,0.98), rgba(6,2,12,0.98));
+      border: 2px solid rgba(212,175,55,0.7);
+      border-radius: 12px;
+      padding: 18px 18px 14px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.9),
+        0 0 28px rgba(160,80,240,0.8);
+      text-align: center;
+    }
+
+    .modal-title {
+      font-family: var(--font-header);
+      color: var(--gold-bright);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 8px;
+    }
+
+    .modal-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-small {
+      padding: 4px 10px;
+      font-size: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.6);
+      background: linear-gradient(135deg, #221427, #0d050f);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .btn-small:hover {
+      color: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(160,80,240,0.9);
+    }
+  </style>
+</head>
+<body>
+<div id="app-shell">
+  <header>
+    <div id="engine-tag">UNDRA‑ENGINE v1.5</div>
+    <h1>Identität & Chronik</h1>
+    <div id="sub-title">Seite 2 – Merkmale, Geschichte, Schwächen</div>
+    <div id="page-indicator">Seite 2 von 3</div>
+  </header>
+
+  <div id="content">
+    <!-- PANEL 1: Identität -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Körperliche Merkmale & Präsentation</div>
+        <div class="panel-sub" id="header-sub-data">Lädt Charakterdaten...</div>
+      </div>
+      <div class="top-grid">
+        <!-- Linke Seite -->
+        <div>
+          <div class="id-grid">
+            <div class="id-field">
+              <span class="id-label">Alter</span>
+              <input type="text" class="id-input" id="id-age">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Größe</span>
+              <input type="text" class="id-input" id="id-height">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Gewicht</span>
+              <input type="text" class="id-input" id="id-weight">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Augenfarbe</span>
+              <input type="text" class="id-input" id="id-eyes">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Haarfarbe</span>
+              <input type="text" class="id-input" id="id-hair">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Stimme</span>
+              <input type="text" class="id-input" id="id-voice">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Kleidung / Rüstung</span>
+              <input type="text" class="id-input" id="id-clothes">
+            </div>
+            <div class="id-field">
+              <span class="id-label">Besondere Merkmale</span>
+              <input type="text" class="id-input" id="id-specialmarks">
+            </div>
+          </div>
+
+          <div class="id-headline">Kurzbeschreibung</div>
+          <textarea id="id-shortdesc" class="id-input id-textarea"
+                    placeholder="Eine knappe, prägnante Beschreibung, wie dein Charakter wahrgenommen wird."></textarea>
+
+          <div class="id-headline">Hintergrund / Vorgeschichte</div>
+          <textarea id="id-story" class="id-input id-textarea-long"
+                    placeholder="Hier kannst du die Geschichte, Herkunft, Wendepunkte und inneren Konflikte deines Charakters festhalten."></textarea>
+        </div>
+
+        <!-- Rechte Seite: Portrait + Zusammenfassung -->
+        <div>
+          <div class="preview-portrait-frame">
+            <img id="preview" src="" alt="" style="display:none;">
+            <div id="placeholder" class="preview-placeholder">PORTRAIT AUS SEITE 1</div>
+          </div>
+          <div class="preview-card" style="margin-top:6px;">
+            <div class="preview-name" id="preview-name-line">Namenlos – ohne Titel</div>
+            <div style="margin-bottom:4px;">
+              <b>Volk:</b> <span id="preview-race">–</span><br>
+              <b>Profession:</b> <span id="preview-prof">–</span><br>
+              <b>Gabe:</b> <span id="preview-spec" style="font-style:italic;">–</span>
+            </div>
+            <div style="margin-top:4px;">
+              <span style="color:var(--text-muted); font-size:11px;">Kurzbeschreibung:</span><br>
+              <span id="preview-shortdesc" style="font-size:11px;">Noch keine Beschreibung vergeben.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: Vorteile & Nachteile -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Charakterzüge</div>
+        <div class="panel-sub">
+          Wähle genau 2 Vorteile und 3 Nachteile. Ohne diese Auswahl kann die Seite nicht abgeschlossen werden.
+        </div>
+      </div>
+      <div class="traits-grid">
+        <div class="traits-col">
+          <h4>Vorteile</h4>
+          <div class="traits-col-inner">
+            <div class="traits-search-bar">
+              <span>Suche:</span>
+              <input type="text" id="search-adv" placeholder="Vorteile durchsuchen...">
+            </div>
+            <div id="adv-list" class="check-list"></div>
+          </div>
+        </div>
+        <div class="traits-col">
+          <h4>Nachteile</h4>
+          <div class="traits-col-inner">
+            <div class="traits-search-bar">
+              <span>Suche:</span>
+              <input type="text" id="search-dis" placeholder="Nachteile durchsuchen...">
+            </div>
+            <div id="dis-list" class="check-list"></div>
+          </div>
+        </div>
+      </div>
+      <div class="traits-footer">
+        <div>
+          <span>Vorteile: <b id="count-adv">0</b> / 2</span> •
+          <span>Nachteile: <b id="count-dis">0</b> / 3</span>
+        </div>
+        <button class="btn-reset" id="btn-reset-traits">Auswahl zurücksetzen</button>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Chronik-Vorschau -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Chronik – Auszug</div>
+        <div class="panel-sub">Automatisch erzeugte Zusammenfassung deiner Daten und Züge.</div>
+      </div>
+      <div class="chronik-grid">
+        <div class="chronik-text">
+          <div id="chronik-text-block">
+            <p>Es wurden noch nicht genügend Daten erfasst, um eine Chronik zu erzeugen.</p>
+          </div>
+        </div>
+        <div class="chronik-right">
+          <div class="chronik-radar-box">
+            <canvas id="chronikRadar" width="180" height="180"></canvas>
+          </div>
+          <div class="chronik-abilities">
+            <div class="chronik-abilities-title">Erwachte Fähigkeiten</div>
+            <div class="chronik-abilities-row">
+              <b>Rassenfähigkeit:</b><br>
+              <span id="ability-race">–</span>
+            </div>
+            <div class="chronik-abilities-row">
+              <b>Untergruppen-Fähigkeit:</b><br>
+              <span id="ability-sub">–</span>
+            </div>
+            <div class="chronik-abilities-row">
+              <b>Attributbonus +1:</b><br>
+              <span id="ability-attr">–</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <button class="btn-main btn-ghost" id="btn-back">Zurück zu Seite 1</button>
+    </div>
+    <div class="footer-center">
+      Identität & Chronik – <span>UNDRA‑ENGINE v1.5</span>
+    </div>
+    <div class="footer-right">
+      <button class="btn-main btn-ghost" id="btn-save-local">Zwischenspeichern</button>
+      <button class="btn-main" id="btn-next">Weiter zum Dashboard</button>
+    </div>
+  </footer>
+
+  <!-- TRANSIENT MSG -->
+  <div id="transient-msg"></div>
+
+  <!-- MODAL: Seite 2 verlassen -->
+  <div id="leave-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-title">Auswahl bestätigen</div>
+      <div class="modal-sub">
+        Bist du mit deiner Identität & Chronik zufrieden?<br>
+        Die getroffenen Entscheidungen werden als Grundlage für das Dashboard übernommen.
+      </div>
+      <div style="text-align:left; font-size:11px; margin:8px 0 10px;">
+        <b>Aktuelle Zusammenfassung:</b><br>
+        <span id="leave-summary" style="color:var(--gold-bright);"></span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-small" id="btn-leave-cancel">Zurück</button>
+        <button class="btn-small" id="btn-leave-confirm" style="color:#f8e7b0;">Ja, weiter zum Dashboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- KEYS ---------- */
+const KEY_CHAR = "undra15_character";
+const KEY_ID   = "undra15_identity";
+const KEY_DASH = "undra15_dashboard";
+
+/* ---------- ATTRIBUTES (für Radar) ---------- */
+const ATTRIBUTES = [
+  "Mut","Intelligenz","Fingerfertigkeit","Gewandtheit","Körperkraft",
+  "Körperbewusstsein","Konstitution","Charisma","Sozialstatus",
+  "Geistiger Zustand","Intuition","Angriff","Verteidigung","Abwehrschlag",
+  "Fernkampf","Trefferchance","Technik"
+];
+
+const ATTR_SHORT = [
+  "MU","IN","FF","GE","KK",
+  "KB","KO","CH","SS",
+  "GZ","IT","AN","VE","AS",
+  "FK","TC","TE"
+];
+
+/* ---------- TRAIT POOLS (Platzhalter – hier deine 200 Einträge einfügen) ---------- */
+const advPool = [
+  "Anpassungsfähig", "Astralsinn", "Ausdauernd", "Balancegefühl", "Baumeisterblick",
+    "Blick für Details", "Diplomatisch", "Dunkelwahrnehmung", "Durchhaltewille",
+    "Energiespürer", "Einfühlsam", "Erinnerungsstark", "Feinmechanik", "Feinsinn",
+    "Fleißig", "Fokusreserve", "Gefahreninstinkt", "Geländekenner", "Geschickte Hände",
+    "Glücksgriff", "Harmoniesinn", "Hartnäckig", "Hitzetolerant", "Humorvoll",
+    "Improvisationstalent", "Improvisationsmut", "Inspirierend", "Intuitiv",
+    "Kälteresistent", "Knotenmeister", "Kraftfokus", "Kreativ", "Lagermeister",
+    "Lernfähig", "Leichtfüßig", "Logikdenker", "Manafluss‑Stabilität",
+    "Materialkenntnis", "Mentale Stabilität", "Mustererkennung", "Naturverbunden",
+    "Nachtaktiv", "Orientierungssinn", "Pflanzenkenntnis", "Präzisionsarbeit",
+    "Präzisionsgriff", "Redegewandt", "Runenverständnis", "Ritualgefühl",
+    "Ruhe in Gefahr", "Ruhepol", "Scharfes Gehör", "Schnelle Auffassung",
+    "Schneller Griff", "Schnellpacker", "Schmerzresistenz", "Selbstbeherrschung",
+    "Schildgefühl", "Schlafreduziert", "Spureninstinkt", "Spurenleser",
+    "Stabiler Stand", "Symbolkenntnis", "Taktisches Denken", "Tiervertraut",
+    "Trittsicher", "Verhandlungsgeschick", "Vertrauenswürdig", "Waffenkenntnis",
+    "Wasservertraut", "Weitblick", "Wettergefühl", "Willensstark", "Werkzeuggefühl",
+    "Zähes Leben", "Zielstrebig", "Zauberdisziplin", "Geistige Offenheit",
+    "Orientierung im Dunkeln", "Pfadfinder", "Sammlerblick", "Ausweichreflex",
+    "Trefferinstinkt", "Kampfintuition", "Taktgefühl", "Geduld", "Zäher Körper",
+    "Gelenkig", "Schnellreaktion", "Hitzeschutz", "Kälteschutz", "Dursttoleranz",
+    "Hungertoleranz"
+  // ... HIER deine restlichen Vorteile aus v1.11 einfügen ...
+];
+
+const disPool = [
+  "Astralblind", "Ausweichschwach", "Baumeisterblind", "Chaotischer Geist",
+    "Disharmonie", "Durstanfällig", "Empathielos", "Energieschwäche", "Faul",
+    "Geringe Belastbarkeit", "Geräuschempfindlich", "Geländeunsicher",
+    "Geistige Blockade", "Grobehändig", "Grobmotorischer Sinn", "Hitzeanfällig",
+    "Hungeranfällig", "Ideenlos", "Impulsiv", "Jähzornig", "Kälteanfällig",
+    "Knotenprobleme", "Kurzsichtig", "Langsame Auffassung", "Langsamer Griff",
+    "Langsame Reaktion", "Lernschwach", "Lichtempfindlich", "Materialblind",
+    "Mentale Instabilität", "Misstrauisch", "Nachtblind", "Naturfremd", "Nervös",
+    "Nachlässig", "Orientierungslos", "Panik in Gefahr", "Pechvogel",
+    "Pflanzenunkenntnis", "Reparaturschwach", "Runenblind", "Ritualunsicherheit",
+    "Schlafbedürftig", "Schlechte Ausweichreaktion", "Schlechte Kampfintuition",
+    "Schlechte Menschenkenntnis", "Schlechte Mustererkennung",
+    "Schlechte Spurenlesung", "Schlechte Waffenführung", "Schmerzempfindlich",
+    "Schwache Ausdauer", "Schwache Fokusreserve", "Schwache Orientierung",
+    "Schwacher Stand", "Schwerfällig", "Schwerhörig", "Spurenblind", "Steif",
+    "Symbolblind", "Taktlos", "Tierfurcht", "Übermut", "Übervorsichtig",
+    "Ungeduldig", "Ungeschickte Hände", "Unhöflich", "Unkonzentriert",
+    "Unorganisiert", "Unpräziser Griff", "Unüberzeugend", "Unsicherer Stand",
+    "Unaufmerksam", "Vergesslich", "Verwirrbar", "Waffenunsicher",
+    "Wackliger Stand", "Wasserfurcht", "Wetterempfindlich", "Willensschwach",
+    "Zerbrechlich", "Ziellos", "Schwindelanfällig", "Geräuschüberempfindlich",
+    "Schwache Improvisation", "Schwache Technikkenntnis", "Schwache Logik",
+    "Schwache Intuition", "Schwache Wahrnehmung", "Schwache Motorik",
+    "Schwache Konzentration", "Schwache Reaktion", "Schwache Präzision",
+    "Schwache Koordination", "Schwache Stabilität", "Schwache Resistenz",
+    "Schwache Willenskraft"
+  // ... HIER deine restlichen Nachteile aus v1.11 einfügen ...
+];
+
+/* ---------- STATE ---------- */
+let char = null;
+let identity = {
+  age: "",
+  height: "",
+  weight: "",
+  eyes: "",
+  hair: "",
+  voice: "",
+  clothes: "",
+  specialmarks: "",
+  shortdesc: "",
+  story: "",
+  adv: [],
+  dis: []
+};
+
+let transientTimeout = null;
+
+/* ---------- DOM ---------- */
+const headerSubData = document.getElementById("header-sub-data");
+
+const idAge = document.getElementById("id-age");
+const idHeight = document.getElementById("id-height");
+const idWeight = document.getElementById("id-weight");
+const idEyes = document.getElementById("id-eyes");
+const idHair = document.getElementById("id-hair");
+const idVoice = document.getElementById("id-voice");
+const idClothes = document.getElementById("id-clothes");
+const idSpecialMarks = document.getElementById("id-specialmarks");
+const idShortdesc = document.getElementById("id-shortdesc");
+const idStory = document.getElementById("id-story");
+
+const previewImg = document.getElementById("preview");
+const placeholder = document.getElementById("placeholder");
+const previewNameLine = document.getElementById("preview-name-line");
+const previewRace = document.getElementById("preview-race");
+const previewProf = document.getElementById("preview-prof");
+const previewSpec = document.getElementById("preview-spec");
+const previewShortdesc = document.getElementById("preview-shortdesc");
+
+const advList = document.getElementById("adv-list");
+const disList = document.getElementById("dis-list");
+const searchAdv = document.getElementById("search-adv");
+const searchDis = document.getElementById("search-dis");
+const btnResetTraits = document.getElementById("btn-reset-traits");
+const countAdvSpan = document.getElementById("count-adv");
+const countDisSpan = document.getElementById("count-dis");
+
+const chronikTextBlock = document.getElementById("chronik-text-block");
+const chronikRadarCanvas = document.getElementById("chronikRadar");
+const chronikRadarCtx = chronikRadarCanvas.getContext("2d");
+
+const abilityRace = document.getElementById("ability-race");
+const abilitySub = document.getElementById("ability-sub");
+const abilityAttr = document.getElementById("ability-attr");
+
+const btnBack = document.getElementById("btn-back");
+const btnNext = document.getElementById("btn-next");
+const btnSaveLocal = document.getElementById("btn-save-local");
+
+const transientMsgEl = document.getElementById("transient-msg");
+
+// Leave modal
+const leaveModal = document.getElementById("leave-modal");
+const leaveSummary = document.getElementById("leave-summary");
+const btnLeaveCancel = document.getElementById("btn-leave-cancel");
+const btnLeaveConfirm = document.getElementById("btn-leave-confirm");
+
+/* ---------- HELPER ---------- */
+function showMsg(text, ms=2200) {
+  transientMsgEl.textContent = text;
+  transientMsgEl.style.opacity = "1";
+  if (transientTimeout) clearTimeout(transientTimeout);
+  transientTimeout = setTimeout(() => {
+    transientMsgEl.style.opacity = "0";
+  }, ms);
+}
+
+/* ---------- LOAD FROM STORAGE ---------- */
+function loadCharacterFromStorage() {
+  const raw = localStorage.getItem(KEY_CHAR);
+  if (!raw) {
+    // Wenn keine Charakterdaten vorhanden sind, weiterleiten oder Platzhalter nutzen
+    return;
+  }
+  try {
+    const data = JSON.parse(raw);
+    if (data && typeof data === "object") char = data;
+  } catch (e) {
+    console.error("Fehler beim Laden der Charakterdaten:", e);
+  }
+}
+
+function loadIdentityFromStorage() {
+  const raw = localStorage.getItem(KEY_ID);
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    if (data && typeof data === "object") Object.assign(identity, data);
+  } catch (e) {
+    console.error("Fehler beim Laden der Identitätsdaten:", e);
+  }
+}
+
+/* ---------- INIT UI FROM DATA ---------- */
+function initIdentityFields() {
+  idAge.value = identity.age || "";
+  idHeight.value = identity.height || "";
+  idWeight.value = identity.weight || "";
+  idEyes.value = identity.eyes || "";
+  idHair.value = identity.hair || "";
+  idVoice.value = identity.voice || "";
+  idClothes.value = identity.clothes || "";
+  idSpecialMarks.value = identity.specialmarks || "";
+  idShortdesc.value = identity.shortdesc || "";
+  idStory.value = identity.story || "";
+}
+
+function initCharacterPreview() {
+  if (!char) {
+    headerSubData.textContent = "Unbekannter Charakter";
+    return;
+  }
+
+  const name = char.name || "Namenlos";
+  const title = char.title ? " – " + char.title : " – ohne Titel";
+  previewNameLine.textContent = name + title;
+
+  let raceText = "–";
+  if (char.race && char.race2) {
+    raceText = char.race + " / " + char.race2 + " (Mischwesen)";
+  } else if (char.race) {
+    raceText = char.race;
+  } else if (char.race2) {
+    raceText = char.race2;
+  }
+  if (char.sub) raceText += " (" + char.sub + ")";
+  previewRace.textContent = raceText;
+
+  previewProf.textContent = char.prof || "–";
+  previewSpec.textContent = char.special || "–";
+
+  if (char.portraitData) {
+    previewImg.src = char.portraitData;
+    previewImg.style.display = "block";
+    placeholder.style.display = "none";
+  } else {
+    previewImg.style.display = "none";
+    placeholder.style.display = "block";
+  }
+
+  headerSubData.textContent = name + " | " + (char.prof || "unbestimmte Profession");
+
+  abilityRace.textContent = char.raceAbility || "–";
+  abilitySub.textContent = char.subAbility || "–";
+  abilityAttr.textContent = char.attrBonusNote || "–";
+}
+
+/* ---------- RADAR ---------- */
+function drawChronikRadar() {
+  const canvas = chronikRadarCanvas;
+  const ctx = chronikRadarCtx;
+  const w = canvas.width;
+  const h = canvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+  const radius = Math.min(w, h) / 2 - 12;
+
+  ctx.clearRect(0,0,w,h);
+
+  if (!char || !char.attrs) {
+    // leichter Hintergrundkreis
+    const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, radius+12);
+    grad.addColorStop(0, "rgba(180,108,255,0.08)");
+    grad.addColorStop(1, "rgba(0,0,0,0.0)");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius+12, 0, Math.PI*2);
+    ctx.fill();
+    return;
+  }
+
+  const count = ATTRIBUTES.length;
+  const step = (Math.PI * 2) / count;
+
+  // Achsen
+  ctx.strokeStyle = "rgba(212,175,55,0.18)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < count; i++) {
+    const angle = step*i - Math.PI/2;
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    const tx = cx + Math.cos(angle) * (radius + 3);
+    const ty = cy + Math.sin(angle) * (radius + 3);
+    ctx.fillStyle = "#f8e7b0";
+    ctx.font = "8px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(ATTR_SHORT[i], tx, ty);
+  }
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI*2);
+  ctx.strokeStyle = "rgba(248,231,176,0.6)";
+  ctx.stroke();
+
+  // Wertefläche
+  ctx.beginPath();
+  for (let i = 0; i < count; i++) {
+    const val = char.attrs[ATTRIBUTES[i]] || 0;
+    const factor = Math.max(0, Math.min(1, val / 20));
+    const r = radius * (0.1 + factor * 0.9);
+    const angle = step*i - Math.PI/2;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    if (i === 0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = "rgba(208,70,70,0.35)";
+  ctx.strokeStyle = "#d4af37";
+  ctx.lineWidth = 2;
+  ctx.fill();
+  ctx.stroke();
+}
+
+/* ---------- TRAITS RENDERN ---------- */
+function renderTraits() {
+  advList.innerHTML = "";
+  disList.innerHTML = "";
+
+  advPool.forEach(name => {
+    const label = document.createElement("label");
+    label.className = "trait-item";
+    label.dataset.name = name.toLowerCase();
+    label.dataset.type = "adv";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = name;
+    input.checked = identity.adv.includes(name);
+
+    input.addEventListener("change", () => handleTraitChange("adv", name, input.checked));
+
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + name));
+    advList.appendChild(label);
+  });
+
+  disPool.forEach(name => {
+    const label = document.createElement("label");
+    label.className = "trait-item";
+    label.dataset.name = name.toLowerCase();
+    label.dataset.type = "dis";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = name;
+    input.checked = identity.dis.includes(name);
+
+    input.addEventListener("change", () => handleTraitChange("dis", name, input.checked));
+
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + name));
+    disList.appendChild(label);
+  });
+
+  updateTraitStateAndChronik();
+}
+
+/* ---------- TRAIT LOGIK (2/3 FIX) ---------- */
+function handleTraitChange(type, name, checked) {
+  if (type === "adv") {
+    if (checked) {
+      if (identity.adv.length >= 2) {
+        showMsg("Es dürfen genau 2 Vorteile gewählt werden.");
+        const cb = findTraitCheckbox("adv", name);
+        if (cb) cb.checked = false;
+        return;
+      }
+      identity.adv.push(name);
+    } else {
+      identity.adv = identity.adv.filter(t => t !== name);
+    }
+  } else if (type === "dis") {
+    if (checked) {
+      if (identity.dis.length >= 3) {
+        showMsg("Es dürfen genau 3 Nachteile gewählt werden.");
+        const cb = findTraitCheckbox("dis", name);
+        if (cb) cb.checked = false;
+        return;
+      }
+      identity.dis.push(name);
+    } else {
+      identity.dis = identity.dis.filter(t => t !== name);
+    }
+  }
+
+  updateTraitStateAndChronik();
+}
+
+function findTraitCheckbox(type, name) {
+  const container = type === "adv" ? advList : disList;
+  const inputs = container.querySelectorAll("input[type='checkbox']");
+  for (const cb of inputs) {
+    if (cb.value === name) return cb;
+  }
+  return null;
+}
+
+function updateTraitStateAndChronik() {
+  // Zähler
+  const advCount = identity.adv.length;
+  const disCount = identity.dis.length;
+  countAdvSpan.textContent = advCount;
+  countDisSpan.textContent = disCount;
+
+  // Sperren/Entsperren der anderen Traits
+  updateTraitDisabling("adv", advCount >= 2);
+  updateTraitDisabling("dis", disCount >= 3);
+
+  updateChronik();
+  updateNextButtonState();
+}
+
+function updateTraitDisabling(type, shouldDisableOthers) {
+  const container = type === "adv" ? advList : disList;
+  const chosen = type === "adv" ? identity.adv : identity.dis;
+  const labels = container.querySelectorAll(".trait-item");
+
+  labels.forEach(label => {
+    const input = label.querySelector("input[type='checkbox']");
+    const isSelected = chosen.includes(input.value);
+
+    if (shouldDisableOthers && !isSelected) {
+      label.classList.add("disabled");
+      input.disabled = true;
+    } else {
+      label.classList.remove("disabled");
+      input.disabled = false;
+    }
+  });
+}
+
+function resetTraits() {
+  identity.adv = [];
+  identity.dis = [];
+
+  advList.querySelectorAll("input[type='checkbox']").forEach(cb => {
+    cb.checked = false;
+    cb.disabled = false;
+  });
+  disList.querySelectorAll("input[type='checkbox']").forEach(cb => {
+    cb.checked = false;
+    cb.disabled = false;
+  });
+
+  searchAdv.value = "";
+  searchDis.value = "";
+  applyTraitSearch("adv", "");
+  applyTraitSearch("dis", "");
+
+  updateTraitStateAndChronik();
+}
+
+/* ---------- TRAIT SUCHE ---------- */
+function applyTraitSearch(type, term) {
+  const container = type === "adv" ? advList : disList;
+  const lowerTerm = term.trim().toLowerCase();
+  const items = container.querySelectorAll(".trait-item");
+
+  items.forEach(label => {
+    const name = label.dataset.name || "";
+    if (!lowerTerm || name.includes(lowerTerm)) {
+      label.style.display = "";
+    } else {
+      label.style.display = "none";
+    }
+  });
+}
+
+/* ---------- CHRONIK ---------- */
+function updateChronik() {
+  const advSelected = identity.adv;
+  const disSelected = identity.dis;
+
+  const name = char?.name || "Namenlos";
+  const title = char?.title || "";
+  const racePart = (() => {
+    if (!char) return "Unbekanntes Volk";
+    if (char.race && char.race2) return char.race + " / " + char.race2 + " (Mischwesen)";
+    if (char.race) return char.race;
+    if (char.race2) return char.race2;
+    return "Unbekanntes Volk";
+  })();
+  const subPart = char?.sub ? " (" + char.sub + ")" : "";
+  const profPart = char?.prof || "Unbekannter Beruf";
+
+  chronikTextBlock.innerHTML = `
+    <p>
+      <b>${name}</b>${title ? ", " + title : ""}<br>
+      Volk: ${racePart}${subPart}<br>
+      Beruf: ${profPart}
+    </p>
+    <div class="chronik-grid-small">
+      <div><span>Alter:</span> ${identity.age || "-"}</div>
+      <div><span>Größe:</span> ${identity.height || "-"}</div>
+      <div><span>Gewicht:</span> ${identity.weight || "-"}</div>
+      <div><span>Augenfarbe:</span> ${identity.eyes || "-"}</div>
+      <div><span>Haarfarbe:</span> ${identity.hair || "-"}</div>
+      <div><span>Stimme:</span> ${identity.voice || "-"}</div>
+      <div><span>Kleidung:</span> ${identity.clothes || "-"}</div>
+      <div><span>Merkmale:</span> ${identity.specialmarks || "-"}</div>
+    </div>
+    <p style="margin-top:8px;"><b>Kurzbeschreibung:</b><br>${identity.shortdesc || "-"}</p>
+    <p style="margin-top:4px;"><b>Vorteile:</b> ${advSelected.join(", ") || "-"}</p>
+    <p style="margin-top:2px;"><b>Nachteile:</b> ${disSelected.join(", ") || "-"}</p>
+  `;
+
+  previewShortdesc.textContent = identity.shortdesc || "Noch keine Beschreibung vergeben.";
+
+  drawChronikRadar();
+}
+
+/* ---------- SAVE / LOAD IDENTITY ---------- */
+function saveIdentity() {
+  const data = {
+    age: idAge.value.trim(),
+    height: idHeight.value.trim(),
+    weight: idWeight.value.trim(),
+    eyes: idEyes.value.trim(),
+    hair: idHair.value.trim(),
+    voice: idVoice.value.trim(),
+    clothes: idClothes.value.trim(),
+    specialmarks: idSpecialMarks.value.trim(),
+    shortdesc: idShortdesc.value.trim(),
+    story: idStory.value.trim(),
+    adv: identity.adv,
+    dis: identity.dis
+  };
+  identity = data;
+  try {
+    localStorage.setItem(KEY_ID, JSON.stringify(data));
+    showMsg("Identität & Chronik gespeichert.");
+  } catch (e) {
+    console.error(e);
+    showMsg("Fehler beim Speichern der Identität.");
+  }
+}
+
+/* ---------- NAVIGATION ---------- */
+function goBackToPage1() {
+  saveIdentity();
+  window.location.href = "UNDRA-ENGINE-1.5-Seite1.html";
+}
+
+function goToPage3() {
+  saveIdentity();
+  window.location.href = "UNDRA-ENGINE-1.5-Seite3.html";
+}
+
+function openLeaveModal() {
+  const name = char?.name || "Namenlos";
+  const title = char?.title ? " – " + char.title : "";
+  const racePart = (() => {
+    if (!char) return "Unbekanntes Volk";
+    if (char.race && char.race2) return char.race + " / " + char.race2 + " (Mischwesen)";
+    if (char.race) return char.race;
+    if (char.race2) return char.race2;
+    return "Unbekanntes Volk";
+  })();
+  const subPart = char?.sub ? " (" + char.sub + ")" : "";
+  const profPart = char?.prof || "Unbekannter Beruf";
+
+  const summary = [
+    name + title,
+    "Volk: " + racePart + subPart,
+    "Profession: " + profPart,
+    "Vorteile: " + (identity.adv.join(", ") || "-"),
+    "Nachteile: " + (identity.dis.join(", ") || "-")
+  ].join(" • ");
+
+  leaveSummary.textContent = summary;
+  leaveModal.style.display = "flex";
+}
+
+function closeLeaveModal() {
+  leaveModal.style.display = "none";
+}
+
+/* ---------- BUTTON-STATE ---------- */
+function updateNextButtonState() {
+  const valid = (identity.adv.length === 2 && identity.dis.length === 3);
+  btnNext.disabled = !valid;
+}
+
+/* ---------- EVENT BINDING ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  // Falls loadCharacterFromStorage bereits aufgerufen wurde, initCharacterPreview aktualisieren
+  initCharacterPreview();
+  renderTraits();
+  updateChronik();
+  updateNextButtonState();
+
+  // Identity inputs
+  [
+    [idAge,   "age"],
+    [idHeight,"height"],
+    [idWeight,"weight"],
+    [idEyes,  "eyes"],
+    [idHair,  "hair"],
+    [idVoice, "voice"],
+    [idClothes,"clothes"],
+    [idSpecialMarks,"specialmarks"]
+  ].forEach(([el, key]) => {
+    if (!el) return;
+    el.addEventListener("input", () => {
+      identity[key] = el.value.trim();
+      updateChronik();
+    });
+  });
+
+  if (idShortdesc) {
+    idShortdesc.addEventListener("input", () => {
+      identity.shortdesc = idShortdesc.value.trim();
+      updateChronik();
+    });
+  }
+
+  if (idStory) {
+    idStory.addEventListener("input", () => {
+      identity.story = idStory.value.trim();
+    });
+  }
+
+  // Trait Suche
+  if (searchAdv) {
+    searchAdv.addEventListener("input", () => {
+      applyTraitSearch("adv", searchAdv.value);
+    });
+  }
+  if (searchDis) {
+    searchDis.addEventListener("input", () => {
+      applyTraitSearch("dis", searchDis.value);
+    });
+  }
+
+  // Reset
+  if (btnResetTraits) btnResetTraits.addEventListener("click", resetTraits);
+
+  // Navigation
+  if (btnBack) btnBack.addEventListener("click", goBackToPage1);
+  if (btnSaveLocal) btnSaveLocal.addEventListener("click", saveIdentity);
+  if (btnNext) btnNext.addEventListener("click", openLeaveModal);
+
+  if (btnLeaveCancel) btnLeaveCancel.addEventListener("click", closeLeaveModal);
+  if (btnLeaveConfirm) btnLeaveConfirm.addEventListener("click", () => {
+    closeLeaveModal();
+    goToPage3();
+  });
+
+  // Radar bei Resize neu zeichnen (falls Größe geändert)
+  window.addEventListener("resize", drawChronikRadar);
+});
+/* ============================
+   PORTRAIT FIX
+   ============================ */
+
+function setPortrait(src) {
+  if (!previewImg) return;
+
+  if (!src) {
+    previewImg.style.display = "none";
+    placeholder.style.display = "block";
+    return;
+  }
+
+  previewImg.onload = () => {
+    previewImg.style.display = "block";
+    placeholder.style.display = "none";
+  };
+
+  previewImg.onerror = () => {
+    previewImg.style.display = "none";
+    placeholder.style.display = "block";
+    console.warn("Portrait konnte nicht geladen werden:", src);
+  };
+
+  previewImg.src = src;
+}
+
+/* Einbau in initCharacterPreview */
+(function patchPortraitInit(){
+  const oldInit = initCharacterPreview;
+  initCharacterPreview = function(){
+    oldInit();
+    if (char && char.portraitData) setPortrait(char.portraitData);
+    else setPortrait(null);
+  };
+})();
+
+
+
+/* ============================
+   RADAR FIX
+   ============================ */
+
+(function patchRadar(){
+  const oldDraw = drawChronikRadar;
+
+  drawChronikRadar = function(){
+
+    // Canvas-Pixelgröße sicherstellen
+    chronikRadarCanvas.width = 180;
+    chronikRadarCanvas.height = 180;
+
+    // Fallback für fehlende Attribute
+    if (!char) char = {};
+    if (!char.attrs || typeof char.attrs !== "object") {
+      char.attrs = {};
+      ATTRIBUTES.forEach(k => char.attrs[k] = 0);
+    }
+
+    oldDraw();
+  };
+
+})();
+
+/* ============================
+   LAYOUT FIX BEIM LADEN
+   ============================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Textareas entquetschen
+  document.querySelectorAll(".id-input, .id-textarea, .id-textarea-long")
+    .forEach(el => {
+      el.style.width = "100%";
+      el.style.boxSizing = "border-box";
+    });
+
+  // Radar sofort korrekt zeichnen
+  chronikRadarCanvas.width = 180;
+  chronikRadarCanvas.height = 180;
+  drawChronikRadar();
+
+  // Portrait sofort prüfen
+  if (char && char.portraitData) setPortrait(char.portraitData);
+  else setPortrait(null);
+
+});
+
+</script>
+</body>
+</html>
