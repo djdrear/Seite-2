@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>UNDRA-ENGINE v1.5 – Seite 2 – Identität & Chronik</title>
 
+  <!-- Ab hier kommt dein Bloodcore Ember CSS -->
   <style>
   /* --- TEXTAREAS NICHT MEHR GEQUETSCHT --- */
 .id-input,
@@ -896,7 +897,7 @@
       Identität & Chronik – <span>UNDRA‑ENGINE v1.5</span>
     </div>
     <div class="footer-right">
-      <button class="btn-main btn-ghost" id="btn-save-local">Zwischenspeichern</button>
+      <button class="btn-main btn-ghost" id="btn-save-local">Werte übernehmen</button>
       <button class="btn-main" id="btn-next">Weiter zum Dashboard</button>
     </div>
   </footer>
@@ -1020,6 +1021,75 @@ let identity = {
 };
 
 let transientTimeout = null;
+
+// ------------------------------------------------------------
+    // 1) ID aus URL lesen
+    // ------------------------------------------------------------
+    function getCharacterId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    // ------------------------------------------------------------
+    // 2) Charakter aus Cloudflare Worker laden
+    // ------------------------------------------------------------
+    async function loadCharacterFromCloud(id) {
+      try {
+        const res = await fetch(`https://undra.djdrear.workers.dev/load/${id}`);
+
+        if (!res.ok) {
+          console.error(await res.text());
+          alert("Fehler beim Laden aus der UNDRA‑Cloud.");
+          return null;
+        }
+
+        return await res.json();
+
+      } catch (err) {
+        console.error(err);
+        alert("Netzwerkfehler beim Cloud‑Laden.");
+        return null;
+      }
+    }
+
+    // ------------------------------------------------------------
+    // 3) Seite 2 initialisieren
+    // ------------------------------------------------------------
+    async function initSeite2() {
+      const id = getCharacterId();
+
+      if (!id) {
+        alert("Keine Charakter‑ID übergeben.");
+        return;
+      }
+
+      const char = await loadCharacterFromCloud(id);
+      if (!char) return;
+
+      // UI füllen
+      const nameEl = document.querySelector("#charName");
+      const titleEl = document.querySelector("#charTitle");
+      const raceEl = document.querySelector("#charRace");
+
+      if (nameEl) nameEl.textContent = char.name || "Unbekannt";
+      if (titleEl) titleEl.textContent = char.title || "";
+      if (raceEl) raceEl.textContent = char.race || "--";
+
+      // Attribute
+      if (char.attrs) {
+        for (const key in char.attrs) {
+          const el = document.querySelector(`[data-attr="${key}"]`);
+          if (el) el.textContent = char.attrs[key];
+        }
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", initSeite2);
+
+
+
+
+
 
 /* ---------- DOM ---------- */
 const headerSubData = document.getElementById("header-sub-data");
@@ -1389,6 +1459,12 @@ function applyTraitSearch(type, term) {
   });
 }
 
+
+
+
+
+
+
 /* ---------- CHRONIK ---------- */
 function updateChronik() {
   const advSelected = identity.adv;
@@ -1457,6 +1533,14 @@ function saveIdentity() {
     showMsg("Fehler beim Speichern der Identität.");
   }
 }
+function applyValuesToUI() {
+  saveIdentity();
+  initIdentityFields();
+  initCharacterPreview();
+  updateChronik();
+  drawChronikRadar();
+  showMsg("Werte übernommen.");
+}
 
 /* ---------- NAVIGATION ---------- */
 function goBackToPage1() {
@@ -1505,12 +1589,6 @@ function updateNextButtonState() {
 }
 
 /* ---------- EVENT BINDING ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-  // Falls loadCharacterFromStorage bereits aufgerufen wurde, initCharacterPreview aktualisieren
-  initCharacterPreview();
-  renderTraits();
-  updateChronik();
-  updateNextButtonState();
 
   // Identity inputs
   [
@@ -1560,7 +1638,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Navigation
   if (btnBack) btnBack.addEventListener("click", goBackToPage1);
-  if (btnSaveLocal) btnSaveLocal.addEventListener("click", saveIdentity);
+  
+  
+  
+  if (btnSaveLocal) btnSaveLocal.addEventListener("click", applyValuesToUI);
+  
+  
+  
   if (btnNext) btnNext.addEventListener("click", openLeaveModal);
 
   if (btnLeaveCancel) btnLeaveCancel.addEventListener("click", closeLeaveModal);
@@ -1639,26 +1723,6 @@ function setPortrait(src) {
 /* ============================
    LAYOUT FIX BEIM LADEN
    ============================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  // Textareas entquetschen
-  document.querySelectorAll(".id-input, .id-textarea, .id-textarea-long")
-    .forEach(el => {
-      el.style.width = "100%";
-      el.style.boxSizing = "border-box";
-    });
-
-  // Radar sofort korrekt zeichnen
-  chronikRadarCanvas.width = 180;
-  chronikRadarCanvas.height = 180;
-  drawChronikRadar();
-
-  // Portrait sofort prüfen
-  if (char && char.portraitData) setPortrait(char.portraitData);
-  else setPortrait(null);
-
-});
 
 </script>
 </body>
