@@ -439,13 +439,13 @@
   justify-content: center;
   position: relative;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   background: #050308;
 }
 
 /* EKG-Null-Linie */
 .flatline {
-  width: 300px;
+  width: 350px;
   height: 6px;
   border-radius: 4px;
   background: #ff0000;
@@ -462,9 +462,9 @@
 /* Explosion Flash */
 .flash-explosion {
   position: absolute;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
+  width: 500px;
+  height: 500px;
+  border-radius: 100%;
   background: radial-gradient(circle, rgba(255,255,255,1), rgba(150,200,255,0.6), transparent);
   box-shadow: 0 0 60px rgba(180,220,255,1);
   animation: flashA 0.45s ease-out forwards;
@@ -473,7 +473,7 @@
 
 @keyframes flashA {
   0% { transform: scale(0.2); opacity: 1; }
-  70% { transform: scale(1.4); opacity: 0.9; }
+  60% { transform: scale(1.4); opacity: 0.9; }
   100% { transform: scale(2.2); opacity: 0; }
 }
 
@@ -485,22 +485,22 @@
 /* Orb Wrapper */
 .orbit-wrapper {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 150px;
+  height: 150px;
   display: grid;
   place-items: center;
 }
 
 /* Orb Core */
 .orbit-core {
-  width: 180px;
-  height: 180px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background: radial-gradient(circle at 40% 30%, #ff2a2a, #6b0000, #1a0000);
   box-shadow:
     0 0 35px rgba(255,0,0,0.9),
     inset 0 0 25px rgba(255,180,180,0.4);
-  animation: heartbeat 1.6s ease-in-out infinite;
+  animation: heartbeat 1.4s ease-in-out infinite;
 }
 
 /* Heartbeat */
@@ -1103,8 +1103,8 @@ footer {
     <div class="modal-box">
       <div class="modal-title">Auswahl bestätigen</div>
       <div class="modal-sub">
-        Bist du mit deiner Identität & Chronik zufrieden?<br>
-        Die getroffenen Entscheidungen werden als Grundlage für das Dashboard übernommen.
+        Dein neuer Charakter lebt. Bist du mit deiner Identität & Chronik zufrieden?<br>
+        Die getroffenen Entscheidungen werden als Grundlage fixiert und übernommen.
       </div>
       <div style="text-align:left; font-size:11px; margin:8px 0 10px;">
         <b>Aktuelle Zusammenfassung:</b><br>
@@ -1163,7 +1163,6 @@ const advPool = [
   "Trefferinstinkt", "Kampfintuition", "Taktgefühl", "Geduld", "Zäher Körper",
   "Gelenkig", "Schnellreaktion", "Hitzeschutz", "Kälteschutz", "Dursttoleranz",
   "Hungertoleranz"
-  // … Rest wie gehabt …
 ];
 
 const disPool = [
@@ -1193,7 +1192,6 @@ const disPool = [
   "Schwache Konzentration", "Schwache Reaktion", "Schwache Präzision",
   "Schwache Koordination", "Schwache Stabilität", "Schwache Resistenz",
   "Schwache Willenskraft"
-  // … Rest wie gehabt …
 ];
 
 /* ---------- STATE ---------- */
@@ -1283,23 +1281,7 @@ const transientMsgEl = document.getElementById("transient-msg");
 
 // Leave modal
 const leaveSummary = document.getElementById("leave-summary");
-
-function updateLeaveSummary() {
-  if (!leaveSummary || !identity) return;
-
-  const race = identity.race || "–";
-  const sub = identity.subgroupAbility || "–";
-  const bonus = identity.attributeBonus || "–";
-  const shortdesc = identity.shortdesc || "Keine Kurzbeschreibung hinterlegt.";
-
-  leaveSummary.innerHTML = `
-    <b>Kurzbeschreibung:</b> ${shortdesc}<br>
-    <b>Rassenfähigkeit:</b> ${race}<br>
-    <b>Untergruppenfähigkeit:</b> ${sub}<br>
-    <b>Attributbonus:</b> ${bonus}
-  `;
-}
-
+const leaveModal = document.getElementById("leave-modal");
 const btnLeaveCancel = document.getElementById("btn-leave-cancel");
 const btnLeaveConfirm = document.getElementById("btn-leave-confirm");
 
@@ -1336,21 +1318,21 @@ function loadIdentityFromStorage() {
   }
 }
 
-
-
-/* ---------- INIT UI FROM DATA (FIXED) ---------- */
+/* ---------- INIT IDENTITY-FELDER ---------- */
 function initIdentityFields() {
-  idAge.value           = identity.age           || char.age           || "";
-  idHeight.value        = identity.height        || char.height        || "";
-  idWeight.value        = identity.weight        || char.weight        || "";
-  idEyes.value          = identity.eyes          || char.eyes          || "";
-  idHair.value          = identity.hair          || char.hair          || "";
-  idVoice.value         = identity.voice         || char.voice         || "";
-  idClothes.value       = identity.clothes       || char.clothes       || "";
-  idSpecialMarks.value  = identity.specialmarks  || char.specialmarks  || "";
-  idShortdesc.value     = identity.shortdesc     || char.shortdesc     || "";
-  idStory.value         = identity.story         || char.story         || "";
+  if (idAge) idAge.value = identity.age || char?.age || "";
+  if (idHeight) idHeight.value = identity.height || char?.height || "";
+  if (idWeight) idWeight.value = identity.weight || char?.weight || "";
+  if (idEyes) idEyes.value = identity.eyes || char?.eyes || "";
+  if (idHair) idHair.value = identity.hair || char?.hair || "";
+  if (idVoice) idVoice.value = identity.voice || char?.voice || "";
+  if (idClothes) idClothes.value = identity.clothes || char?.clothes || "";
+  if (idSpecialMarks) idSpecialMarks.value = identity.specialmarks || char?.specialmarks || "";
+  if (idShortdesc) idShortdesc.value = identity.shortdesc || char?.shortdesc || "";
+  if (idStory) idStory.value = identity.story || char?.story || "";
 }
+
+/* ---------- PREVIEW ---------- */
 function initCharacterPreview() {
   if (!char) {
     headerSubData.textContent = "Unbekannter Charakter";
@@ -1395,6 +1377,39 @@ function initCharacterPreview() {
   abilityRace.textContent = char.raceAbility || "–";
   abilitySub.textContent = char.subAbility || "–";
   abilityAttr.textContent = char.attrBonusNote || "–";
+
+  // --- Attribute-Kurzvorschau erzeugen ---
+  let attrPreview = "";
+  if (char && char.attrs) {
+    attrPreview = ATTR_SHORT.map(short => {
+      const full = ATTRIBUTES[ATTR_SHORT.indexOf(short)];
+      const val = char.attrs[full] ?? "-";
+      return `${short} ${val}`;
+    }).join(" • ");
+  } else {
+    attrPreview = "Keine Attribute geladen.";
+  }
+
+  // --- Vorschau-Container füllen ---
+  previewShortdesc.innerHTML = `
+    <div style="margin-bottom:6px;">
+      <b style="color:var(--gold-bright);">Name:</b> ${char?.name || "Namenlos"}<br>
+      <b style="color:var(--gold-bright);">Titel:</b> ${char?.title || "–"}<br>
+      <b style="color:var(--gold-bright);">Volk:</b> ${previewRace.textContent}<br>
+      <b style="color:var(--gold-bright);">Profession:</b> ${char?.prof || "–"}<br>
+      <b style="color:var(--gold-bright);">Gabe:</b> ${char?.special || "–"}<br>
+      <b style="color:var(--gold-bright);">Rassenfähigkeit:</b> ${char?.raceAbility || "–"}<br>
+      <b style="color:var(--gold-bright);">Untergruppen-Fähigkeit:</b> ${char?.subAbility || "–"}<br>
+      <b style="color:var(--gold-bright);">Attributbonus +1:</b> ${char?.attrBonusNote || "–"}
+    </div>
+
+    <div style="margin-top:6px; color:var(--text-muted); font-size:10px;">
+      <span style="color:var(--gold-bright);">Attribute:</span><br>
+      ${attrPreview}
+    </div>
+  `;
+
+  drawChronikRadar();
 }
 
 /* ---------- RADAR ---------- */
@@ -1562,6 +1577,7 @@ function updateTraitStateAndChronik() {
 
   updateChronik();
   updateNextButtonState();
+  updateErweckenButton(); // Orb-Button immer mitziehen
 }
 
 function updateTraitDisabling(type, shouldDisableOthers) {
@@ -1657,39 +1673,6 @@ function updateChronik() {
     <p style="margin-top:4px;"><b>Vorteile:</b> ${advSelected.join(", ") || "-"}</p>
     <p style="margin-top:2px;"><b>Nachteile:</b> ${disSelected.join(", ") || "-"}</p>
   `;
-
-  // --- Attribute-Kurzvorschau erzeugen ---
-let attrPreview = "";
-if (char && char.attrs) {
-  attrPreview = ATTR_SHORT.map(short => {
-    const full = ATTRIBUTES[ATTR_SHORT.indexOf(short)];
-    const val = char.attrs[full] ?? "-";
-    return `${short} ${val}`;
-  }).join(" • ");
-} else {
-  attrPreview = "Keine Attribute geladen.";
-}
-
-// --- Vorschau-Container füllen ---
-previewShortdesc.innerHTML = `
-  <div style="margin-bottom:6px;">
-    <b style="color:var(--gold-bright);">Name:</b> ${char?.name || "Namenlos"}<br>
-    <b style="color:var(--gold-bright);">Titel:</b> ${char?.title || "–"}<br>
-    <b style="color:var(--gold-bright);">Volk:</b> ${previewRace.textContent}<br>
-    <b style="color:var(--gold-bright);">Profession:</b> ${char?.prof || "–"}<br>
-    <b style="color:var(--gold-bright);">Gabe:</b> ${char?.special || "–"}<br>
-    <b style="color:var(--gold-bright);">Rassenfähigkeit:</b> ${char?.raceAbility || "–"}<br>
-    <b style="color:var(--gold-bright);">Untergruppen-Fähigkeit:</b> ${char?.subAbility || "–"}<br>
-    <b style="color:var(--gold-bright);">Attributbonus +1:</b> ${char?.attrBonusNote || "–"}
-  </div>
-
-  <div style="margin-top:6px; color:var(--text-muted); font-size:10px;">
-    <span style="color:var(--gold-bright);">Attribute:</span><br>
-    ${attrPreview}
-  </div>
-`;
-
-  drawChronikRadar();
 }
 
 /* ---------- SAVE / LOAD IDENTITY ---------- */
@@ -1718,19 +1701,6 @@ function saveIdentity() {
   }
 }
 
-function initIdentityFields() {
-  if (idAge) idAge.value = identity.age || char.age || "";
-  if (idHeight) idHeight.value = identity.height || char.height || "";
-  if (idWeight) idWeight.value = identity.weight || char.weight || "";
-  if (idEyes) idEyes.value = identity.eyes || char.eyes || "";
-  if (idHair) idHair.value = identity.hair || char.hair || "";
-  if (idVoice) idVoice.value = identity.voice || char.voice || "";
-  if (idClothes) idClothes.value = identity.clothes || char.clothes || "";
-  if (idSpecialMarks) idSpecialMarks.value = identity.specialmarks || char.specialmarks || "";
-
-  if (idShortdesc) idShortdesc.value = identity.shortdesc || char.shortdesc || "";
-  if (idStory) idStory.value = identity.story || char.story || "";
-}
 /* ---------- NAVIGATION ---------- */
 function goBackToPage1() {
   saveIdentity();
@@ -1771,7 +1741,7 @@ function closeLeaveModal() {
   leaveModal.style.display = "none";
 }
 
-/* ---------- BUTTON-STATE ---------- */
+/* ---------- BUTTON-STATE (Seite 2 intern) ---------- */
 function updateNextButtonState() {
   const traitsValid = (identity.adv.length === 2 && identity.dis.length === 3);
 
@@ -1790,13 +1760,14 @@ function updateNextButtonState() {
   const page2Complete = traitsValid && fieldsValid;
 
   // Weiter-Button bleibt deaktiviert, bis der Orb erwacht ist
-  btnNext.disabled = true;
+  if (btnNext) btnNext.disabled = true;
 
-  // Wenn Seite 2 vollständig ist → Erwecken-Button anzeigen
+  // Wenn Seite 2 vollständig ist → Awakening-Button (Seite-2-Gimmick) aktivieren
   if (page2Complete) {
     enableAwakening();
   }
 }
+
 /* ---------- PORTRAIT FIX ---------- */
 function setPortrait(src) {
   if (!previewImg) return;
@@ -1838,40 +1809,158 @@ function setPortrait(src) {
   };
 })();
 
-/* ---------- AWAKENING ELEMENTS (GLOBAL) ---------- */
-const btnAwaken = document.getElementById("btn-awaken");
-const flash = document.getElementById("awakening-flash");
-const orbWrapper = document.querySelector(".orbit-wrapper");
+function triggerOrbAwakening() {
+  const flat = document.getElementById("orb-flatline");
+  const orb = document.getElementById("orb-container");
+  const btnErw = document.getElementById("btn-erwecken");
+  const btnNext = document.getElementById("btn-next"); // Footer-Button (WEITER ZUR SPIELOBERFLÄCHE)
+  const btnPage3 = document.getElementById("btn-to-page3"); // Gelber Button (Weiter zu Seite 3)
 
-/* Wird aufgerufen, wenn Seite 1 + Seite 2 vollständig sind */
-function enableAwakening() {
-  if (!btnAwaken) return;
-  btnAwaken.disabled = false;   // Button aktivieren
+  // Explosionseffekt
+  const flash = document.createElement("div");
+  flash.className = "flash-explosion";
+  document.getElementById("orb-ritual-area").appendChild(flash);
+
+  if (flat) flat.style.display = "none";
+
+  // Orb erscheint
+  setTimeout(() => {
+    if (orb) orb.classList.remove("orb-hidden");
+  }, 300);
+
+  // Erwecken-Button vollständig verstecken
+  if (btnErw) {
+    btnErw.style.opacity = "0";
+    btnErw.style.pointerEvents = "none";
+    btnErw.style.visibility = "hidden";
+  }
+
+  // Gelben Button ausblenden
+  if (btnPage3) {
+    btnPage3.style.opacity = "0";
+    btnPage3.style.pointerEvents = "none";
+    btnPage3.style.visibility = "hidden";
+  }
+
+  // Footer-Button aktivieren
+  setTimeout(() => {
+    if (btnNext) {
+      btnNext.disabled = false;
+      btnNext.classList.add("active");
+    }
+  }, 800);
 }
 
-/* Erwecken */
-if (btnAwaken) {
-  btnAwaken.addEventListener("click", () => {
-    // Button deaktivieren (oder ausblenden, wenn du willst)
-    btnAwaken.disabled = true;
-
-    // Explosion starten
-    flash.style.animation = "awaken-explosion 0.7s ease-out forwards";
-
-    // Orb nach Explosion einblenden
-    setTimeout(() => {
-      orbWrapper.classList.remove("hidden");
-      stats.hp = 1.0;
-      updateVitalOrbit();
-
-      // Weiter-Button freischalten
-      if (btnNext) btnNext.disabled = false;
-    }, 650);
-  });
+/* ---------- SEITE 1 PRÜFUNG ---------- */
+function isPage1Complete() {
+  if (!char) return false;
+  return (
+    char.name &&
+    char.title &&
+    char.pool > 0 &&
+    char.used === char.pool &&
+    (char.race || char.race2) &&
+    char.sub &&
+    char.prof &&
+    char.raceAbility &&
+    char.subAbility &&
+    char.attrBonusNote &&
+    char.bonusApplied?.[char.attrBonusNote]
+  );
 }
-/* ---------- INIT PAGE 2 ---------- */
-async function initPage2() {
-  // 1) Charakter laden: zuerst lokal, dann optional Cloud
+
+/* ---------- SEITE 2 PRÜFUNG (nur Vorteile/Nachteile für Orb) ---------- */
+function isPage2Complete() {
+  return (
+    identity.adv.length === 2 &&
+    identity.dis.length === 3
+  );
+}
+
+/* ---------- TRAITS → CHAR SPIEGELN ---------- */
+function syncTraitsToChar() {
+  if (!char) char = {};
+  char.vorteile = [...identity.adv];
+  char.nachteile = [...identity.dis];
+}
+
+/* ---------- ERWECKEN-BUTTON (Orb auf Seite 2) ---------- */
+function updateErweckenButton() {
+  const btn = document.getElementById("btn-erwecken");
+  if (!btn) return;
+
+  const ready = isPage1Complete() && isPage2Complete();
+
+  btn.disabled = !ready;
+  btn.classList.toggle("active", ready);
+  btn.textContent = ready ? "Erwecken" : "Erwecken (nicht bereit)";
+}
+
+/* ---------- SEITE 2 SPEICHERN (für Seite 3 / Gesamtstatus) ---------- */
+function übernehmenSeite2() {
+  saveIdentity();       // Identity (inkl. Traits) sichern
+  syncTraitsToChar();   // Traits in char spiegeln
+  char["Seite 2"] = isPage2Complete();
+
+  try {
+    localStorage.setItem(KEY_CHAR, JSON.stringify(char));
+  } catch (e) {
+    console.error("Fehler beim Speichern von Seite 2:", e);
+  }
+
+  updateErweckenButton();
+}
+
+function triggerOrbAwakening() {
+  const flat = document.getElementById("orb-flatline");
+  const orb = document.getElementById("orb-container");
+  const btnErw = document.getElementById("btn-erwecken");
+  const btnNext = document.getElementById("btn-next"); // Footer-Button
+  const btnPage3 = document.getElementById("btn-to-page3"); // Gelber Button
+
+  // Explosionseffekt
+  const flash = document.createElement("div");
+  flash.className = "flash-explosion";
+  document.getElementById("orb-ritual-area").appendChild(flash);
+
+  if (flat) flat.style.display = "none";
+
+  // Orb erscheint
+  setTimeout(() => {
+    if (orb) orb.classList.remove("orb-hidden");
+  }, 300);
+
+  // Erwecken-Button vollständig verstecken
+  if (btnErw) {
+    btnErw.style.display = "none";
+    btnErw.style.opacity = "0";
+    btnErw.style.pointerEvents = "none";
+    btnErw.style.visibility = "hidden";
+  }
+
+  // Gelben Button ausblenden
+  if (btnPage3) {
+    btnPage3.style.display = "none";
+    btnPage3.style.opacity = "0";
+    btnPage3.style.pointerEvents = "none";
+    btnPage3.style.visibility = "hidden";
+  }
+
+  // Footer-Button aktivieren und sichtbar machen
+  setTimeout(() => {
+    if (btnNext) {
+      btnNext.disabled = false;
+      btnNext.classList.add("active");
+      btnNext.style.opacity = "1";
+      btnNext.style.pointerEvents = "auto";
+      btnNext.style.visibility = "visible";
+    }
+  }, 800);
+}
+
+/* ---------- INIT ---------- */
+document.addEventListener("DOMContentLoaded", async () => {
+  // Charakter laden (lokal, optional Cloud)
   loadCharacterFromStorage();
   if (!char) {
     const id = getCharacterId();
@@ -1888,75 +1977,34 @@ async function initPage2() {
     }
   }
 
-  // 2) Identity laden
+  // Identity laden
   loadIdentityFromStorage();
 
-  // 3) UI initialisieren
+  // UI initialisieren
   initIdentityFields();
   initCharacterPreview();
   renderTraits();
   updateChronik();
   drawChronikRadar();
   updateNextButtonState();
+  updateErweckenButton();
 
-  // 4) Events binden
-  [
-    [idAge,   "age"],
-    [idHeight,"height"],
-    [idWeight,"weight"],
-    [idEyes,  "eyes"],
-    [idHair,  "hair"],
-    [idVoice, "voice"],
-    [idClothes,"clothes"],
-    [idSpecialMarks,"specialmarks"]
-  ].forEach(([el, key]) => {
-    if (!el) return;
-    el.addEventListener("input", () => {
-      identity[key] = el.value.trim();
-      updateChronik();
-      updateNextButtonState();
-    });
+  // Events
+  if (btnBack) btnBack.addEventListener("click", goBackToPage1);
+  if (btnNext) btnNext.addEventListener("click", openLeaveModal);
+  if (btnSaveLocal) btnSaveLocal.addEventListener("click", () => {
+    saveIdentity();
+    übernehmenSeite2();
   });
-
-  if (idShortdesc) {
-    idShortdesc.addEventListener("input", () => {
-      identity.shortdesc = idShortdesc.value.trim();
-      updateChronik();
-      updateNextButtonState();
-    });
-  }
-
-  if (idStory) {
-    idStory.addEventListener("input", () => {
-      identity.story = idStory.value.trim();
-      updateNextButtonState();
-    });
-  }
-
-  if (searchAdv) {
-    searchAdv.addEventListener("input", () => {
-      applyTraitSearch("adv", searchAdv.value);
-    });
-  }
-
-  if (searchDis) {
-    searchDis.addEventListener("input", () => {
-      applyTraitSearch("dis", searchDis.value);
-    });
-  }
 
   if (btnResetTraits) btnResetTraits.addEventListener("click", resetTraits);
 
-  function refreshFromPage1() {
-    loadCharacterFromStorage();
-    initCharacterPreview();
-    updateChronik();
-    drawChronikRadar();
-    showMsg("Werte aus Seite 1 übernommen.");
-  }
-
-  if (btnSaveLocal) btnSaveLocal.addEventListener("click", applyValuesToUI);
-  if (btnNext) btnNext.addEventListener("click", openLeaveModal);
+  if (searchAdv) searchAdv.addEventListener("input", () => {
+    applyTraitSearch("adv", searchAdv.value);
+  });
+  if (searchDis) searchDis.addEventListener("input", () => {
+    applyTraitSearch("dis", searchDis.value);
+  });
 
   if (btnLeaveCancel) btnLeaveCancel.addEventListener("click", closeLeaveModal);
   if (btnLeaveConfirm) btnLeaveConfirm.addEventListener("click", () => {
@@ -1964,114 +2012,12 @@ async function initPage2() {
     goToPage3();
   });
 
-  window.addEventListener("resize", drawChronikRadar);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  initPage2();
-});
-
-
-
-
-/* Prüfen ob Seite 1 vollständig ist */
-function isPage1Complete() {
-  return (
-    char.name &&
-    char.title &&
-    char.pool > 0 &&
-    char.used === char.pool &&
-    (char.race || char.race2) &&
-    char.sub &&
-    char.prof &&
-    char.raceAbility &&
-    char.subAbility &&
-    char.attrBonusNote &&
-    char.bonusApplied?.[char.attrBonusNote]
-  );
-}
-
-/* Prüfen ob Seite 2 vollständig ist */
-function isPage2Complete() {
-  return (
-    char.vorteile?.length === 2 &&
-    char.nachteile?.length === 3
-  );
-}
-
-/* Button aktivieren wenn beide Seiten fertig */
-function updateErweckenButton() {
-  const btn = document.getElementById("btn-erwecken");
-  if (!btn) return;
-
-  const ready = isPage1Complete() && isPage2Complete();
-
-  btn.disabled = !ready;
-  btn.classList.toggle("active", ready);
-  btn.textContent = ready ? "Erwecken" : "Erwecken (nicht bereit)";
-}
-
-/* Seite 2 speichern */
-function übernehmenSeite2() {
-
-  const feldMap = {
-    age: "alter",
-    weight: "gewicht",
-    height: "groesse",
-    eyes: "augenfarbe",
-    hair: "haarfarbe",
-    voice: "stimme",
-    clothes: "kleidung",
-    story: "hintergrund"
-  };
-
-  // Felder speichern
-  Object.entries(feldMap).forEach(([key, id]) => {
-    const el = document.getElementById(id);
-    if (el) char[key] = el.value;
-  });
-
-  // Vorteile / Nachteile speichern
-  char.vorteile = [...document.querySelectorAll('.vorteil.active')].map(el => el.dataset.value);
-  char.nachteile = [...document.querySelectorAll('.nachteil.active')].map(el => el.dataset.value);
-
-  // Seite 2 vollständig?
-  char["Seite 2"] = isPage2Complete();
-
-  // Speichern
-  localStorage.setItem("undra_char", JSON.stringify(char));
-
-  updateErweckenButton();
-}
-
-/* Explosion + Orb Erwecken */
-function triggerOrbAwakening() {
-  const flat = document.getElementById("orb-flatline");
-  const orb = document.getElementById("orb-container");
   const btnErw = document.getElementById("btn-erwecken");
-  const btnNext = document.getElementById("btn-to-page3");
+  if (btnErw) btnErw.addEventListener("click", triggerOrbAwakening);
 
-  const flash = document.createElement("div");
-  flash.className = "flash-explosion";
-  document.getElementById("orb-ritual-area").appendChild(flash);
-
-  flat.style.display = "none";
-
-  setTimeout(() => orb.classList.remove("orb-hidden"), 300);
-
-  btnErw.style.display = "none";
-
-  setTimeout(() => btnNext.style.display = "block", 800);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("btn-erwecken");
-  if (btn) btn.addEventListener("click", triggerOrbAwakening);
-
-  updateErweckenButton();
+  window.addEventListener("resize", drawChronikRadar);
 });
-
-
 </script>
+
 </body>
 </html>
