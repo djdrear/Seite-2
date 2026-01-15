@@ -1650,7 +1650,6 @@ function updateNextButtonState() {
     enableAwakening();
   }
 }
-
 /* ---------- PORTRAIT FIX ---------- */
 function setPortrait(src) {
   if (!previewImg) return;
@@ -1692,6 +1691,39 @@ function setPortrait(src) {
   };
 })();
 
+/* ---------- AWAKENING ELEMENTS (GLOBAL) ---------- */
+const btnAwaken = document.getElementById("btn-awaken");
+const flash = document.getElementById("awakening-flash");
+const orbWrapper = document.querySelector(".orbit-wrapper");
+
+/* Wird aufgerufen, wenn Seite 1 + Seite 2 vollständig sind */
+function enableAwakening() {
+  if (!btnAwaken) return;
+  btnAwaken.classList.remove("hidden");
+}
+
+/* Erwecken */
+if (btnAwaken) {
+  btnAwaken.addEventListener("click", () => {
+    // Button ausblenden
+    btnAwaken.classList.add("hidden");
+
+    // Explosion starten
+    flash.style.animation = "awaken-explosion 0.7s ease-out forwards";
+
+    // Orb nach Explosion einblenden
+    setTimeout(() => {
+      orbWrapper.classList.remove("hidden");
+      stats.hp = 1.0;
+      updateVitalOrbit();
+
+      // Weiter-Button freischalten
+      if (btnNext) btnNext.disabled = false;
+    }, 650);
+  });
+}
+
+
 /* ---------- INIT PAGE 2 ---------- */
 async function initPage2() {
   // 1) Charakter laden: zuerst lokal, dann optional Cloud
@@ -1723,7 +1755,6 @@ async function initPage2() {
   updateNextButtonState();
 
   // 4) Events binden
-
   [
     [idAge,   "age"],
     [idHeight,"height"],
@@ -1738,6 +1769,7 @@ async function initPage2() {
     el.addEventListener("input", () => {
       identity[key] = el.value.trim();
       updateChronik();
+      updateNextButtonState();
     });
   });
 
@@ -1745,12 +1777,14 @@ async function initPage2() {
     idShortdesc.addEventListener("input", () => {
       identity.shortdesc = idShortdesc.value.trim();
       updateChronik();
+      updateNextButtonState();
     });
   }
 
   if (idStory) {
     idStory.addEventListener("input", () => {
       identity.story = idStory.value.trim();
+      updateNextButtonState();
     });
   }
 
@@ -1759,6 +1793,7 @@ async function initPage2() {
       applyTraitSearch("adv", searchAdv.value);
     });
   }
+
   if (searchDis) {
     searchDis.addEventListener("input", () => {
       applyTraitSearch("dis", searchDis.value);
@@ -1768,38 +1803,13 @@ async function initPage2() {
   if (btnResetTraits) btnResetTraits.addEventListener("click", resetTraits);
 
   function refreshFromPage1() {
-  loadCharacterFromStorage();   // Seite‑1‑Daten neu laden
-  initCharacterPreview();       // Vorschau aktualisieren
-  updateChronik();              // Chronik aktualisieren
-  drawChronikRadar();           // Radar neu zeichnen
-  showMsg("Werte aus Seite 1 übernommen.");
-}
+    loadCharacterFromStorage();
+    initCharacterPreview();
+    updateChronik();
+    drawChronikRadar();
+    showMsg("Werte aus Seite 1 übernommen.");
+  }
 
-const btnAwaken = document.getElementById("btn-awaken");
-const flash = document.getElementById("awakening-flash");
-const orbWrapper = document.querySelector(".orbit-wrapper");
-
-/* Wird aufgerufen, wenn Seite 1 + Seite 2 vollständig sind */
-function enableAwakening() {
-  btnAwaken.classList.remove("hidden");
-}
-
-/* Erwecken */
-btnAwaken.addEventListener("click", () => {
-  // Button ausblenden
-  btnAwaken.classList.add("hidden");
-
-  // Explosion starten
-  flash.style.animation = "awaken-explosion 0.7s ease-out forwards";
-
-  // Orb nach Explosion einblenden
-  setTimeout(() => {
-    orbWrapper.classList.remove("hidden");
-    stats.hp = 1.0;
-    updateVitalOrbit();
-  }, 650);
-});
-  
   if (btnSaveLocal) btnSaveLocal.addEventListener("click", applyValuesToUI);
   if (btnNext) btnNext.addEventListener("click", openLeaveModal);
 
