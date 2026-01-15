@@ -445,7 +445,7 @@
 
 /* EKG-Null-Linie */
 .flatline {
-  width: 200px;
+  width: 300px;
   height: 6px;
   border-radius: 4px;
   background: #ff0000;
@@ -904,7 +904,7 @@ footer {
 <body>
 <div id="app-shell">
   <header>
-    <div id="engine-tag">UNDRA‑ENGINE v1.5</div>
+    <div id="engine-tag">UNDRA‑ENGINE v2.0Beta</div>
     <h1>Identität & Chronik</h1>
     <div id="sub-title">Seite 2 – Merkmale, Geschichte, Schwächen</div>
     <div id="page-indicator">Seite 2 von 3</div>
@@ -1085,10 +1085,10 @@ footer {
   <!-- FOOTER -->
   <footer>
     <div class="footer-left">
-      <button class="btn-main" id="btn-refresh">Werte übernehmen</button>
+      <button class="btn-main" id="btn-refresh" onclick="übernehmenSeite2()">Werte übernehmen</button>
     </div>
     <div class="footer-center">
-      Identität & Chronik – <span>UNDRA‑ENGINE v1.5</span>
+      Identität & Chronik – <span>UNDRA‑ENGINE v2.0beta</span>
     </div>
     <div class="footer-right">
       <button class="btn-main" id="btn-next">Weiter zur Spieloberfläche</button>
@@ -1335,6 +1335,8 @@ function loadIdentityFromStorage() {
     console.error("Fehler beim Laden der Identitätsdaten:", e);
   }
 }
+
+
 
 /* ---------- INIT UI FROM DATA (FIXED) ---------- */
 function initIdentityFields() {
@@ -1968,6 +1970,10 @@ async function initPage2() {
 document.addEventListener("DOMContentLoaded", () => {
   initPage2();
 });
+
+
+
+
 /* Prüfen ob Seite 1 vollständig ist */
 function isPage1Complete() {
   return (
@@ -1988,14 +1994,6 @@ function isPage1Complete() {
 /* Prüfen ob Seite 2 vollständig ist */
 function isPage2Complete() {
   return (
-    char.age &&
-    char.weight &&
-    char.height &&
-    char.eyes &&
-    char.hair &&
-    char.voice &&
-    char.clothes &&
-    char.story &&
     char.vorteile?.length === 2 &&
     char.nachteile?.length === 3
   );
@@ -2006,10 +2004,44 @@ function updateErweckenButton() {
   const btn = document.getElementById("btn-erwecken");
   if (!btn) return;
 
-  if (isPage1Complete() && isPage2Complete()) {
-    btn.disabled = false;
-    btn.classList.add("active");
-  }
+  const ready = isPage1Complete() && isPage2Complete();
+
+  btn.disabled = !ready;
+  btn.classList.toggle("active", ready);
+  btn.textContent = ready ? "Erwecken" : "Erwecken (nicht bereit)";
+}
+
+/* Seite 2 speichern */
+function übernehmenSeite2() {
+
+  const feldMap = {
+    age: "alter",
+    weight: "gewicht",
+    height: "groesse",
+    eyes: "augenfarbe",
+    hair: "haarfarbe",
+    voice: "stimme",
+    clothes: "kleidung",
+    story: "hintergrund"
+  };
+
+  // Felder speichern
+  Object.entries(feldMap).forEach(([key, id]) => {
+    const el = document.getElementById(id);
+    if (el) char[key] = el.value;
+  });
+
+  // Vorteile / Nachteile speichern
+  char.vorteile = [...document.querySelectorAll('.vorteil.active')].map(el => el.dataset.value);
+  char.nachteile = [...document.querySelectorAll('.nachteil.active')].map(el => el.dataset.value);
+
+  // Seite 2 vollständig?
+  char["Seite 2"] = isPage2Complete();
+
+  // Speichern
+  localStorage.setItem("undra_char", JSON.stringify(char));
+
+  updateErweckenButton();
 }
 
 /* Explosion + Orb Erwecken */
@@ -2019,63 +2051,26 @@ function triggerOrbAwakening() {
   const btnErw = document.getElementById("btn-erwecken");
   const btnNext = document.getElementById("btn-to-page3");
 
-  // Explosion erzeugen
   const flash = document.createElement("div");
   flash.className = "flash-explosion";
   document.getElementById("orb-ritual-area").appendChild(flash);
 
-  // Flatline entfernen
   flat.style.display = "none";
 
-  // Orb anzeigen
-  setTimeout(() => {
-    orb.classList.remove("orb-hidden");
-  }, 300);
+  setTimeout(() => orb.classList.remove("orb-hidden"), 300);
 
-  // Erwecken-Button entfernen
   btnErw.style.display = "none";
 
-  // Weiter-Button aktivieren
-  setTimeout(() => {
-    btnNext.style.display = "block";
-  }, 800);
-}
-
-/* Event Listener */
-document.addEventListener("DOMContentLoaded", () => {
-  const btnErw = document.getElementById("btn-erwecken");
-  if (btnErw) btnErw.addEventListener("click", triggerOrbAwakening);
-
-  // Jedes UI-Update prüft den Button
-  setInterval(updateErweckenButton, 500);
-});
-function updateErweckenButton() {
-  const btn = document.getElementById("btn-erwecken");
-  if (!btn) return;
-
-  if (char["Seite 1"] === true && char["Seite 2"] === true) {
-    btn.disabled = false;
-    btn.classList.add("active");
-  }
+  setTimeout(() => btnNext.style.display = "block", 800);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("btn-erwecken");
+  if (btn) btn.addEventListener("click", triggerOrbAwakening);
 
-  // Prüfen, ob beide Seiten vollständig sind
-  if (char["Seite 1"] === true && char["Seite 2"] === true) {
-    btn.disabled = false;
-    btn.classList.add("active");
-    btn.textContent = "Erwecken";
-  } else {
-    btn.disabled = true;
-    btn.classList.remove("active");
-    btn.textContent = "Erwecken (nicht bereit)";
-  }
-
-  // Klick-Event
-  btn.addEventListener("click", triggerOrbAwakening);
+  updateErweckenButton();
 });
+
 
 </script>
 </body>
