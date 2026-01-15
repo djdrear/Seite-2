@@ -428,6 +428,120 @@
     .trait-item input {
       margin-right: 6px;
     }
+    
+    /* Ritualbereich */
+#orb-ritual-area {
+  width: 100%;
+  height: 300px; /* Höhe B */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background: #050308;
+}
+
+/* EKG-Null-Linie */
+.flatline {
+  width: 200px;
+  height: 6px;
+  border-radius: 4px;
+  background: #ff0000;
+  box-shadow: 0 0 25px rgba(255,0,0,0.9);
+  animation: ekg-flat 1.2s ease-out infinite;
+}
+
+@keyframes ekg-flat {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* Explosion Flash */
+.flash-explosion {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,1), rgba(150,200,255,0.6), transparent);
+  box-shadow: 0 0 60px rgba(180,220,255,1);
+  animation: flashA 0.45s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flashA {
+  0% { transform: scale(0.2); opacity: 1; }
+  70% { transform: scale(1.4); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Orb versteckt */
+.orb-hidden {
+  display: none;
+}
+
+/* Orb Wrapper */
+.orbit-wrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: grid;
+  place-items: center;
+}
+
+/* Orb Core */
+.orbit-core {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #ff2a2a, #6b0000, #1a0000);
+  box-shadow:
+    0 0 35px rgba(255,0,0,0.9),
+    inset 0 0 25px rgba(255,180,180,0.4);
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+/* Heartbeat */
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.18); }
+  40%  { transform: scale(0.92); }
+  60%  { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+/* Erwecken Button */
+.btn-erwecken {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #333;
+  border: 1px solid #555;
+  color: #777;
+  border-radius: 6px;
+  cursor: not-allowed;
+}
+
+.btn-erwecken.active {
+  background: #4a8cff;
+  border-color: #8ab4ff;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(120,160,255,0.8);
+}
+
+/* Weiter Button */
+.btn-to-page3 {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #d4af37;
+  border: none;
+  color: #1a0f0f;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
     .traits-footer {
       grid-column: 1 / -1;
@@ -946,6 +1060,27 @@ footer {
       </div>
     </div>
   </div>
+  
+  <!-- ORB-RITUAL-BEREICH -->
+<div id="orb-ritual-area">
+  
+  <!-- Startzustand: EKG-Null-Linie -->
+  <div id="orb-flatline" class="flatline"></div>
+
+  <!-- Orb-Container (unsichtbar bis Erweckung) -->
+  <div id="orb-container" class="orb-hidden">
+    <div class="orbit-wrapper">
+      <div class="orbit-core"></div>
+    </div>
+  </div>
+
+  <!-- Erwecken-Button -->
+  <button id="btn-erwecken" class="btn-erwecken" disabled>Erwecken</button>
+
+  <!-- Weiter-Button (unsichtbar bis Ritual abgeschlossen) -->
+  <button id="btn-to-page3" class="btn-to-page3" style="display:none;">Weiter zu Seite 3</button>
+
+</div>
 
   <!-- FOOTER -->
   <footer>
@@ -1201,20 +1336,19 @@ function loadIdentityFromStorage() {
   }
 }
 
-/* ---------- INIT UI FROM DATA ---------- */
+/* ---------- INIT UI FROM DATA (FIXED) ---------- */
 function initIdentityFields() {
-  idAge.value = identity.age || "";
-  idHeight.value = identity.height || "";
-  idWeight.value = identity.weight || "";
-  idEyes.value = identity.eyes || "";
-  idHair.value = identity.hair || "";
-  idVoice.value = identity.voice || "";
-  idClothes.value = identity.clothes || "";
-  idSpecialMarks.value = identity.specialmarks || "";
-  idShortdesc.value = identity.shortdesc || "";
-  idStory.value = identity.story || "";
+  idAge.value           = identity.age           || char.age           || "";
+  idHeight.value        = identity.height        || char.height        || "";
+  idWeight.value        = identity.weight        || char.weight        || "";
+  idEyes.value          = identity.eyes          || char.eyes          || "";
+  idHair.value          = identity.hair          || char.hair          || "";
+  idVoice.value         = identity.voice         || char.voice         || "";
+  idClothes.value       = identity.clothes       || char.clothes       || "";
+  idSpecialMarks.value  = identity.specialmarks  || char.specialmarks  || "";
+  idShortdesc.value     = identity.shortdesc     || char.shortdesc     || "";
+  idStory.value         = identity.story         || char.story         || "";
 }
-
 function initCharacterPreview() {
   if (!char) {
     headerSubData.textContent = "Unbekannter Charakter";
@@ -1833,6 +1967,87 @@ async function initPage2() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initPage2();
+});
+/* Prüfen ob Seite 1 vollständig ist */
+function isPage1Complete() {
+  return (
+    char.name &&
+    char.title &&
+    char.pool > 0 &&
+    char.used === char.pool &&
+    (char.race || char.race2) &&
+    char.sub &&
+    char.prof &&
+    char.raceAbility &&
+    char.subAbility &&
+    char.attrBonusNote &&
+    char.bonusApplied?.[char.attrBonusNote]
+  );
+}
+
+/* Prüfen ob Seite 2 vollständig ist */
+function isPage2Complete() {
+  return (
+    char.age &&
+    char.weight &&
+    char.height &&
+    char.eyes &&
+    char.hair &&
+    char.voice &&
+    char.clothes &&
+    char.story &&
+    char.vorteile?.length === 2 &&
+    char.nachteile?.length === 3
+  );
+}
+
+/* Button aktivieren wenn beide Seiten fertig */
+function updateErweckenButton() {
+  const btn = document.getElementById("btn-erwecken");
+  if (!btn) return;
+
+  if (isPage1Complete() && isPage2Complete()) {
+    btn.disabled = false;
+    btn.classList.add("active");
+  }
+}
+
+/* Explosion + Orb Erwecken */
+function triggerOrbAwakening() {
+  const flat = document.getElementById("orb-flatline");
+  const orb = document.getElementById("orb-container");
+  const btnErw = document.getElementById("btn-erwecken");
+  const btnNext = document.getElementById("btn-to-page3");
+
+  // Explosion erzeugen
+  const flash = document.createElement("div");
+  flash.className = "flash-explosion";
+  document.getElementById("orb-ritual-area").appendChild(flash);
+
+  // Flatline entfernen
+  flat.style.display = "none";
+
+  // Orb anzeigen
+  setTimeout(() => {
+    orb.classList.remove("orb-hidden");
+  }, 300);
+
+  // Erwecken-Button entfernen
+  btnErw.style.display = "none";
+
+  // Weiter-Button aktivieren
+  setTimeout(() => {
+    btnNext.style.display = "block";
+  }, 800);
+}
+
+/* Event Listener */
+document.addEventListener("DOMContentLoaded", () => {
+  const btnErw = document.getElementById("btn-erwecken");
+  if (btnErw) btnErw.addEventListener("click", triggerOrbAwakening);
+
+  // Jedes UI-Update prüft den Button
+  setInterval(updateErweckenButton, 500);
 });
 </script>
 </body>
