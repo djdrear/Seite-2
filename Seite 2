@@ -2049,6 +2049,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // Jedes UI-Update prüft den Button
   setInterval(updateErweckenButton, 500);
 });
+function updateErweckenButton() {
+  const btn = document.getElementById("btn-erwecken");
+  if (!btn) return;
+
+  if (char["Seite 1"] === true && char["Seite 2"] === true) {
+    btn.disabled = false;
+    btn.classList.add("active");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("btn-erwecken");
+
+  // Prüfen, ob beide Seiten vollständig sind
+  if (char["Seite 1"] === true && char["Seite 2"] === true) {
+    btn.disabled = false;
+    btn.classList.add("active");
+    btn.textContent = "Erwecken";
+  } else {
+    btn.disabled = true;
+    btn.classList.remove("active");
+    btn.textContent = "Erwecken (nicht bereit)";
+  }
+
+  // Klick-Event
+  btn.addEventListener("click", triggerOrbAwakening);
+});
+
 </script>
 </body>
 </html>
