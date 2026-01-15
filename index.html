@@ -1582,15 +1582,19 @@ function saveIdentity() {
   }
 }
 
-function applyValuesToUI() {
-  saveIdentity();
-  initIdentityFields();
-  initCharacterPreview();
-  updateChronik();
-  drawChronikRadar();
-  showMsg("Werte übernommen.");
-}
+function initIdentityFields() {
+  if (idAge) idAge.value = identity.age || char.age || "";
+  if (idHeight) idHeight.value = identity.height || char.height || "";
+  if (idWeight) idWeight.value = identity.weight || char.weight || "";
+  if (idEyes) idEyes.value = identity.eyes || char.eyes || "";
+  if (idHair) idHair.value = identity.hair || char.hair || "";
+  if (idVoice) idVoice.value = identity.voice || char.voice || "";
+  if (idClothes) idClothes.value = identity.clothes || char.clothes || "";
+  if (idSpecialMarks) idSpecialMarks.value = identity.specialmarks || char.specialmarks || "";
 
+  if (idShortdesc) idShortdesc.value = identity.shortdesc || char.shortdesc || "";
+  if (idStory) idStory.value = identity.story || char.story || "";
+}
 /* ---------- NAVIGATION ---------- */
 function goBackToPage1() {
   saveIdentity();
