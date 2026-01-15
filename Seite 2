@@ -1709,7 +1709,7 @@ function goBackToPage1() {
 
 function goToPage3() {
   saveIdentity();
-  window.location.href = "UNDRA-ENGINE-1.5-Seite3.html";
+  window.location.href = "https://djdrear.github.io/Seite-3/";
 }
 
 function openLeaveModal() {
