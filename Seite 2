@@ -562,34 +562,86 @@
     }
 
     .chronik-abilities-row {
-      margin-bottom: 4px;
-    }
+  margin-bottom: 4px;
+}
 
-    .chronik-abilities-row b {
-      color: var(--gold-bright);
-    }
+.chronik-abilities-row b {
+  color: var(--gold-bright);
+}
 
-    .chronik-abilities-row span {
-      color: var(--text-main);
-    }
+.chronik-abilities-row span {
+  color: var(--text-main);
+}
 
-    footer {
-      padding: 8px 10px;
-      border-top: 1px solid var(--gold-soft);
-      background: linear-gradient(180deg, rgba(10,2,14,0.9), rgba(4,0,8,0.98));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 11px;
-    }
+/* Explosion Flash */
+#awakening-flash {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,200,80,1), rgba(255,80,0,0.8), rgba(0,0,0,0));
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+}
 
-    .footer-left,
-    .footer-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+/* KORREKTE Explosion */
+@keyframes awaken-explosion {
+  0%   { width: 0; height: 0; opacity: 0.9; }
+  40%  { width: 420px; height: 420px; opacity: 1; }
+  100% { width: 180px; height: 180px; opacity: 0; }
+}
+
+/* Hidden */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* Erwecken-Button */
+.awaken-btn {
+  margin-top: 20px;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffd9a6;
+  background: linear-gradient(180deg, #7a0000, #ff3c00);
+  border: 2px solid #ffb347;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow:
+    0 0 12px rgba(255,80,0,0.8),
+    0 0 22px rgba(255,120,0,0.6);
+  animation: flamepulse 1.2s infinite ease-in-out;
+}
+
+@keyframes flamepulse {
+  0%   { box-shadow: 0 0 12px rgba(255,80,0,0.8); }
+  50%  { box-shadow: 0 0 28px rgba(255,150,0,1); }
+  100% { box-shadow: 0 0 12px rgba(255,80,0,0.8); }
+}
+
+/* Footer */
+footer {
+  padding: 8px 10px;
+  border-top: 1px solid var(--gold-soft);
+  background: linear-gradient(180deg, rgba(10,2,14,0.9), rgba(4,0,8,0.98));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
     .footer-center {
       display: flex;
@@ -891,14 +943,13 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-left">
-      <button class="btn-main btn-ghost" id="btn-back">Zurück zu Seite 1</button>
+      <button class="btn-main" id="btn-refresh">Werte übernehmen</button>
     </div>
     <div class="footer-center">
       Identität & Chronik – <span>UNDRA‑ENGINE v1.5</span>
     </div>
     <div class="footer-right">
-      <button class="btn-main btn-ghost" id="btn-save-local">Werte übernehmen</button>
-      <button class="btn-main" id="btn-next">Weiter zum Dashboard</button>
+      <button class="btn-main" id="btn-next">Weiter zur Spieloberfläche</button>
     </div>
   </footer>
 
@@ -946,61 +997,61 @@ const ATTR_SHORT = [
   "FK","TC","TE"
 ];
 
-/* ---------- TRAIT POOLS (Platzhalter – hier deine 200 Einträge einfügen) ---------- */
+/* ---------- TRAIT POOLS ---------- */
 const advPool = [
   "Anpassungsfähig", "Astralsinn", "Ausdauernd", "Balancegefühl", "Baumeisterblick",
-    "Blick für Details", "Diplomatisch", "Dunkelwahrnehmung", "Durchhaltewille",
-    "Energiespürer", "Einfühlsam", "Erinnerungsstark", "Feinmechanik", "Feinsinn",
-    "Fleißig", "Fokusreserve", "Gefahreninstinkt", "Geländekenner", "Geschickte Hände",
-    "Glücksgriff", "Harmoniesinn", "Hartnäckig", "Hitzetolerant", "Humorvoll",
-    "Improvisationstalent", "Improvisationsmut", "Inspirierend", "Intuitiv",
-    "Kälteresistent", "Knotenmeister", "Kraftfokus", "Kreativ", "Lagermeister",
-    "Lernfähig", "Leichtfüßig", "Logikdenker", "Manafluss‑Stabilität",
-    "Materialkenntnis", "Mentale Stabilität", "Mustererkennung", "Naturverbunden",
-    "Nachtaktiv", "Orientierungssinn", "Pflanzenkenntnis", "Präzisionsarbeit",
-    "Präzisionsgriff", "Redegewandt", "Runenverständnis", "Ritualgefühl",
-    "Ruhe in Gefahr", "Ruhepol", "Scharfes Gehör", "Schnelle Auffassung",
-    "Schneller Griff", "Schnellpacker", "Schmerzresistenz", "Selbstbeherrschung",
-    "Schildgefühl", "Schlafreduziert", "Spureninstinkt", "Spurenleser",
-    "Stabiler Stand", "Symbolkenntnis", "Taktisches Denken", "Tiervertraut",
-    "Trittsicher", "Verhandlungsgeschick", "Vertrauenswürdig", "Waffenkenntnis",
-    "Wasservertraut", "Weitblick", "Wettergefühl", "Willensstark", "Werkzeuggefühl",
-    "Zähes Leben", "Zielstrebig", "Zauberdisziplin", "Geistige Offenheit",
-    "Orientierung im Dunkeln", "Pfadfinder", "Sammlerblick", "Ausweichreflex",
-    "Trefferinstinkt", "Kampfintuition", "Taktgefühl", "Geduld", "Zäher Körper",
-    "Gelenkig", "Schnellreaktion", "Hitzeschutz", "Kälteschutz", "Dursttoleranz",
-    "Hungertoleranz"
-  // ... HIER deine restlichen Vorteile aus v1.11 einfügen ...
+  "Blick für Details", "Diplomatisch", "Dunkelwahrnehmung", "Durchhaltewille",
+  "Energiespürer", "Einfühlsam", "Erinnerungsstark", "Feinmechanik", "Feinsinn",
+  "Fleißig", "Fokusreserve", "Gefahreninstinkt", "Geländekenner", "Geschickte Hände",
+  "Glücksgriff", "Harmoniesinn", "Hartnäckig", "Hitzetolerant", "Humorvoll",
+  "Improvisationstalent", "Improvisationsmut", "Inspirierend", "Intuitiv",
+  "Kälteresistent", "Knotenmeister", "Kraftfokus", "Kreativ", "Lagermeister",
+  "Lernfähig", "Leichtfüßig", "Logikdenker", "Manafluss‑Stabilität",
+  "Materialkenntnis", "Mentale Stabilität", "Mustererkennung", "Naturverbunden",
+  "Nachtaktiv", "Orientierungssinn", "Pflanzenkenntnis", "Präzisionsarbeit",
+  "Präzisionsgriff", "Redegewandt", "Runenverständnis", "Ritualgefühl",
+  "Ruhe in Gefahr", "Ruhepol", "Scharfes Gehör", "Schnelle Auffassung",
+  "Schneller Griff", "Schnellpacker", "Schmerzresistenz", "Selbstbeherrschung",
+  "Schildgefühl", "Schlafreduziert", "Spureninstinkt", "Spurenleser",
+  "Stabiler Stand", "Symbolkenntnis", "Taktisches Denken", "Tiervertraut",
+  "Trittsicher", "Verhandlungsgeschick", "Vertrauenswürdig", "Waffenkenntnis",
+  "Wasservertraut", "Weitblick", "Wettergefühl", "Willensstark", "Werkzeuggefühl",
+  "Zähes Leben", "Zielstrebig", "Zauberdisziplin", "Geistige Offenheit",
+  "Orientierung im Dunkeln", "Pfadfinder", "Sammlerblick", "Ausweichreflex",
+  "Trefferinstinkt", "Kampfintuition", "Taktgefühl", "Geduld", "Zäher Körper",
+  "Gelenkig", "Schnellreaktion", "Hitzeschutz", "Kälteschutz", "Dursttoleranz",
+  "Hungertoleranz"
+  // … Rest wie gehabt …
 ];
 
 const disPool = [
   "Astralblind", "Ausweichschwach", "Baumeisterblind", "Chaotischer Geist",
-    "Disharmonie", "Durstanfällig", "Empathielos", "Energieschwäche", "Faul",
-    "Geringe Belastbarkeit", "Geräuschempfindlich", "Geländeunsicher",
-    "Geistige Blockade", "Grobehändig", "Grobmotorischer Sinn", "Hitzeanfällig",
-    "Hungeranfällig", "Ideenlos", "Impulsiv", "Jähzornig", "Kälteanfällig",
-    "Knotenprobleme", "Kurzsichtig", "Langsame Auffassung", "Langsamer Griff",
-    "Langsame Reaktion", "Lernschwach", "Lichtempfindlich", "Materialblind",
-    "Mentale Instabilität", "Misstrauisch", "Nachtblind", "Naturfremd", "Nervös",
-    "Nachlässig", "Orientierungslos", "Panik in Gefahr", "Pechvogel",
-    "Pflanzenunkenntnis", "Reparaturschwach", "Runenblind", "Ritualunsicherheit",
-    "Schlafbedürftig", "Schlechte Ausweichreaktion", "Schlechte Kampfintuition",
-    "Schlechte Menschenkenntnis", "Schlechte Mustererkennung",
-    "Schlechte Spurenlesung", "Schlechte Waffenführung", "Schmerzempfindlich",
-    "Schwache Ausdauer", "Schwache Fokusreserve", "Schwache Orientierung",
-    "Schwacher Stand", "Schwerfällig", "Schwerhörig", "Spurenblind", "Steif",
-    "Symbolblind", "Taktlos", "Tierfurcht", "Übermut", "Übervorsichtig",
-    "Ungeduldig", "Ungeschickte Hände", "Unhöflich", "Unkonzentriert",
-    "Unorganisiert", "Unpräziser Griff", "Unüberzeugend", "Unsicherer Stand",
-    "Unaufmerksam", "Vergesslich", "Verwirrbar", "Waffenunsicher",
-    "Wackliger Stand", "Wasserfurcht", "Wetterempfindlich", "Willensschwach",
-    "Zerbrechlich", "Ziellos", "Schwindelanfällig", "Geräuschüberempfindlich",
-    "Schwache Improvisation", "Schwache Technikkenntnis", "Schwache Logik",
-    "Schwache Intuition", "Schwache Wahrnehmung", "Schwache Motorik",
-    "Schwache Konzentration", "Schwache Reaktion", "Schwache Präzision",
-    "Schwache Koordination", "Schwache Stabilität", "Schwache Resistenz",
-    "Schwache Willenskraft"
-  // ... HIER deine restlichen Nachteile aus v1.11 einfügen ...
+  "Disharmonie", "Durstanfällig", "Empathielos", "Energieschwäche", "Faul",
+  "Geringe Belastbarkeit", "Geräuschempfindlich", "Geländeunsicher",
+  "Geistige Blockade", "Grobehändig", "Grobmotorischer Sinn", "Hitzeanfällig",
+  "Hungeranfällig", "Ideenlos", "Impulsiv", "Jähzornig", "Kälteanfällig",
+  "Knotenprobleme", "Kurzsichtig", "Langsame Auffassung", "Langsamer Griff",
+  "Langsame Reaktion", "Lernschwach", "Lichtempfindlich", "Materialblind",
+  "Mentale Instabilität", "Misstrauisch", "Nachtblind", "Naturfremd", "Nervös",
+  "Nachlässig", "Orientierungslos", "Panik in Gefahr", "Pechvogel",
+  "Pflanzenunkenntnis", "Reparaturschwach", "Runenblind", "Ritualunsicherheit",
+  "Schlafbedürftig", "Schlechte Ausweichreaktion", "Schlechte Kampfintuition",
+  "Schlechte Menschenkenntnis", "Schlechte Mustererkennung",
+  "Schlechte Spurenlesung", "Schlechte Waffenführung", "Schmerzempfindlich",
+  "Schwache Ausdauer", "Schwache Fokusreserve", "Schwache Orientierung",
+  "Schwacher Stand", "Schwerfällig", "Schwerhörig", "Spurenblind", "Steif",
+  "Symbolblind", "Taktlos", "Tierfurcht", "Übermut", "Übervorsichtig",
+  "Ungeduldig", "Ungeschickte Hände", "Unhöflich", "Unkonzentriert",
+  "Unorganisiert", "Unpräziser Griff", "Unüberzeugend", "Unsicherer Stand",
+  "Unaufmerksam", "Vergesslich", "Verwirrbar", "Waffenunsicher",
+  "Wackliger Stand", "Wasserfurcht", "Wetterempfindlich", "Willensschwach",
+  "Zerbrechlich", "Ziellos", "Schwindelanfällig", "Geräuschüberempfindlich",
+  "Schwache Improvisation", "Schwache Technikkenntnis", "Schwache Logik",
+  "Schwache Intuition", "Schwache Wahrnehmung", "Schwache Motorik",
+  "Schwache Konzentration", "Schwache Reaktion", "Schwache Präzision",
+  "Schwache Koordination", "Schwache Stabilität", "Schwache Resistenz",
+  "Schwache Willenskraft"
+  // … Rest wie gehabt …
 ];
 
 /* ---------- STATE ---------- */
@@ -1022,74 +1073,27 @@ let identity = {
 
 let transientTimeout = null;
 
-// ------------------------------------------------------------
-    // 1) ID aus URL lesen
-    // ------------------------------------------------------------
-    function getCharacterId() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("id");
+/* ---------- CLOUD-ID / CLOUD-LOAD (optional) ---------- */
+function getCharacterId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+}
+
+async function loadCharacterFromCloud(id) {
+  try {
+    const res = await fetch(`https://undra.djdrear.workers.dev/load/${id}`);
+    if (!res.ok) {
+      console.error(await res.text());
+      alert("Fehler beim Laden aus der UNDRA‑Cloud.");
+      return null;
     }
-
-    // ------------------------------------------------------------
-    // 2) Charakter aus Cloudflare Worker laden
-    // ------------------------------------------------------------
-    async function loadCharacterFromCloud(id) {
-      try {
-        const res = await fetch(`https://undra.djdrear.workers.dev/load/${id}`);
-
-        if (!res.ok) {
-          console.error(await res.text());
-          alert("Fehler beim Laden aus der UNDRA‑Cloud.");
-          return null;
-        }
-
-        return await res.json();
-
-      } catch (err) {
-        console.error(err);
-        alert("Netzwerkfehler beim Cloud‑Laden.");
-        return null;
-      }
-    }
-
-    // ------------------------------------------------------------
-    // 3) Seite 2 initialisieren
-    // ------------------------------------------------------------
-    async function initSeite2() {
-      const id = getCharacterId();
-
-      if (!id) {
-        alert("Keine Charakter‑ID übergeben.");
-        return;
-      }
-
-      const char = await loadCharacterFromCloud(id);
-      if (!char) return;
-
-      // UI füllen
-      const nameEl = document.querySelector("#charName");
-      const titleEl = document.querySelector("#charTitle");
-      const raceEl = document.querySelector("#charRace");
-
-      if (nameEl) nameEl.textContent = char.name || "Unbekannt";
-      if (titleEl) titleEl.textContent = char.title || "";
-      if (raceEl) raceEl.textContent = char.race || "--";
-
-      // Attribute
-      if (char.attrs) {
-        for (const key in char.attrs) {
-          const el = document.querySelector(`[data-attr="${key}"]`);
-          if (el) el.textContent = char.attrs[key];
-        }
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", initSeite2);
-
-
-
-
-
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    alert("Netzwerkfehler beim Cloud‑Laden.");
+    return null;
+  }
+}
 
 /* ---------- DOM ---------- */
 const headerSubData = document.getElementById("header-sub-data");
@@ -1136,13 +1140,29 @@ const btnSaveLocal = document.getElementById("btn-save-local");
 const transientMsgEl = document.getElementById("transient-msg");
 
 // Leave modal
-const leaveModal = document.getElementById("leave-modal");
 const leaveSummary = document.getElementById("leave-summary");
+
+function updateLeaveSummary() {
+  if (!leaveSummary || !identity) return;
+
+  const race = identity.race || "–";
+  const sub = identity.subgroupAbility || "–";
+  const bonus = identity.attributeBonus || "–";
+  const shortdesc = identity.shortdesc || "Keine Kurzbeschreibung hinterlegt.";
+
+  leaveSummary.innerHTML = `
+    <b>Kurzbeschreibung:</b> ${shortdesc}<br>
+    <b>Rassenfähigkeit:</b> ${race}<br>
+    <b>Untergruppenfähigkeit:</b> ${sub}<br>
+    <b>Attributbonus:</b> ${bonus}
+  `;
+}
+
 const btnLeaveCancel = document.getElementById("btn-leave-cancel");
 const btnLeaveConfirm = document.getElementById("btn-leave-confirm");
 
 /* ---------- HELPER ---------- */
-function showMsg(text, ms=2200) {
+function showMsg(text, ms = 2200) {
   transientMsgEl.textContent = text;
   transientMsgEl.style.opacity = "1";
   if (transientTimeout) clearTimeout(transientTimeout);
@@ -1154,10 +1174,7 @@ function showMsg(text, ms=2200) {
 /* ---------- LOAD FROM STORAGE ---------- */
 function loadCharacterFromStorage() {
   const raw = localStorage.getItem(KEY_CHAR);
-  if (!raw) {
-    // Wenn keine Charakterdaten vorhanden sind, weiterleiten oder Platzhalter nutzen
-    return;
-  }
+  if (!raw) return;
   try {
     const data = JSON.parse(raw);
     if (data && typeof data === "object") char = data;
@@ -1194,6 +1211,15 @@ function initIdentityFields() {
 function initCharacterPreview() {
   if (!char) {
     headerSubData.textContent = "Unbekannter Charakter";
+    previewNameLine.textContent = "Namenlos – ohne Titel";
+    previewRace.textContent = "–";
+    previewProf.textContent = "–";
+    previewSpec.textContent = "–";
+    abilityRace.textContent = "–";
+    abilitySub.textContent = "–";
+    abilityAttr.textContent = "–";
+    placeholder.style.display = "block";
+    if (previewImg) previewImg.style.display = "none";
     return;
   }
 
@@ -1216,12 +1242,9 @@ function initCharacterPreview() {
   previewSpec.textContent = char.special || "–";
 
   if (char.portraitData) {
-    previewImg.src = char.portraitData;
-    previewImg.style.display = "block";
-    placeholder.style.display = "none";
+    setPortrait(char.portraitData);
   } else {
-    previewImg.style.display = "none";
-    placeholder.style.display = "block";
+    setPortrait(null);
   }
 
   headerSubData.textContent = name + " | " + (char.prof || "unbestimmte Profession");
@@ -1241,16 +1264,15 @@ function drawChronikRadar() {
   const cy = h / 2;
   const radius = Math.min(w, h) / 2 - 12;
 
-  ctx.clearRect(0,0,w,h);
+  ctx.clearRect(0, 0, w, h);
 
   if (!char || !char.attrs) {
-    // leichter Hintergrundkreis
-    const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, radius+12);
+    const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, radius + 12);
     grad.addColorStop(0, "rgba(180,108,255,0.08)");
     grad.addColorStop(1, "rgba(0,0,0,0.0)");
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.arc(cx, cy, radius+12, 0, Math.PI*2);
+    ctx.arc(cx, cy, radius + 12, 0, Math.PI * 2);
     ctx.fill();
     return;
   }
@@ -1258,11 +1280,10 @@ function drawChronikRadar() {
   const count = ATTRIBUTES.length;
   const step = (Math.PI * 2) / count;
 
-  // Achsen
   ctx.strokeStyle = "rgba(212,175,55,0.18)";
   ctx.lineWidth = 1;
   for (let i = 0; i < count; i++) {
-    const angle = step*i - Math.PI/2;
+    const angle = step * i - Math.PI / 2;
     const x = cx + Math.cos(angle) * radius;
     const y = cy + Math.sin(angle) * radius;
     ctx.beginPath();
@@ -1280,21 +1301,20 @@ function drawChronikRadar() {
   }
 
   ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI*2);
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.strokeStyle = "rgba(248,231,176,0.6)";
   ctx.stroke();
 
-  // Wertefläche
   ctx.beginPath();
   for (let i = 0; i < count; i++) {
     const val = char.attrs[ATTRIBUTES[i]] || 0;
     const factor = Math.max(0, Math.min(1, val / 20));
     const r = radius * (0.1 + factor * 0.9);
-    const angle = step*i - Math.PI/2;
+    const angle = step * i - Math.PI / 2;
     const x = cx + Math.cos(angle) * r;
     const y = cy + Math.sin(angle) * r;
-    if (i === 0) ctx.moveTo(x,y);
-    else ctx.lineTo(x,y);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
   }
   ctx.closePath();
   ctx.fillStyle = "rgba(208,70,70,0.35)";
@@ -1389,13 +1409,11 @@ function findTraitCheckbox(type, name) {
 }
 
 function updateTraitStateAndChronik() {
-  // Zähler
   const advCount = identity.adv.length;
   const disCount = identity.dis.length;
   countAdvSpan.textContent = advCount;
   countDisSpan.textContent = disCount;
 
-  // Sperren/Entsperren der anderen Traits
   updateTraitDisabling("adv", advCount >= 2);
   updateTraitDisabling("dis", disCount >= 3);
 
@@ -1459,12 +1477,6 @@ function applyTraitSearch(type, term) {
   });
 }
 
-
-
-
-
-
-
 /* ---------- CHRONIK ---------- */
 function updateChronik() {
   const advSelected = identity.adv;
@@ -1503,7 +1515,36 @@ function updateChronik() {
     <p style="margin-top:2px;"><b>Nachteile:</b> ${disSelected.join(", ") || "-"}</p>
   `;
 
-  previewShortdesc.textContent = identity.shortdesc || "Noch keine Beschreibung vergeben.";
+  // --- Attribute-Kurzvorschau erzeugen ---
+let attrPreview = "";
+if (char && char.attrs) {
+  attrPreview = ATTR_SHORT.map(short => {
+    const full = ATTRIBUTES[ATTR_SHORT.indexOf(short)];
+    const val = char.attrs[full] ?? "-";
+    return `${short} ${val}`;
+  }).join(" • ");
+} else {
+  attrPreview = "Keine Attribute geladen.";
+}
+
+// --- Vorschau-Container füllen ---
+previewShortdesc.innerHTML = `
+  <div style="margin-bottom:6px;">
+    <b style="color:var(--gold-bright);">Name:</b> ${char?.name || "Namenlos"}<br>
+    <b style="color:var(--gold-bright);">Titel:</b> ${char?.title || "–"}<br>
+    <b style="color:var(--gold-bright);">Volk:</b> ${previewRace.textContent}<br>
+    <b style="color:var(--gold-bright);">Profession:</b> ${char?.prof || "–"}<br>
+    <b style="color:var(--gold-bright);">Gabe:</b> ${char?.special || "–"}<br>
+    <b style="color:var(--gold-bright);">Rassenfähigkeit:</b> ${char?.raceAbility || "–"}<br>
+    <b style="color:var(--gold-bright);">Untergruppen-Fähigkeit:</b> ${char?.subAbility || "–"}<br>
+    <b style="color:var(--gold-bright);">Attributbonus +1:</b> ${char?.attrBonusNote || "–"}
+  </div>
+
+  <div style="margin-top:6px; color:var(--text-muted); font-size:10px;">
+    <span style="color:var(--gold-bright);">Attribute:</span><br>
+    ${attrPreview}
+  </div>
+`;
 
   drawChronikRadar();
 }
@@ -1533,6 +1574,7 @@ function saveIdentity() {
     showMsg("Fehler beim Speichern der Identität.");
   }
 }
+
 function applyValuesToUI() {
   saveIdentity();
   initIdentityFields();
@@ -1584,13 +1626,104 @@ function closeLeaveModal() {
 
 /* ---------- BUTTON-STATE ---------- */
 function updateNextButtonState() {
-  const valid = (identity.adv.length === 2 && identity.dis.length === 3);
-  btnNext.disabled = !valid;
+  const traitsValid = (identity.adv.length === 2 && identity.dis.length === 3);
+
+  const fieldsValid =
+    identity.age &&
+    identity.height &&
+    identity.weight &&
+    identity.eyes &&
+    identity.hair &&
+    identity.voice &&
+    identity.clothes &&
+    identity.specialmarks &&
+    identity.shortdesc &&
+    identity.story;
+
+  const page2Complete = traitsValid && fieldsValid;
+
+  // Weiter-Button bleibt deaktiviert, bis der Orb erwacht ist
+  btnNext.disabled = true;
+
+  // Wenn Seite 2 vollständig ist → Erwecken-Button anzeigen
+  if (page2Complete) {
+    enableAwakening();
+  }
 }
 
-/* ---------- EVENT BINDING ---------- */
+/* ---------- PORTRAIT FIX ---------- */
+function setPortrait(src) {
+  if (!previewImg) return;
 
-  // Identity inputs
+  if (!src) {
+    previewImg.style.display = "none";
+    placeholder.style.display = "block";
+    return;
+  }
+
+  previewImg.onload = () => {
+    previewImg.style.display = "block";
+    placeholder.style.display = "none";
+  };
+
+  previewImg.onerror = () => {
+    previewImg.style.display = "none";
+    placeholder.style.display = "block";
+    console.warn("Portrait konnte nicht geladen werden:", src);
+  };
+
+  previewImg.src = src;
+}
+
+/* ---------- RADAR FIX ---------- */
+(function patchRadar() {
+  const oldDraw = drawChronikRadar;
+  drawChronikRadar = function () {
+    chronikRadarCanvas.width = 180;
+    chronikRadarCanvas.height = 180;
+
+    if (!char) char = {};
+    if (!char.attrs || typeof char.attrs !== "object") {
+      char.attrs = {};
+      ATTRIBUTES.forEach(k => char.attrs[k] = 0);
+    }
+
+    oldDraw();
+  };
+})();
+
+/* ---------- INIT PAGE 2 ---------- */
+async function initPage2() {
+  // 1) Charakter laden: zuerst lokal, dann optional Cloud
+  loadCharacterFromStorage();
+  if (!char) {
+    const id = getCharacterId();
+    if (id) {
+      const cloudChar = await loadCharacterFromCloud(id);
+      if (cloudChar) {
+        char = cloudChar;
+        try {
+          localStorage.setItem(KEY_CHAR, JSON.stringify(char));
+        } catch (e) {
+          console.warn("Konnte Cloud-Char nicht lokal cachen:", e);
+        }
+      }
+    }
+  }
+
+  // 2) Identity laden
+  loadIdentityFromStorage();
+
+  // 3) UI initialisieren
+  initIdentityFields();
+  initCharacterPreview();
+  renderTraits();
+  updateChronik();
+  drawChronikRadar();
+  updateNextButtonState();
+
+  // 4) Events binden
+
   [
     [idAge,   "age"],
     [idHeight,"height"],
@@ -1621,7 +1754,6 @@ function updateNextButtonState() {
     });
   }
 
-  // Trait Suche
   if (searchAdv) {
     searchAdv.addEventListener("input", () => {
       applyTraitSearch("adv", searchAdv.value);
@@ -1633,18 +1765,42 @@ function updateNextButtonState() {
     });
   }
 
-  // Reset
   if (btnResetTraits) btnResetTraits.addEventListener("click", resetTraits);
 
-  // Navigation
-  if (btnBack) btnBack.addEventListener("click", goBackToPage1);
-  
-  
+  function refreshFromPage1() {
+  loadCharacterFromStorage();   // Seite‑1‑Daten neu laden
+  initCharacterPreview();       // Vorschau aktualisieren
+  updateChronik();              // Chronik aktualisieren
+  drawChronikRadar();           // Radar neu zeichnen
+  showMsg("Werte aus Seite 1 übernommen.");
+}
+
+const btnAwaken = document.getElementById("btn-awaken");
+const flash = document.getElementById("awakening-flash");
+const orbWrapper = document.querySelector(".orbit-wrapper");
+
+/* Wird aufgerufen, wenn Seite 1 + Seite 2 vollständig sind */
+function enableAwakening() {
+  btnAwaken.classList.remove("hidden");
+}
+
+/* Erwecken */
+btnAwaken.addEventListener("click", () => {
+  // Button ausblenden
+  btnAwaken.classList.add("hidden");
+
+  // Explosion starten
+  flash.style.animation = "awaken-explosion 0.7s ease-out forwards";
+
+  // Orb nach Explosion einblenden
+  setTimeout(() => {
+    orbWrapper.classList.remove("hidden");
+    stats.hp = 1.0;
+    updateVitalOrbit();
+  }, 650);
+});
   
   if (btnSaveLocal) btnSaveLocal.addEventListener("click", applyValuesToUI);
-  
-  
-  
   if (btnNext) btnNext.addEventListener("click", openLeaveModal);
 
   if (btnLeaveCancel) btnLeaveCancel.addEventListener("click", closeLeaveModal);
@@ -1653,77 +1809,12 @@ function updateNextButtonState() {
     goToPage3();
   });
 
-  // Radar bei Resize neu zeichnen (falls Größe geändert)
   window.addEventListener("resize", drawChronikRadar);
-});
-/* ============================
-   PORTRAIT FIX
-   ============================ */
-
-function setPortrait(src) {
-  if (!previewImg) return;
-
-  if (!src) {
-    previewImg.style.display = "none";
-    placeholder.style.display = "block";
-    return;
-  }
-
-  previewImg.onload = () => {
-    previewImg.style.display = "block";
-    placeholder.style.display = "none";
-  };
-
-  previewImg.onerror = () => {
-    previewImg.style.display = "none";
-    placeholder.style.display = "block";
-    console.warn("Portrait konnte nicht geladen werden:", src);
-  };
-
-  previewImg.src = src;
 }
 
-/* Einbau in initCharacterPreview */
-(function patchPortraitInit(){
-  const oldInit = initCharacterPreview;
-  initCharacterPreview = function(){
-    oldInit();
-    if (char && char.portraitData) setPortrait(char.portraitData);
-    else setPortrait(null);
-  };
-})();
-
-
-
-/* ============================
-   RADAR FIX
-   ============================ */
-
-(function patchRadar(){
-  const oldDraw = drawChronikRadar;
-
-  drawChronikRadar = function(){
-
-    // Canvas-Pixelgröße sicherstellen
-    chronikRadarCanvas.width = 180;
-    chronikRadarCanvas.height = 180;
-
-    // Fallback für fehlende Attribute
-    if (!char) char = {};
-    if (!char.attrs || typeof char.attrs !== "object") {
-      char.attrs = {};
-      ATTRIBUTES.forEach(k => char.attrs[k] = 0);
-    }
-
-    oldDraw();
-  };
-
-})();
-
-/* ============================
-   LAYOUT FIX BEIM LADEN
-   ============================ */
-
+document.addEventListener("DOMContentLoaded", () => {
+  initPage2();
+});
 </script>
 </body>
 </html>
