@@ -1118,7 +1118,276 @@ footer {
   </div>
 </div>
 
+
 <script>
+/* ============================================
+   UNDRA – CLOUD SAVE / LOAD (GLOBAL)
+   Kompatibel mit Seite 1, 2 und neuer Seite 3
+============================================ */
+
+window.undra = window.undra || {};
+
+/* --------------------------------------------
+   CLOUD SAVE
+   Übergibt den kompletten UNDRA-State an Server
+-------------------------------------------- */
+undra.cloudSave = async function(data) {
+    try {
+        const payload = JSON.stringify(data);
+
+        const res = await fetch("/undra/cloud/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: payload
+        });
+
+        if (!res.ok) {
+            alert("Cloud‑Speichern fehlgeschlagen.");
+            return false;
+        }
+
+        alert("Cloud‑Speichern erfolgreich.");
+        return true;
+
+    } catch (err) {
+        console.error("Cloud‑Save Fehler:", err);
+        alert("Cloud‑Speichern nicht möglich.");
+        return false;
+    }
+};
+
+
+/* --------------------------------------------
+   CLOUD LOAD
+   Lädt UNDRA‑State vom Server
+   Muss ein Promise zurückgeben → Seite 3 erwartet das
+-------------------------------------------- */
+undra.cloudLoad = async function() {
+    try {
+        const res = await fetch("/undra/cloud/load", {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+
+        if (!res.ok) {
+            alert("Cloud‑Laden fehlgeschlagen.");
+            return null;
+        }
+
+        const data = await res.json();
+
+        if (!data) {
+            alert("Keine Cloud‑Daten gefunden.");
+            return null;
+        }
+
+        alert("Cloud‑Daten geladen.");
+        return data;
+
+    } catch (err) {
+        console.error("Cloud‑Load Fehler:", err);
+        alert("Cloud‑Laden nicht möglich.");
+        return null;
+    }
+};
+</script>
+
+<script>
+    window.undra = window.undra || {};
+
+undra.state = {
+    /* ============================
+       META / CHARAKTERDATEN
+    ============================ */
+    meta: {
+        name: "",
+        title: "",
+        race: "",
+        subrace: "",
+        profession: "",
+        special: "",
+        portrait: ""
+    },
+
+    /* ============================
+       ATTRIBUTE
+    ============================ */
+    attributes: {},
+
+    /* ============================
+       VITALWERTE
+    ============================ */
+    vitals: {
+        hp: 0,
+        stamina: 0,
+        ae: 0,
+        sgp: 0,
+        armorTotal: 0,
+        gg: 0,
+        tc: 0
+    },
+
+    /* ============================
+       VITAL-BONUS (7 Kristalle)
+    ============================ */
+    vitalBonus: {
+        LE: 0,
+        RUEST: 0,
+        DYN: 0,
+        GG: 0,
+        TC: 0
+    },
+
+    /* ============================
+       KAMPF
+    ============================ */
+    combat: {
+        attack: 0,
+        defense: 0,
+        counter: 0,
+        ranged: 0,
+        technique: 0,
+        status: "",
+        adjustments: ""
+    },
+
+    /* ============================
+       RÜSTUNG / ZONEN
+    ============================ */
+    armor: {
+        selected: 1,
+        zones: {
+            1:{max:0,cur:0,type:null},
+            2:{max:0,cur:0,type:null},
+            3:{max:0,cur:0,type:null},
+            4:{max:0,cur:0,type:null},
+            5:{max:0,cur:0,type:null},
+            6:{max:0,cur:0,type:null},
+            7:{max:0,cur:0,type:null},
+            8:{max:0,cur:0,type:null}
+        }
+    },
+
+    /* ============================
+       INVENTAR
+    ============================ */
+    inventory: {
+        small: Array(10).fill(""),
+        medium: Array(10).fill(""),
+        large: Array(10).fill("")
+    },
+
+    /* ============================
+       WÄHRUNG
+    ============================ */
+    currency: {
+        gold: 0,
+        silver: 0,
+        copper: 0
+    },
+
+    /* ============================
+       TIMELINE
+       story = 60 Tage oben
+       tasks = TAP-Checkboxen
+    ============================ */
+    timeline: {
+        story: {
+            currentDay: 1,
+            checked: []
+        },
+        tasks: {
+            boxes: Array(60).fill(0),
+            value: 0
+        }
+    },
+
+    /* ============================
+       TAGESABSCHLUSS
+    ============================ */
+    day: {
+        finalized: false,
+        hiddenSP: 0,
+        totalSP: 0,
+        tp: 0
+    }
+};
+function undraSyncVitalsFromPage2(finalVitals) {
+    const S = undra.state.vitals;
+
+    S.hp = finalVitals.hp ?? S.hp;
+    S.stamina = finalVitals.stamina ?? S.stamina;
+    S.ae = finalVitals.ae ?? S.ae;
+    S.sgp = finalVitals.sgp ?? S.sgp;
+    S.armorTotal = finalVitals.armorTotal ?? S.armorTotal;
+    S.gg = finalVitals.gg ?? S.gg;
+    S.tc = finalVitals.tc ?? S.tc;
+}
+function undraSyncVitalBonusFromPage2(bonus) {
+    const S = undra.state.vitalBonus;
+
+    S.LE = bonus.LE ?? S.LE;
+    S.RUEST = bonus.RUEST ?? S.RUEST;
+    S.DYN = bonus.DYN ?? S.DYN;
+    S.GG = bonus.GG ?? S.GG;
+    S.TC = bonus.TC ?? S.TC;
+}
+function undraSyncCombatFromPage2(combat) {
+    const S = undra.state.combat;
+
+    S.attack = combat.attack ?? S.attack;
+    S.defense = combat.defense ?? S.defense;
+    S.counter = combat.counter ?? S.counter;
+    S.ranged = combat.ranged ?? S.ranged;
+    S.technique = combat.technique ?? S.technique;
+    S.status = combat.status ?? S.status;
+    S.adjustments = combat.adjustments ?? S.adjustments;
+}
+function undraSyncArmorFromPage2() {
+    const S = undra.state.armor;
+
+    for (let z = 1; z <= 8; z++) {
+        S.zones[z].max = zoneMaxArmor[z];
+        S.zones[z].cur = zoneArmor[z];
+        S.zones[z].type = zoneArmorType[z];
+    }
+
+    S.selected = selectedZone;
+}
+function undraSyncInventoryFromPage2() {
+    const S = undra.state.inventory;
+
+    S.small = [...undra.engine.inventory.state.items.small];
+    S.medium = [...undra.engine.inventory.state.items.medium];
+    S.large = [...undra.engine.inventory.state.items.large];
+}
+function undraSyncCurrencyFromPage2() {
+    const S = undra.state.currency;
+    const C = undra.engine.currency;
+
+    S.gold = C.gold;
+    S.silver = C.silver;
+    S.copper = C.copper;
+}
+function undraSyncDayFromPage2() {
+    const S = undra.state.day;
+
+    S.finalized = s3_state?.dayFinalized ?? S.finalized;
+    S.hiddenSP = s3_state?.hiddenSP ?? S.hiddenSP;
+    S.totalSP = s3_state?.totalSP ?? S.totalSP;
+    S.tp = s3_state?.attributePoints ?? S.tp;
+}
+function undraSyncPage2(payload) {
+    if (payload?.vitals) undraSyncVitalsFromPage2(payload.vitals);
+    if (payload?.vitalBonus) undraSyncVitalBonusFromPage2(payload.vitalBonus);
+    if (payload?.combat) undraSyncCombatFromPage2(payload.combat);
+
+    undraSyncArmorFromPage2();
+    undraSyncInventoryFromPage2();
+    undraSyncCurrencyFromPage2();
+    undraSyncDayFromPage2();
+}
+
 /* ---------- KEYS ---------- */
 const KEY_CHAR = "undra15_character";
 const KEY_ID   = "undra15_identity";
