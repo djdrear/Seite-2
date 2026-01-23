@@ -1943,9 +1943,36 @@ function updateChronik() {
     <p style="margin-top:2px;"><b>Nachteile:</b> ${disSelected.join(", ") || "-"}</p>
   `;
 }
+/* ---------- SYNC PAGE 2 → GLOBAL CHAR ---------- */
+function syncPage2ToChar() {
+  if (!char) char = {};
 
+  // Identität / Merkmale
+  char.identity = {
+    age: idAge.value.trim(),
+    height: idHeight.value.trim(),
+    weight: idWeight.value.trim(),
+    eyes: idEyes.value.trim(),
+    hair: idHair.value.trim(),
+    voice: idVoice.value.trim(),
+    clothes: idClothes.value.trim(),
+    specialmarks: idSpecialMarks.value.trim(),
+    shortdesc: idShortdesc.value.trim(),
+    story: idStory.value.trim()
+  };
+
+  // Vor- und Nachteile
+  char.vorteile = [...identity.adv];
+  char.nachteile = [...identity.dis];
+
+  // Portrait (falls vorhanden)
+  if (previewImg && previewImg.src) {
+    char.portrait = previewImg.src;
+  }
+}
 /* ---------- SAVE / LOAD IDENTITY ---------- */
 function saveIdentity() {
+  syncPage2ToChar();
   const data = {
     age: idAge.value.trim(),
     height: idHeight.value.trim(),
@@ -1972,11 +1999,13 @@ function saveIdentity() {
 
 /* ---------- NAVIGATION ---------- */
 function goBackToPage1() {
+  syncPage2ToChar();
   saveIdentity();
   window.location.href = "UNDRA-ENGINE-1.5-Seite1.html";
 }
 
 function goToPage3() {
+  syncPage2ToChar();
   saveIdentity();
   window.location.href = "https://djdrear.github.io/Seite-3/";
 }
@@ -2181,6 +2210,7 @@ function übernehmenSeite2() {
 }
 
 function triggerOrbAwakening() {
+    syncPage2ToChar();
   const flat = document.getElementById("orb-flatline");
   const orb = document.getElementById("orb-container");
   const btnErw = document.getElementById("btn-erwecken");
