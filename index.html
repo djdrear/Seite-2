@@ -1990,9 +1990,29 @@ function syncPage2ToChar() {
     char.portrait = previewImg.src;
   }
 }
+/* ---------- SYNC IDENTITY → UNDRA.STATE ---------- */
+function undraSyncIdentityFromPage2() {
+    undra.state.merkmale = {
+        age: identity.age,
+        height: identity.height,
+        weight: identity.weight,
+        eyes: identity.eyes,
+        hair: identity.hair,
+        voice: identity.voice,
+        armor: identity.clothes,
+        special: identity.specialmarks
+    };
+
+    undra.state.shortdesc = identity.shortdesc;
+    undra.state.story = identity.story;
+    undra.state.vorteile = [...identity.adv];
+    undra.state.nachteile = [...identity.dis];
+}
+
 /* ---------- SAVE / LOAD IDENTITY ---------- */
 function saveIdentity() {
   syncPage2ToChar();
+
   const data = {
     age: idAge.value.trim(),
     height: idHeight.value.trim(),
@@ -2007,7 +2027,9 @@ function saveIdentity() {
     adv: identity.adv,
     dis: identity.dis
   };
+
   identity = data;
+
   try {
     localStorage.setItem(KEY_ID, JSON.stringify(data));
     showMsg("Identität & Chronik gespeichert.");
@@ -2017,19 +2039,27 @@ function saveIdentity() {
   }
 }
 
-/* ---------- NAVIGATION ---------- */
-function goBackToPage1() {
-  syncPage2ToChar();
-  saveIdentity();
-  window.location.href = "UNDRA-ENGINE-1.5-Seite1.html";
-}
-
+/* ---------- NAVIGATION → SEITE 3 ---------- */
 function goToPage3() {
   syncPage2ToChar();
   saveIdentity();
+
+  // Merkmale, Story, Kurzbeschreibung, Vor-/Nachteile in undra.state schreiben
+  undraSyncIdentityFromPage2();
+
   window.location.href = "https://djdrear.github.io/Seite-3/";
 }
 
+/* ---------- NAVIGATION → SEITE 1 ---------- */
+function goBackToPage1() {
+  syncPage2ToChar();
+  saveIdentity();
+
+  // Optional: auch hier synchronisieren, damit Seite 1 alles hat
+  undraSyncIdentityFromPage2();
+
+  window.location.href = "UNDRA-ENGINE-1.5-Seite1.html";
+}
 function openLeaveModal() {
   const name = char?.name || "Namenlos";
   const title = char?.title ? " – " + char.title : "";
