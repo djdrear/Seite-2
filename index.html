@@ -1388,6 +1388,25 @@ function undraSyncPage2(payload) {
     undraSyncDayFromPage2();
 }
 
+function undraSyncIdentityFromPage2() {
+    undra.state.merkmale = {
+        age: identity.age,
+        height: identity.height,
+        weight: identity.weight,
+        eyes: identity.eyes,
+        hair: identity.hair,
+        voice: identity.voice,
+        armor: identity.clothes,
+        special: identity.specialmarks
+    };
+
+    undra.state.shortdesc = identity.shortdesc;
+    undra.state.story = identity.story;
+    undra.state.vorteile = [...identity.adv];
+    undra.state.nachteile = [...identity.dis];
+}
+undraSyncIdentityFromPage2();
+
 /* ---------- KEYS ---------- */
 const KEY_CHAR = "undra15_character";
 const KEY_ID   = "undra15_identity";
