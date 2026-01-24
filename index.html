@@ -1405,7 +1405,6 @@ function undraSyncIdentityFromPage2() {
     undra.state.vorteile = [...identity.adv];
     undra.state.nachteile = [...identity.dis];
 }
-undraSyncIdentityFromPage2();
 
 /* ---------- KEYS ---------- */
 const KEY_CHAR = "undra15_character";
@@ -1483,6 +1482,7 @@ const disPool = [
 ];
 
 /* ---------- STATE ---------- */
+
 let char = null;
 let identity = {
   age: "",
@@ -1607,6 +1607,7 @@ function loadIdentityFromStorage() {
 }
 
 /* ---------- INIT IDENTITY-FELDER ---------- */
+
 function initIdentityFields() {
   if (idAge) idAge.value = identity.age || char?.age || "";
   if (idHeight) idHeight.value = identity.height || char?.height || "";
