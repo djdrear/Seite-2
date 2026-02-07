@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UNDRA-ENGINE v1.5 – Seite 2 – Identität & Chronik</title>
+  <title>UNDRA-ENGINE v2.00 – Seite 2 – Identität & Chronik</title>
 
-  <!-- Ab hier kommt dein Bloodcore Ember CSS -->
   <style>
   /* --- TEXTAREAS NICHT MEHR GEQUETSCHT --- */
 .id-input,
@@ -248,6 +247,12 @@
       background: rgba(18,8,28,0.96);
     }
 
+
+
+
+
+
+
     .id-textarea {
       resize: vertical;
       min-height: 70px;
@@ -295,30 +300,33 @@
       margin-bottom: 4px;
     }
 
-    /* Portrait jetzt quadratisch */
-    .preview-portrait-frame {
-      width: 220px;
-      height: 300px;
-      border-radius: 10px;
-      border: 2px solid rgba(212,175,55,0.7);
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 55%),
-        url("stone-noise.png");
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow:
-        inset 0 0 24px rgba(0,0,0,0.8),
-        0 0 14px rgba(0,0,0,0.9);
-      margin-bottom: 6px;
-    }
+    /* Portrait wieder wie vorher: hochkant, nicht quadratisch */
+.preview-portrait-frame {
+  width: 220px;              /* wie vorher */
+  height: 340px;             /* hochkant */
+  border-radius: 10px;
+  border: 2px solid rgba(212,175,55,0.7);
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 55%),
+    url("stone-noise.png");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 24px rgba(0,0,0,0.8),
+    0 0 14px rgba(0,0,0,0.9);
+  margin-bottom: 6px;
+}
 
-    .preview-portrait-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+/* Bild passt sich perfekt ein, ohne Verzerrung */
+.preview-portrait-frame img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;        /* NICHT cover → kein Abschneiden */
+  object-position: center;    /* sauber eingerückt */
+  background-color: #000;     /* falls Bild schmaler ist */
+}
 
     .preview-placeholder {
       color: #4b374a;
@@ -395,7 +403,7 @@
     .check-list {
       flex: 1;
       overflow-y: auto;
-      padding: 4px 4px 4px 6px;
+      padding: 2px 2px 2px 3px;
       scrollbar-width: thin;
       scrollbar-color: var(--gold) #000;
     }
@@ -411,7 +419,7 @@
       transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, opacity 0.1s ease;
       font-size: 12px;
     }
-
+    
     .trait-item:hover {
       background: rgba(212,175,55,0.12);
       border-color: rgba(212,175,55,0.5);
@@ -428,11 +436,111 @@
     .trait-item input {
       margin-right: 6px;
     }
-    
-    /* Ritualbereich */
+  
+.id-input,
+.id-textarea,
+.id-textarea-long {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Linke Spalte breiter, verhindert Quetschen */
+.top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) 220px;
+  gap: 18px;
+}
+
+/* Luftigere Textareas */
+.id-textarea {
+  min-height: 90px;
+  padding: 10px 12px;
+  line-height: 1.45;
+}
+
+.id-textarea-long {
+  min-height: 200px;
+  padding: 12px 14px;
+  line-height: 1.5;
+}
+
+/* Portrait-Frame stabilisieren */
+.preview-portrait-frame {
+  width: 180px;
+  height: 180px;
+  min-width: 220px;
+  min-height: 300px;
+}
+
+/* ============================================================
+   DEIN GESAMTES CSS BLEIBT UNVERÄNDERT
+   BIS AUF DEN ORB-BEREICH (unten ersetzt)
+   ============================================================ */
+
+:root {
+  --bg-main: #050307;
+  --bg-panel: #120814;
+  --bg-panel-alt: #1b0d24;
+  --bg-header: linear-gradient(135deg, #4a0a2f, #1a0b22);
+  --bg-header-soft: linear-gradient(135deg, #3a071f, #120614);
+  --gold: #d4af37;
+  --gold-bright: #f8e7b0;
+  --gold-soft: rgba(212,175,55,0.55);
+  --text-main: #f5efe6;
+  --text-muted: #a6938a;
+  --accent-purple: #b46cff;
+  --accent-deep: #4a165a;
+  --danger: #ff4b5c;
+  --marble-overlay: radial-gradient(circle at top, rgba(120, 40, 160, 0.35), transparent 55%);
+  --font-header: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --font-body: "Georgia", serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    var(--marble-overlay),
+    url("dark-marmor-texture.png") center/cover fixed no-repeat,
+    radial-gradient(circle at bottom, #050307 0%, #020107 35%, #000 100%);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+#app-shell {
+  width: 100%;
+  max-width: 950px;
+  background:
+    linear-gradient(145deg, rgba(8,2,12,0.98), rgba(4,1,7,0.98));
+  border-radius: 12px;
+  border: 2px solid var(--gold-soft);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.9),
+    0 0 24px rgba(40,0,60,0.65);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+}
+
+/* … ALLES UNVERÄNDERT … */
+
+/* ============================================================
+   ⭐ NEUER ORB‑CSS‑BLOCK (Drop‑In Replacement)
+   ============================================================ */
+
 #orb-ritual-area {
   width: 100%;
-  height: 300px; /* Höhe B */
+  height: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -440,12 +548,15 @@
   position: relative;
   margin-top: 40px;
   margin-bottom: 80px;
-  background: #050308;
+  background: radial-gradient(circle at center,
+    rgba(10,0,20,0.9),
+    rgba(5,0,10,0.95),
+    #050308 80%);
+  overflow: visible;
 }
 
-/* EKG-Null-Linie */
 .flatline {
-  width: 350px;
+  width: 360px;
   height: 6px;
   border-radius: 4px;
   background: #ff0000;
@@ -459,77 +570,175 @@
   100% { opacity: 1; }
 }
 
-/* Explosion Flash */
-.flash-explosion {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,1), rgba(150,200,255,0.6), transparent);
-  box-shadow: 0 0 60px rgba(180,220,255,1);
-  animation: flashA 0.45s ease-out forwards;
-  pointer-events: none;
-}
+.orb-hidden { display: none; }
 
-@keyframes flashA {
-  0% { transform: scale(0.2); opacity: 1; }
-  60% { transform: scale(1.4); opacity: 0.9; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-
-/* Orb versteckt */
-.orb-hidden {
-  display: none;
-}
-
-/* Orb Wrapper */
 .orbit-wrapper {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   display: grid;
   place-items: center;
+  filter: drop-shadow(0 0 25px rgba(180,0,255,0.8));
 }
 
-/* Orb Core */
 .orbit-core {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 30%, #ff2a2a, #6b0000, #1a0000);
+  background:
+    radial-gradient(circle at 40% 30%, #ff4a4a, #6b0000 40%, #1a0000 70%),
+    radial-gradient(circle at center, rgba(255,80,0,0.4), transparent 70%);
   box-shadow:
-    0 0 35px rgba(255,0,0,0.9),
-    inset 0 0 25px rgba(255,180,180,0.4);
-  animation: heartbeat 1.4s ease-in-out infinite;
+    0 0 40px rgba(255,0,0,0.9),
+    inset 0 0 35px rgba(255,200,200,0.4),
+    inset 0 0 60px rgba(255,80,80,0.3);
+  animation:
+    heartbeat 1.4s ease-in-out infinite,
+    vortex-spin 6s linear infinite;
 }
 
-/* Heartbeat */
 @keyframes heartbeat {
   0%   { transform: scale(1); }
-  25%  { transform: scale(1.18); }
+  25%  { transform: scale(1.22); }
   40%  { transform: scale(0.92); }
-  60%  { transform: scale(1.14); }
+  60%  { transform: scale(1.18); }
   100% { transform: scale(1); }
 }
 
-/* Erwecken Button */
-.btn-erwecken {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #333;
-  border: 1px solid #555;
-  color: #777;
-  border-radius: 6px;
-  cursor: not-allowed;
+@keyframes vortex-spin {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
-.btn-erwecken.active {
-  background: #4a8cff;
-  border-color: #8ab4ff;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(120,160,255,0.8);
+.orbit-wrapper::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 2px solid rgba(180,108,255,0.4);
+  box-shadow:
+    0 0 18px rgba(180,108,255,0.6),
+    inset 0 0 12px rgba(120,0,200,0.4);
+  animation: runes-rotate 9s linear infinite;
 }
+
+@keyframes runes-rotate {
+  0%   { transform: rotate(0deg); opacity: 0.8; }
+  50%  { opacity: 1; }
+  100% { transform: rotate(360deg); opacity: 0.8; }
+}
+
+.orbit-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle,
+      rgba(255,200,80,0.15) 0%,
+      rgba(255,80,0,0.05) 40%,
+      transparent 70%);
+  animation: particle-flicker 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes particle-flicker {
+  0%   { opacity: 0.25; transform: scale(1); }
+  50%  { opacity: 0.45; transform: scale(1.08); }
+  100% { opacity: 0.25; transform: scale(1); }
+}
+
+.flash-explosion {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle,
+      rgba(255,255,255,1),
+      rgba(200,120,255,0.8),
+      rgba(120,0,200,0.4),
+      transparent 70%);
+  box-shadow:
+    0 0 60px rgba(255,255,255,1),
+    0 0 120px rgba(180,0,255,0.8);
+  animation: flashEpic 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flashEpic {
+  0%   { width: 40px; height: 40px; opacity: 1; transform: scale(0.2); }
+  40%  { width: 420px; height: 420px; opacity: 1; transform: scale(1.4); }
+  70%  { width: 520px; height: 520px; opacity: 0.6; transform: scale(1.8); }
+  100% { width: 620px; height: 620px; opacity: 0; transform: scale(2.4); }
+}
+
+/* Epischer UNDRA-Erwecken-Button */
+.btn-erwecken {
+  margin-top: 15px;                 /* Button tiefer setzen */
+  padding: 14px 26px;               /* größerer Button */
+  font-size: 15px;                  /* größere Schrift */
+  border-radius: 10px;
+  border: 2px solid rgba(212,175,55,0.6);
+  background: rgba(40,20,0,0.6);
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: all 0.25s ease;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Aktivierter Zustand – goldener Puls + Glow */
+.btn-erwecken.active {
+  background: linear-gradient(135deg, #8a6b1f, #d4af37);
+  border-color: #f8e7b0;
+  color: #1a0b00;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+
+  box-shadow:
+    0 0 12px rgba(248,231,176,0.8),
+    0 0 22px rgba(212,175,55,0.9),
+    inset 0 0 12px rgba(255,255,255,0.4);
+
+  animation: erweckenPulse 1.6s ease-in-out infinite;
+}
+
+/* Goldener Puls */
+@keyframes erweckenPulse {
+  0% {
+    box-shadow:
+      0 0 10px rgba(248,231,176,0.6),
+      0 0 18px rgba(212,175,55,0.7),
+      inset 0 0 8px rgba(255,255,255,0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(248,231,176,1),
+      0 0 28px rgba(212,175,55,1),
+      inset 0 0 14px rgba(255,255,255,0.5);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(248,231,176,0.6),
+      0 0 18px rgba(212,175,55,0.7),
+      inset 0 0 8px rgba(255,255,255,0.3);
+    transform: scale(1);
+  }
+}
+
+@keyframes awakenPulse {
+  0%   { box-shadow: 0 0 10px rgba(120,160,255,0.6); }
+  50%  { box-shadow: 0 0 22px rgba(180,200,255,1); }
+  100% { box-shadow: 0 0 10px rgba(120,160,255,0.6); }
+}
+
 
 /* Weiter Button */
 .btn-to-page3 {
@@ -663,6 +872,12 @@
       display: block;
     }
 
+
+
+
+
+
+
     .chronik-abilities {
       font-size: 11px;
     }
@@ -687,62 +902,56 @@
   color: var(--text-main);
 }
 
-/* Explosion Flash */
-#awakening-flash {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,200,80,1), rgba(255,80,0,0.8), rgba(0,0,0,0));
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 50%;
+
+
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-/* KORREKTE Explosion */
-@keyframes awaken-explosion {
-  0%   { width: 0; height: 0; opacity: 0.9; }
-  40%  { width: 420px; height: 420px; opacity: 1; }
-  100% { width: 180px; height: 180px; opacity: 0; }
-}
-
-/* Erwecken-Button – UNDRA Arcane Gothic */
-.awaken-btn {
-  width: 100%;
-  padding: 14px 18px;
-  margin-top: 20px;
-
-  background: #1a0f1f;            /* dunkles violett-schwarz */
-  border: 1px solid #5a3b7a;      /* metallisch-violetter Rahmen */
-  color: #d8c9ff;                 /* helles mystisches Violett */
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-
+.popup-window {
+  background: #1a1a1a;
+  border: 2px solid #d4af37;
+  padding: 20px;
+  width: 300px;
   border-radius: 6px;
+  color: #f8e7b0;
+  box-shadow: 0 0 20px rgba(212,175,55,0.4);
+}
+
+.popup-window h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #d4af37;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.btn-cancel {
+  background: #444;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
 }
 
-/* deaktiviert */
-.awaken-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  border-color: #3a2a4a;
-  color: #8a7a9a;
-}
-
-/* hover (nur wenn aktiv) */
-.awaken-btn:not(:disabled):hover {
-  background: #2a1633;
-  border-color: #8b5cc4;
-}
-@keyframes flamepulse {
-  0%   { box-shadow: 0 0 12px rgba(255,80,0,0.8); }
-  50%  { box-shadow: 0 0 28px rgba(255,150,0,1); }
-  100% { box-shadow: 0 0 12px rgba(255,80,0,0.8); }
+.btn-confirm {
+  background: #d4af37;
+  color: #000;
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 /* Footer */
@@ -901,6 +1110,7 @@ footer {
     }
   </style>
 </head>
+
 <body>
 <div id="app-shell">
   <header>
@@ -909,13 +1119,13 @@ footer {
     <div id="sub-title">Seite 2 – Merkmale, Geschichte, Schwächen</div>
     <div id="page-indicator">Seite 2 von 3</div>
   </header>
-
+  
   <div id="content">
     <!-- PANEL 1: Identität -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">Körperliche Merkmale & Präsentation</div>
-        <div class="panel-sub" id="header-sub-data">Lädt Charakterdaten...</div>
+        <div class="panel-sub" id="header-sub-data">Charakterdaten werden geladen...</div>
       </div>
       <div class="top-grid">
         <!-- Linke Seite -->
@@ -955,10 +1165,9 @@ footer {
             </div>
           </div>
 
-          <div class="id-headline">Kurzbeschreibung</div>
-          <textarea id="id-shortdesc" class="id-input id-textarea"
-                    placeholder="Eine knappe, prägnante Beschreibung, wie dein Charakter wahrgenommen wird."></textarea>
-
+          <div class="id-headline">Charakterprofil</div>
+          <div id="id-maybeShowPitch" class="id-input id-textarea" style="min-height: 60px; white-space: pre-line;"></div>
+          
           <div class="id-headline">Hintergrund / Vorgeschichte</div>
           <textarea id="id-story" class="id-input id-textarea-long"
                     placeholder="Hier kannst du die Geschichte, Herkunft, Wendepunkte und inneren Konflikte deines Charakters festhalten."></textarea>
@@ -978,14 +1187,12 @@ footer {
               <b>Gabe:</b> <span id="preview-spec" style="font-style:italic;">–</span>
             </div>
             <div style="margin-top:4px;">
-              <span style="color:var(--text-muted); font-size:11px;">Kurzbeschreibung:</span><br>
               <span id="preview-shortdesc" style="font-size:11px;">Noch keine Beschreibung vergeben.</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <!-- PANEL 2: Vorteile & Nachteile -->
     <div class="panel">
       <div class="panel-header">
@@ -1028,7 +1235,7 @@ footer {
     <!-- PANEL 3: Chronik-Vorschau -->
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">Chronik – Auszug</div>
+        <div class="panel-title">Zusammenfassung</div>
         <div class="panel-sub">Automatisch erzeugte Zusammenfassung deiner Daten und Züge.</div>
       </div>
       <div class="chronik-grid">
@@ -1060,32 +1267,24 @@ footer {
       </div>
     </div>
   </div>
-  
   <!-- ORB-RITUAL-BEREICH -->
-<div id="orb-ritual-area">
-  
-  <!-- Startzustand: EKG-Null-Linie -->
-  <div id="orb-flatline" class="flatline"></div>
+  <div id="orb-ritual-area">
+    <div id="orb-flatline" class="flatline"></div>
 
-  <!-- Orb-Container (unsichtbar bis Erweckung) -->
-  <div id="orb-container" class="orb-hidden">
-    <div class="orbit-wrapper">
-      <div class="orbit-core"></div>
+    <div id="orb-container" class="orb-hidden">
+      <div class="orbit-wrapper">
+        <div class="orbit-core"></div>
+      </div>
     </div>
+
+    <button id="btn-erwecken" class="btn-erwecken" disabled>Erwecken</button>
+    <button id="btn-to-page3" class="btn-to-page3" style="display:none;">Weiter zu Seite 3</button>
   </div>
-
-  <!-- Erwecken-Button -->
-  <button id="btn-erwecken" class="btn-erwecken" disabled>Erwecken</button>
-
-  <!-- Weiter-Button (unsichtbar bis Ritual abgeschlossen) -->
-  <button id="btn-to-page3" class="btn-to-page3" style="display:none;">Weiter zu Seite 3</button>
-
-</div>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-left">
-      <button class="btn-main" id="btn-refresh" onclick="übernehmenSeite2()">Werte übernehmen</button>
+      <button class="btn-main" id="btn-save-local">Werte übernehmen</button>
     </div>
     <div class="footer-center">
       Identität & Chronik – <span>UNDRA‑ENGINE v2.0beta</span>
@@ -1118,300 +1317,84 @@ footer {
   </div>
 </div>
 
+<!-- POPUP: WERTE ÜBERNEHMEN -->
+<div id="popup-uebernehmen" class="popup-overlay" style="display:none;">
+  <div class="popup-window">
+    <h2>Werte übernehmen</h2>
+    <p>Von welchem Charakter willst du die Werte übernehmen?</p>
+
+    <label>Vorname</label>
+    <input type="text" id="uebernehmen-vorname" placeholder="Vorname eingeben">
+
+    <label>Zuname</label>
+    <input type="text" id="uebernehmen-zuname" placeholder="Zuname eingeben">
+
+    <div class="popup-buttons">
+      <button id="uebernehmen-abbrechen" class="btn-cancel">Abbrechen</button>
+      <button id="uebernehmen-laden" class="btn-confirm">Laden</button>
+    </div>
+  </div>
+</div>
 
 <script>
-/* ============================================
-   UNDRA – CLOUD SAVE / LOAD (GLOBAL)
-   Kompatibel mit Seite 1, 2 und neuer Seite 3
-============================================ */
-
+window.char = window.char || {};
 window.undra = window.undra || {};
 
-/* --------------------------------------------
-   CLOUD SAVE
-   Übergibt den kompletten UNDRA-State an Server
--------------------------------------------- */
-undra.cloudSave = async function(data) {
-    try {
-        const payload = JSON.stringify(data);
+console.log(window.char);
+// URL → Name & Titel übernehmen
+function readNameFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const name  = params.get("name");
+  const title = params.get("title");
 
-        const res = await fetch("/undra/cloud/save", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: payload
-        });
+  // Nur überschreiben, wenn Parameter existieren
+  if (name)  window.char.name  = name;
+  if (title) window.char.title = title;
+}
+  
 
-        if (!res.ok) {
-            alert("Cloud‑Speichern fehlgeschlagen.");
-            return false;
-        }
+function makeCharId(name, title) {
+  return `undra_${(name || "namenlos").trim().toLowerCase()}_${(title || "ohne").trim().toLowerCase()}`
+    .replace(/\s+/g, "_");
+}
 
-        alert("Cloud‑Speichern erfolgreich.");
-        return true;
-
-    } catch (err) {
-        console.error("Cloud‑Save Fehler:", err);
-        alert("Cloud‑Speichern nicht möglich.");
-        return false;
+// CLOUD SPEICHERN
+undra.save = async function (name, title, char) {
+  const id = makeCharId(name, title);
+  try {
+    const res = await fetch(`https://undra.djdrear.workers.dev/save/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(char)
+    });
+    if (!res.ok) {
+      console.error("Cloud‑Speichern fehlgeschlagen:", await res.text());
+      return false;
     }
+    return true;
+  } catch (err) {
+    console.error("Cloud‑Save Fehler:", err);
+    return false;
+  }
 };
 
-
-/* --------------------------------------------
-   CLOUD LOAD
-   Lädt UNDRA‑State vom Server
-   Muss ein Promise zurückgeben → Seite 3 erwartet das
--------------------------------------------- */
-undra.cloudLoad = async function() {
-    try {
-        const res = await fetch("/undra/cloud/load", {
-            method: "GET",
-            headers: { "Accept": "application/json" }
-        });
-
-        if (!res.ok) {
-            alert("Cloud‑Laden fehlgeschlagen.");
-            return null;
-        }
-
-        const data = await res.json();
-
-        if (!data) {
-            alert("Keine Cloud‑Daten gefunden.");
-            return null;
-        }
-
-        alert("Cloud‑Daten geladen.");
-        return data;
-
-    } catch (err) {
-        console.error("Cloud‑Load Fehler:", err);
-        alert("Cloud‑Laden nicht möglich.");
-        return null;
+// CLOUD LADEN
+undra.load = async function (name, title = "") {
+  const id = makeCharId(name, title);
+  try {
+    const res = await fetch(`https://undra.djdrear.workers.dev/load/${id}`);
+    if (!res.ok) {
+      console.error("Cloud‑Laden fehlgeschlagen:", await res.text());
+      return null;
     }
+    return await res.json();
+  } catch (err) {
+    console.error("Cloud‑Load Fehler:", err);
+    return null;
+  }
 };
-</script>
 
-<script>
-    window.undra = window.undra || {};
-
-undra.state = {
-    /* ============================
-       META / CHARAKTERDATEN
-    ============================ */
-    meta: {
-        name: "",
-        title: "",
-        race: "",
-        subrace: "",
-        profession: "",
-        special: "",
-        portrait: ""
-    },
-
-    /* ============================
-       ATTRIBUTE
-    ============================ */
-    attributes: {},
-
-    /* ============================
-       VITALWERTE
-    ============================ */
-    vitals: {
-        hp: 0,
-        stamina: 0,
-        ae: 0,
-        sgp: 0,
-        armorTotal: 0,
-        gg: 0,
-        tc: 0
-    },
-
-    /* ============================
-       VITAL-BONUS (7 Kristalle)
-    ============================ */
-    vitalBonus: {
-        LE: 0,
-        RUEST: 0,
-        DYN: 0,
-        GG: 0,
-        TC: 0
-    },
-
-    /* ============================
-       KAMPF
-    ============================ */
-    combat: {
-        attack: 0,
-        defense: 0,
-        counter: 0,
-        ranged: 0,
-        technique: 0,
-        status: "",
-        adjustments: ""
-    },
-
-    /* ============================
-       RÜSTUNG / ZONEN
-    ============================ */
-    armor: {
-        selected: 1,
-        zones: {
-            1:{max:0,cur:0,type:null},
-            2:{max:0,cur:0,type:null},
-            3:{max:0,cur:0,type:null},
-            4:{max:0,cur:0,type:null},
-            5:{max:0,cur:0,type:null},
-            6:{max:0,cur:0,type:null},
-            7:{max:0,cur:0,type:null},
-            8:{max:0,cur:0,type:null}
-        }
-    },
-
-    /* ============================
-       INVENTAR
-    ============================ */
-    inventory: {
-        small: Array(10).fill(""),
-        medium: Array(10).fill(""),
-        large: Array(10).fill("")
-    },
-
-    /* ============================
-       WÄHRUNG
-    ============================ */
-    currency: {
-        gold: 0,
-        silver: 0,
-        copper: 0
-    },
-
-    /* ============================
-       TIMELINE
-       story = 60 Tage oben
-       tasks = TAP-Checkboxen
-    ============================ */
-    timeline: {
-        story: {
-            currentDay: 1,
-            checked: []
-        },
-        tasks: {
-            boxes: Array(60).fill(0),
-            value: 0
-        }
-    },
-
-    /* ============================
-       TAGESABSCHLUSS
-    ============================ */
-    day: {
-        finalized: false,
-        hiddenSP: 0,
-        totalSP: 0,
-        tp: 0
-    }
-};
-function undraSyncVitalsFromPage2(finalVitals) {
-    const S = undra.state.vitals;
-
-    S.hp = finalVitals.hp ?? S.hp;
-    S.stamina = finalVitals.stamina ?? S.stamina;
-    S.ae = finalVitals.ae ?? S.ae;
-    S.sgp = finalVitals.sgp ?? S.sgp;
-    S.armorTotal = finalVitals.armorTotal ?? S.armorTotal;
-    S.gg = finalVitals.gg ?? S.gg;
-    S.tc = finalVitals.tc ?? S.tc;
-}
-function undraSyncVitalBonusFromPage2(bonus) {
-    const S = undra.state.vitalBonus;
-
-    S.LE = bonus.LE ?? S.LE;
-    S.RUEST = bonus.RUEST ?? S.RUEST;
-    S.DYN = bonus.DYN ?? S.DYN;
-    S.GG = bonus.GG ?? S.GG;
-    S.TC = bonus.TC ?? S.TC;
-}
-function undraSyncCombatFromPage2(combat) {
-    const S = undra.state.combat;
-
-    S.attack = combat.attack ?? S.attack;
-    S.defense = combat.defense ?? S.defense;
-    S.counter = combat.counter ?? S.counter;
-    S.ranged = combat.ranged ?? S.ranged;
-    S.technique = combat.technique ?? S.technique;
-    S.status = combat.status ?? S.status;
-    S.adjustments = combat.adjustments ?? S.adjustments;
-}
-function undraSyncArmorFromPage2() {
-    const S = undra.state.armor;
-
-    for (let z = 1; z <= 8; z++) {
-        S.zones[z].max = zoneMaxArmor[z];
-        S.zones[z].cur = zoneArmor[z];
-        S.zones[z].type = zoneArmorType[z];
-    }
-
-    S.selected = selectedZone;
-}
-function undraSyncInventoryFromPage2() {
-    const S = undra.state.inventory;
-
-    S.small = [...undra.engine.inventory.state.items.small];
-    S.medium = [...undra.engine.inventory.state.items.medium];
-    S.large = [...undra.engine.inventory.state.items.large];
-}
-function undraSyncCurrencyFromPage2() {
-    const S = undra.state.currency;
-    const C = undra.engine.currency;
-
-    S.gold = C.gold;
-    S.silver = C.silver;
-    S.copper = C.copper;
-}
-function undraSyncDayFromPage2() {
-    const S = undra.state.day;
-
-    S.finalized = s3_state?.dayFinalized ?? S.finalized;
-    S.hiddenSP = s3_state?.hiddenSP ?? S.hiddenSP;
-    S.totalSP = s3_state?.totalSP ?? S.totalSP;
-    S.tp = s3_state?.attributePoints ?? S.tp;
-}
-function undraSyncPage2(payload) {
-    if (payload?.vitals) undraSyncVitalsFromPage2(payload.vitals);
-    if (payload?.vitalBonus) undraSyncVitalBonusFromPage2(payload.vitalBonus);
-    if (payload?.combat) undraSyncCombatFromPage2(payload.combat);
-
-    undraSyncArmorFromPage2();
-    undraSyncInventoryFromPage2();
-    undraSyncCurrencyFromPage2();
-    undraSyncDayFromPage2();
-}
-
-function undraSyncIdentityFromPage2() {
-    undra.state.merkmale = {
-        age: identity.age,
-        height: identity.height,
-        weight: identity.weight,
-        eyes: identity.eyes,
-        hair: identity.hair,
-        voice: identity.voice,
-        armor: identity.clothes,
-        special: identity.specialmarks
-    };
-
-    undra.state.shortdesc = identity.shortdesc;
-    undra.state.story = identity.story;
-    undra.state.vorteile = [...identity.adv];
-    undra.state.nachteile = [...identity.dis];
-}
-
-/* ---------- KEYS ---------- */
-const KEY_CHAR = "undra15_character";
-const KEY_ID   = "undra15_identity";
-const KEY_DASH = "undra15_dashboard";
-
-/* ---------- ATTRIBUTES (für Radar) ---------- */
+// Attribute
 const ATTRIBUTES = [
   "Mut","Intelligenz","Fingerfertigkeit","Gewandtheit","Körperkraft",
   "Körperbewusstsein","Konstitution","Charisma","Sozialstatus",
@@ -1426,320 +1409,344 @@ const ATTR_SHORT = [
   "FK","TC","TE"
 ];
 
-/* ---------- TRAIT POOLS ---------- */
-const advPool = [
-  "Anpassungsfähig", "Astralsinn", "Ausdauernd", "Balancegefühl", "Baumeisterblick",
-  "Blick für Details", "Diplomatisch", "Dunkelwahrnehmung", "Durchhaltewille",
-  "Energiespürer", "Einfühlsam", "Erinnerungsstark", "Feinmechanik", "Feinsinn",
-  "Fleißig", "Fokusreserve", "Gefahreninstinkt", "Geländekenner", "Geschickte Hände",
-  "Glücksgriff", "Harmoniesinn", "Hartnäckig", "Hitzetolerant", "Humorvoll",
-  "Improvisationstalent", "Improvisationsmut", "Inspirierend", "Intuitiv",
-  "Kälteresistent", "Knotenmeister", "Kraftfokus", "Kreativ", "Lagermeister",
-  "Lernfähig", "Leichtfüßig", "Logikdenker", "Manafluss‑Stabilität",
-  "Materialkenntnis", "Mentale Stabilität", "Mustererkennung", "Naturverbunden",
-  "Nachtaktiv", "Orientierungssinn", "Pflanzenkenntnis", "Präzisionsarbeit",
-  "Präzisionsgriff", "Redegewandt", "Runenverständnis", "Ritualgefühl",
-  "Ruhe in Gefahr", "Ruhepol", "Scharfes Gehör", "Schnelle Auffassung",
-  "Schneller Griff", "Schnellpacker", "Schmerzresistenz", "Selbstbeherrschung",
-  "Schildgefühl", "Schlafreduziert", "Spureninstinkt", "Spurenleser",
-  "Stabiler Stand", "Symbolkenntnis", "Taktisches Denken", "Tiervertraut",
-  "Trittsicher", "Verhandlungsgeschick", "Vertrauenswürdig", "Waffenkenntnis",
-  "Wasservertraut", "Weitblick", "Wettergefühl", "Willensstark", "Werkzeuggefühl",
-  "Zähes Leben", "Zielstrebig", "Zauberdisziplin", "Geistige Offenheit",
-  "Orientierung im Dunkeln", "Pfadfinder", "Sammlerblick", "Ausweichreflex",
-  "Trefferinstinkt", "Kampfintuition", "Taktgefühl", "Geduld", "Zäher Körper",
-  "Gelenkig", "Schnellreaktion", "Hitzeschutz", "Kälteschutz", "Dursttoleranz",
-  "Hungertoleranz"
-];
+const TRAIT_MAX_ADV = 2;
+const TRAIT_MAX_DIS = 3;
 
-const disPool = [
-  "Astralblind", "Ausweichschwach", "Baumeisterblind", "Chaotischer Geist",
-  "Disharmonie", "Durstanfällig", "Empathielos", "Energieschwäche", "Faul",
-  "Geringe Belastbarkeit", "Geräuschempfindlich", "Geländeunsicher",
-  "Geistige Blockade", "Grobehändig", "Grobmotorischer Sinn", "Hitzeanfällig",
-  "Hungeranfällig", "Ideenlos", "Impulsiv", "Jähzornig", "Kälteanfällig",
-  "Knotenprobleme", "Kurzsichtig", "Langsame Auffassung", "Langsamer Griff",
-  "Langsame Reaktion", "Lernschwach", "Lichtempfindlich", "Materialblind",
-  "Mentale Instabilität", "Misstrauisch", "Nachtblind", "Naturfremd", "Nervös",
-  "Nachlässig", "Orientierungslos", "Panik in Gefahr", "Pechvogel",
-  "Pflanzenunkenntnis", "Reparaturschwach", "Runenblind", "Ritualunsicherheit",
-  "Schlafbedürftig", "Schlechte Ausweichreaktion", "Schlechte Kampfintuition",
-  "Schlechte Menschenkenntnis", "Schlechte Mustererkennung",
-  "Schlechte Spurenlesung", "Schlechte Waffenführung", "Schmerzempfindlich",
-  "Schwache Ausdauer", "Schwache Fokusreserve", "Schwache Orientierung",
-  "Schwacher Stand", "Schwerfällig", "Schwerhörig", "Spurenblind", "Steif",
-  "Symbolblind", "Taktlos", "Tierfurcht", "Übermut", "Übervorsichtig",
-  "Ungeduldig", "Ungeschickte Hände", "Unhöflich", "Unkonzentriert",
-  "Unorganisiert", "Unpräziser Griff", "Unüberzeugend", "Unsicherer Stand",
-  "Unaufmerksam", "Vergesslich", "Verwirrbar", "Waffenunsicher",
-  "Wackliger Stand", "Wasserfurcht", "Wetterempfindlich", "Willensschwach",
-  "Zerbrechlich", "Ziellos", "Schwindelanfällig", "Geräuschüberempfindlich",
-  "Schwache Improvisation", "Schwache Technikkenntnis", "Schwache Logik",
-  "Schwache Intuition", "Schwache Wahrnehmung", "Schwache Motorik",
-  "Schwache Konzentration", "Schwache Reaktion", "Schwache Präzision",
-  "Schwache Koordination", "Schwache Stabilität", "Schwache Resistenz",
-  "Schwache Willenskraft"
-];
-
-/* ---------- STATE ---------- */
-
-let char = null;
-let identity = {
-  age: "",
-  height: "",
-  weight: "",
-  eyes: "",
-  hair: "",
-  voice: "",
-  clothes: "",
-  specialmarks: "",
-  shortdesc: "",
-  story: "",
-  adv: [],
-  dis: []
-};
+// DOM-Referenzen
+let elAge, elHeight, elWeight, elEyes, elHair, elVoice, elClothes, elSpecialMarks;
+let elStory;
+let elPreviewImg, elPlaceholder, elPreviewNameLine, elPreviewRace, elPreviewProf, elPreviewSpec, elPreviewShortdesc;
+let elAbilityRace, elAbilitySub, elAbilityAttr;
+let elAdvList, elDisList, elSearchAdv, elSearchDis, elBtnResetTraits, elCountAdv, elCountDis;
+let elChronikTextBlock, elChronikRadar, elChronikRadarCtx;
+let elBtnNext, elBtnErwecken, elBtnToPage3;
+let elLeaveModal, elLeaveSummary, elBtnLeaveCancel, elBtnLeaveConfirm;
+let elOrbFlatline, elOrbContainer, elOrbArea;
+let elMaybePitch;
+let elBtnWerteUebernehmen;
+let elPopupUebernehmen, elUebernehmenVorname, elUebernehmenZuname, elBtnUebernehmenAbbrechen, elBtnUebernehmenLaden;
+let elTransientMsg;
+let elHeaderSubData;
 
 let transientTimeout = null;
 
-/* ---------- CLOUD-ID / CLOUD-LOAD (optional) ---------- */
-function getCharacterId() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("id");
-}
-
-async function loadCharacterFromCloud(id) {
-  try {
-    const res = await fetch(`https://undra.djdrear.workers.dev/load/${id}`);
-    if (!res.ok) {
-      console.error(await res.text());
-      alert("Fehler beim Laden aus der UNDRA‑Cloud.");
-      return null;
-    }
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-    alert("Netzwerkfehler beim Cloud‑Laden.");
-    return null;
-  }
-}
-
-/* ---------- DOM ---------- */
-const headerSubData = document.getElementById("header-sub-data");
-
-const idAge = document.getElementById("id-age");
-const idHeight = document.getElementById("id-height");
-const idWeight = document.getElementById("id-weight");
-const idEyes = document.getElementById("id-eyes");
-const idHair = document.getElementById("id-hair");
-const idVoice = document.getElementById("id-voice");
-const idClothes = document.getElementById("id-clothes");
-const idSpecialMarks = document.getElementById("id-specialmarks");
-const idShortdesc = document.getElementById("id-shortdesc");
-const idStory = document.getElementById("id-story");
-
-const previewImg = document.getElementById("preview");
-const placeholder = document.getElementById("placeholder");
-const previewNameLine = document.getElementById("preview-name-line");
-const previewRace = document.getElementById("preview-race");
-const previewProf = document.getElementById("preview-prof");
-const previewSpec = document.getElementById("preview-spec");
-const previewShortdesc = document.getElementById("preview-shortdesc");
-
-const advList = document.getElementById("adv-list");
-const disList = document.getElementById("dis-list");
-const searchAdv = document.getElementById("search-adv");
-const searchDis = document.getElementById("search-dis");
-const btnResetTraits = document.getElementById("btn-reset-traits");
-const countAdvSpan = document.getElementById("count-adv");
-const countDisSpan = document.getElementById("count-dis");
-
-const chronikTextBlock = document.getElementById("chronik-text-block");
-const chronikRadarCanvas = document.getElementById("chronikRadar");
-const chronikRadarCtx = chronikRadarCanvas.getContext("2d");
-
-const abilityRace = document.getElementById("ability-race");
-const abilitySub = document.getElementById("ability-sub");
-const abilityAttr = document.getElementById("ability-attr");
-
-const btnBack = document.getElementById("btn-back");
-const btnNext = document.getElementById("btn-next");
-const btnSaveLocal = document.getElementById("btn-save-local");
-
-const transientMsgEl = document.getElementById("transient-msg");
-
-// Leave modal
-const leaveSummary = document.getElementById("leave-summary");
-const leaveModal = document.getElementById("leave-modal");
-const btnLeaveCancel = document.getElementById("btn-leave-cancel");
-const btnLeaveConfirm = document.getElementById("btn-leave-confirm");
-
-/* ---------- HELPER ---------- */
 function showMsg(text, ms = 2200) {
-  transientMsgEl.textContent = text;
-  transientMsgEl.style.opacity = "1";
+  if (!elTransientMsg) return;
+  elTransientMsg.textContent = text;
+  elTransientMsg.style.opacity = "1";
   if (transientTimeout) clearTimeout(transientTimeout);
   transientTimeout = setTimeout(() => {
-    transientMsgEl.style.opacity = "0";
+    elTransientMsg.style.opacity = "0";
   }, ms);
 }
 
-/* ---------- LOAD FROM STORAGE ---------- */
-function loadCharacterFromStorage() {
-  const raw = localStorage.getItem(KEY_CHAR);
-  if (!raw) return;
-  try {
-    const data = JSON.parse(raw);
-    if (data && typeof data === "object") char = data;
-  } catch (e) {
-    console.error("Fehler beim Laden der Charakterdaten:", e);
+function ensureCharStructure() {
+  if (!window.char || typeof window.char !== "object") window.char = {};
+  const c = window.char;
+
+  if (typeof c.name !== "string")  c.name  = "";
+  if (typeof c.title !== "string") c.title = "";
+
+  if (!c.identity) {
+    c.identity = {
+      age: "",
+      height: "",
+      weight: "",
+      eyes: "",
+      hair: "",
+      voice: "",
+      clothes: "",
+      specialmarks: "",
+      shortdesc: "",
+      story: ""
+    };
   }
+
+  if (!Array.isArray(c.vorteile))  c.vorteile  = [];
+  if (!Array.isArray(c.nachteile)) c.nachteile = [];
+
+  if (!c.attrs || typeof c.attrs !== "object") c.attrs = {};
+  ATTRIBUTES.forEach((full) => {
+    if (c.attrs[full] == null) c.attrs[full] = 0;
+  });
 }
 
-function loadIdentityFromStorage() {
-  const raw = localStorage.getItem(KEY_ID);
-  if (!raw) return;
-  try {
-    const data = JSON.parse(raw);
-    if (data && typeof data === "object") Object.assign(identity, data);
-  } catch (e) {
-    console.error("Fehler beim Laden der Identitätsdaten:", e);
-  }
+function initDomRefs() {
+  elAge          = document.getElementById("id-age");
+  elHeight       = document.getElementById("id-height");
+  elWeight       = document.getElementById("id-weight");
+  elEyes         = document.getElementById("id-eyes");
+  elHair         = document.getElementById("id-hair");
+  elVoice        = document.getElementById("id-voice");
+  elClothes      = document.getElementById("id-clothes");
+  elSpecialMarks = document.getElementById("id-specialmarks");
+  elStory        = document.getElementById("id-story");
+
+  elPreviewImg       = document.getElementById("preview");
+  elPlaceholder      = document.getElementById("placeholder");
+  elPreviewNameLine  = document.getElementById("preview-name-line");
+  elPreviewRace      = document.getElementById("preview-race");
+  elPreviewProf      = document.getElementById("preview-prof");
+  elPreviewSpec      = document.getElementById("preview-spec");
+  elPreviewShortdesc = document.getElementById("preview-shortdesc");
+
+  elMaybePitch = document.getElementById("id-maybeShowPitch");
+
+  elAbilityRace = document.getElementById("ability-race");
+  elAbilitySub  = document.getElementById("ability-sub");
+  elAbilityAttr = document.getElementById("ability-attr");
+
+  elAdvList       = document.getElementById("adv-list");
+  elDisList       = document.getElementById("dis-list");
+  elSearchAdv     = document.getElementById("search-adv");
+  elSearchDis     = document.getElementById("search-dis");
+  elBtnResetTraits= document.getElementById("btn-reset-traits");
+  elCountAdv      = document.getElementById("count-adv");
+  elCountDis      = document.getElementById("count-dis");
+
+  elChronikTextBlock = document.getElementById("chronik-text-block");
+  elChronikRadar     = document.getElementById("chronikRadar");
+  if (elChronikRadar) elChronikRadarCtx = elChronikRadar.getContext("2d");
+
+  elBtnNext        = document.getElementById("btn-next");
+  elBtnErwecken    = document.getElementById("btn-erwecken");
+  elBtnToPage3     = document.getElementById("btn-to-page3");
+
+  elLeaveModal     = document.getElementById("leave-modal");
+  elLeaveSummary   = document.getElementById("leave-summary");
+  elBtnLeaveCancel = document.getElementById("btn-leave-cancel");
+  elBtnLeaveConfirm= document.getElementById("btn-leave-confirm");
+
+  elOrbFlatline    = document.getElementById("orb-flatline");
+  elOrbContainer   = document.getElementById("orb-container");
+  elOrbArea        = document.getElementById("orb-ritual-area");
+
+  elBtnWerteUebernehmen = document.getElementById("btn-save-local");
+
+  elPopupUebernehmen       = document.getElementById("popup-uebernehmen");
+  elUebernehmenVorname     = document.getElementById("uebernehmen-vorname");
+  elUebernehmenZuname      = document.getElementById("uebernehmen-zuname");
+  elBtnUebernehmenAbbrechen= document.getElementById("uebernehmen-abbrechen");
+  elBtnUebernehmenLaden    = document.getElementById("uebernehmen-laden");
+
+  elTransientMsg = document.getElementById("transient-msg");
+  elHeaderSubData = document.getElementById("header-sub-data");
 }
 
-/* ---------- INIT IDENTITY-FELDER ---------- */
+async function loadCharFromCloudActive() {
+  if (!window.char) window.char = {};
+
+  const name  = window.char.name  || "";
+  const title = window.char.title || "";
+
+  if (elHeaderSubData) {
+    elHeaderSubData.textContent = "Charakterdaten werden geladen...";
+  }
+
+  if (!name) {
+    console.warn("⚠️ Aktiver Charakter hat keinen Namen.");
+    if (elHeaderSubData) {
+      elHeaderSubData.textContent = "Kein aktiver Charakter – bitte auf Seite 1 anlegen.";
+    }
+    return null;
+  }
+
+  const data = await undra.load(name, title);
+  if (!data) {
+    if (elHeaderSubData) {
+      elHeaderSubData.textContent = "Fehler beim Laden der Charakterdaten.";
+    }
+    return null;
+  }
+
+  Object.assign(window.char, data);
+  ensureCharStructure();
+
+  if (data.meta) {
+    window.char.name  = data.meta.name  || window.char.name;
+    window.char.title = data.meta.title || window.char.title;
+  }
+
+  initIdentityFields();
+  renderTraits();
+  updateChronik();
+  drawChronikRadar();
+  initCharacterPreview();
+  updateErweckenButton();
+
+  if (elHeaderSubData) {
+    elHeaderSubData.textContent = "Charakter erfolgreich geladen.";
+  }
+
+  console.log("Aktiver Charakter geladen:", window.char);
+  return data;
+}
+
+async function loadCharByName(name, title = "") {
+  if (!name) {
+    console.warn("Name fehlt.");
+    return null;
+  }
+
+  const data = await undra.load(name, title);
+  if (!data) return null;
+
+  Object.assign(window.char, data);
+  ensureCharStructure();
+
+  initIdentityFields();
+  renderTraits();
+  updateChronik();
+  drawChronikRadar();
+  initCharacterPreview();
+  updateErweckenButton();
+
+  return data;
+}
+
+async function saveCharToCloud() {
+  if (!window.char) {
+    console.error("Kann nicht speichern: char fehlt.");
+    return false;
+  }
+
+  const name  = window.char.name  || "";
+  const title = window.char.title || "";
+
+  if (!name) {
+    console.error("Kann nicht speichern: Name fehlt.");
+    return false;
+  }
+
+  return await undra.save(name, title, window.char);
+}
+
+function renderBaseAttributes() {
+  const c = window.char;
+  if (!c || !c.attrs) return;
+
+  const lines = ATTRIBUTES.map((full, i) => {
+    const short = ATTR_SHORT[i];
+    const val = c.attrs[full] ?? 0;
+    return `${short} ${val}`;
+  });
+
+  const block = document.getElementById("id-baseattrs");
+  if (block) block.textContent = lines.join(", ");
+}
 
 function initIdentityFields() {
-  if (idAge) idAge.value = identity.age || char?.age || "";
-  if (idHeight) idHeight.value = identity.height || char?.height || "";
-  if (idWeight) idWeight.value = identity.weight || char?.weight || "";
-  if (idEyes) idEyes.value = identity.eyes || char?.eyes || "";
-  if (idHair) idHair.value = identity.hair || char?.hair || "";
-  if (idVoice) idVoice.value = identity.voice || char?.voice || "";
-  if (idClothes) idClothes.value = identity.clothes || char?.clothes || "";
-  if (idSpecialMarks) idSpecialMarks.value = identity.specialmarks || char?.specialmarks || "";
-  if (idShortdesc) idShortdesc.value = identity.shortdesc || char?.shortdesc || "";
-  if (idStory) idStory.value = identity.story || char?.story || "";
+  const I = window.char.identity;
+  if (elAge)          elAge.value          = I.age;
+  if (elHeight)       elHeight.value       = I.height;
+  if (elWeight)       elWeight.value       = I.weight;
+  if (elEyes)         elEyes.value         = I.eyes;
+  if (elHair)         elHair.value         = I.hair;
+  if (elVoice)        elVoice.value        = I.voice;
+  if (elClothes)      elClothes.value      = I.clothes;
+  if (elSpecialMarks) elSpecialMarks.value = I.specialmarks;
+  if (elStory)        elStory.value        = I.story;
+  renderBaseAttributes();
 }
 
-/* ---------- PREVIEW ---------- */
-function initCharacterPreview() {
-  if (!char) {
-    headerSubData.textContent = "Unbekannter Charakter";
-    previewNameLine.textContent = "Namenlos – ohne Titel";
-    previewRace.textContent = "–";
-    previewProf.textContent = "–";
-    previewSpec.textContent = "–";
-    abilityRace.textContent = "–";
-    abilitySub.textContent = "–";
-    abilityAttr.textContent = "–";
-    placeholder.style.display = "block";
-    if (previewImg) previewImg.style.display = "none";
+function updateIdentityFromInputs() {
+  const I = window.char.identity;
+  if (elAge)          I.age          = elAge.value.trim();
+  if (elHeight)       I.height       = elHeight.value.trim();
+  if (elWeight)       I.weight       = elWeight.value.trim();
+  if (elEyes)         I.eyes         = elEyes.value.trim();
+  if (elHair)         I.hair         = elHair.value.trim();
+  if (elVoice)        I.voice        = elVoice.value.trim();
+  if (elClothes)      I.clothes      = elClothes.value.trim();
+  if (elSpecialMarks) I.specialmarks = elSpecialMarks.value.trim();
+  if (elStory)        I.story        = elStory.value.trim();
+}
+
+function setPortrait(src) {
+  if (!elPreviewImg || !elPlaceholder) return;
+  if (!src) {
+    elPreviewImg.style.display = "none";
+    elPlaceholder.style.display = "block";
     return;
   }
+  elPreviewImg.onload = () => {
+    elPreviewImg.style.display = "block";
+    elPlaceholder.style.display = "none";
+  };
+  elPreviewImg.onerror = () => {
+    elPreviewImg.style.display = "none";
+    elPlaceholder.style.display = "block";
+  };
+  elPreviewImg.src = src;
+}
 
-  const name = char.name || "Namenlos";
-  const title = char.title ? " – " + char.title : " – ohne Titel";
-  previewNameLine.textContent = name + title;
+function initCharacterPreview() {
+  const c = window.char;
+
+  const name  = c.name  || "Namenlos";
+  const title = c.title ? " – " + c.title : " – ohne Titel";
+
+  if (elPreviewNameLine) elPreviewNameLine.textContent = name + title;
 
   let raceText = "–";
-  if (char.race && char.race2) {
-    raceText = char.race + " / " + char.race2 + " (Mischwesen)";
-  } else if (char.race) {
-    raceText = char.race;
-  } else if (char.race2) {
-    raceText = char.race2;
-  }
-  if (char.sub) raceText += " (" + char.sub + ")";
-  previewRace.textContent = raceText;
+  if (c.race && c.race2) raceText = `${c.race} / ${c.race2} (Mischwesen)`;
+  else if (c.race)       raceText = c.race;
+  else if (c.race2)      raceText = c.race2;
+  if (c.sub) raceText += ` (${c.sub})`;
 
-  previewProf.textContent = char.prof || "–";
-  previewSpec.textContent = char.special || "–";
+  if (elPreviewRace) elPreviewRace.textContent = raceText;
+  if (elPreviewProf) elPreviewProf.textContent = c.prof || "–";
+  if (elPreviewSpec) elPreviewSpec.textContent = c.special || "–";
 
-  if (char.portraitData) {
-    setPortrait(char.portraitData);
-  } else {
-    setPortrait(null);
-  }
+  if (elAbilityRace) elAbilityRace.textContent = c.raceAbility || "–";
+  if (elAbilitySub)  elAbilitySub.textContent  = c.subAbility  || "–";
+  if (elAbilityAttr) elAbilityAttr.textContent = c.attrBonusNote || "–";
 
-  headerSubData.textContent = name + " | " + (char.prof || "unbestimmte Profession");
-
-  abilityRace.textContent = char.raceAbility || "–";
-  abilitySub.textContent = char.subAbility || "–";
-  abilityAttr.textContent = char.attrBonusNote || "–";
-
-  // --- Attribute-Kurzvorschau erzeugen ---
-  let attrPreview = "";
-  if (char && char.attrs) {
-    attrPreview = ATTR_SHORT.map(short => {
-      const full = ATTRIBUTES[ATTR_SHORT.indexOf(short)];
-      const val = char.attrs[full] ?? "-";
-      return `${short} ${val}`;
-    }).join(" • ");
-  } else {
-    attrPreview = "Keine Attribute geladen.";
-  }
-
-  // --- Vorschau-Container füllen ---
-  previewShortdesc.innerHTML = `
-    <div style="margin-bottom:6px;">
-      <b style="color:var(--gold-bright);">Name:</b> ${char?.name || "Namenlos"}<br>
-      <b style="color:var(--gold-bright);">Titel:</b> ${char?.title || "–"}<br>
-      <b style="color:var(--gold-bright);">Volk:</b> ${previewRace.textContent}<br>
-      <b style="color:var(--gold-bright);">Profession:</b> ${char?.prof || "–"}<br>
-      <b style="color:var(--gold-bright);">Gabe:</b> ${char?.special || "–"}<br>
-      <b style="color:var(--gold-bright);">Rassenfähigkeit:</b> ${char?.raceAbility || "–"}<br>
-      <b style="color:var(--gold-bright);">Untergruppen-Fähigkeit:</b> ${char?.subAbility || "–"}<br>
-      <b style="color:var(--gold-bright);">Attributbonus +1:</b> ${char?.attrBonusNote || "–"}
-    </div>
-
-    <div style="margin-top:6px; color:var(--text-muted); font-size:10px;">
-      <span style="color:var(--gold-bright);">Attribute:</span><br>
-      ${attrPreview}
-    </div>
-  `;
-
+  if (c.portraitData) setPortrait(c.portraitData);
+  else setPortrait(null);
   drawChronikRadar();
 }
 
-/* ---------- RADAR ---------- */
 function drawChronikRadar() {
-  const canvas = chronikRadarCanvas;
-  const ctx = chronikRadarCtx;
-  const w = canvas.width;
-  const h = canvas.height;
+  if (!elChronikRadar || !elChronikRadarCtx) return;
+
+  const canvas = elChronikRadar;
+  const ctx = elChronikRadarCtx;
+
+  const w = canvas.width = 180;
+  const h = canvas.height = 180;
   const cx = w / 2;
   const cy = h / 2;
-  const radius = Math.min(w, h) / 2 - 12;
+  const radius = 75;
 
   ctx.clearRect(0, 0, w, h);
 
-  if (!char || !char.attrs) {
-    const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, radius + 12);
-    grad.addColorStop(0, "rgba(180,108,255,0.08)");
-    grad.addColorStop(1, "rgba(0,0,0,0.0)");
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius + 12, 0, Math.PI * 2);
-    ctx.fill();
-    return;
-  }
+  const attrs = window.char.attrs || {};
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius + 20, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(180,108,255,0.08)";
+  ctx.fill();
 
   const count = ATTRIBUTES.length;
   const step = (Math.PI * 2) / count;
 
   ctx.strokeStyle = "rgba(212,175,55,0.18)";
   ctx.lineWidth = 1;
+
   for (let i = 0; i < count; i++) {
     const angle = step * i - Math.PI / 2;
     const x = cx + Math.cos(angle) * radius;
     const y = cy + Math.sin(angle) * radius;
+
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.lineTo(x, y);
     ctx.stroke();
 
-    const tx = cx + Math.cos(angle) * (radius + 3);
-    const ty = cy + Math.sin(angle) * (radius + 3);
+    const tx = cx + Math.cos(angle) * (radius + 6);
+    const ty = cy + Math.sin(angle) * (radius + 6);
+
     ctx.fillStyle = "#f8e7b0";
     ctx.font = "8px serif";
     ctx.textAlign = "center";
@@ -1754,16 +1761,19 @@ function drawChronikRadar() {
 
   ctx.beginPath();
   for (let i = 0; i < count; i++) {
-    const val = char.attrs[ATTRIBUTES[i]] || 0;
-    const factor = Math.max(0, Math.min(1, val / 20));
+    const val = attrs[ATTRIBUTES[i]] || 0;
+    const factor = Math.max(0, Math.min(1, val / 10));
     const r = radius * (0.1 + factor * 0.9);
+
     const angle = step * i - Math.PI / 2;
     const x = cx + Math.cos(angle) * r;
     const y = cy + Math.sin(angle) * r;
+
     if (i === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   }
   ctx.closePath();
+
   ctx.fillStyle = "rgba(208,70,70,0.35)";
   ctx.strokeStyle = "#d4af37";
   ctx.lineWidth = 2;
@@ -1771,114 +1781,162 @@ function drawChronikRadar() {
   ctx.stroke();
 }
 
-/* ---------- TRAITS RENDERN ---------- */
+const advPool = [/* unverändert, deine Liste */ 
+  "Anpassungsfähig","Astralsinn","Ausdauernd","Balancegefühl","Baumeisterblick",
+  "Blick für Details","Diplomatisch","Dunkelwahrnehmung","Durchhaltewille",
+  "Energiespürer","Einfühlsam","Erinnerungsstark","Feinmechanik","Feinsinn",
+  "Fleißig","Fokusreserve","Gefahreninstinkt","Geländekenner","Geschickte Hände",
+  "Glücksgriff","Harmoniesinn","Hartnäckig","Hitzetolerant","Humorvoll",
+  "Improvisationstalent","Improvisationsmut","Inspirierend","Intuitiv",
+  "Kälteresistent","Knotenmeister","Kraftfokus","Kreativ","Lagermeister",
+  "Lernfähig","Leichtfüßig","Logikdenker","Manafluss‑Stabilität",
+  "Materialkenntnis","Mentale Stabilität","Mustererkennung","Naturverbunden",
+  "Nachtaktiv","Orientierungssinn","Pflanzenkenntnis","Präzisionsarbeit",
+  "Präzisionsgriff","Redegewandt","Runenverständnis","Ritualgefühl",
+  "Ruhe in Gefahr","Ruhepol","Scharfes Gehör","Schnelle Auffassung",
+  "Schneller Griff","Schnellpacker","Schmerzresistenz","Selbstbeherrschung",
+  "Schildgefühl","Schlafreduziert","Spureninstinkt","Spurenleser",
+  "Stabiler Stand","Symbolkenntnis","Taktisches Denken","Tiervertraut",
+  "Trittsicher","Verhandlungsgeschick","Vertrauenswürdig","Waffenkenntnis",
+  "Wasservertraut","Weitblick","Wettergefühl","Willensstark","Werkzeuggefühl",
+  "Zähes Leben","Zielstrebig","Zauberdisziplin","Geistige Offenheit",
+  "Orientierung im Dunkeln","Pfadfinder","Sammlerblick","Ausweichreflex",
+  "Trefferinstinkt","Kampfintuition","Taktgefühl","Geduld","Zäher Körper",
+  "Gelenkig","Schnellreaktion","Hitzeschutz","Kälteschutz","Dursttoleranz",
+  "Hungertoleranz"
+];
+
+const disPool = [/* unverändert, deine Liste */ 
+  "Astralblind","Ausweichschwach","Baumeisterblind","Chaotischer Geist",
+  "Disharmonie","Durstanfällig","Empathielos","Energieschwäche","Faul",
+  "Geringe Belastbarkeit","Geräuschempfindlich","Geländeunsicher",
+  "Geistige Blockade","Grobehändig","Grobmotorischer Sinn","Hitzeanfällig",
+  "Hungeranfällig","Ideenlos","Impulsiv","Jähzornig","Kälteanfällig",
+  "Knotenprobleme","Kurzsichtig","Langsame Auffassung","Langsamer Griff",
+  "Langsame Reaktion","Lernschwach","Lichtempfindlich","Materialblind",
+  "Mentale Instabilität","Misstrauisch","Nachtblind","Naturfremd","Nervös",
+  "Nachlässig","Orientierungslos","Panik in Gefahr","Pechvogel",
+  "Pflanzenunkenntnis","Reparaturschwach","Runenblind","Ritualunsicherheit",
+  "Schlafbedürftig","Schlechte Ausweichreaktion","Schlechte Kampfintuition",
+  "Schlechte Menschenkenntnis","Schlechte Mustererkennung",
+  "Schlechte Spurenlesung","Schlechte Waffenführung","Schmerzempfindlich",
+  "Schwache Ausdauer","Schwache Fokusreserve","Schwache Orientierung",
+  "Schwacher Stand","Schwerfällig","Schwerhörig","Spurenblind","Steif",
+  "Symbolblind","Taktlos","Tierfurcht","Übermut","Übervorsichtig",
+  "Ungeduldig","Ungeschickte Hände","Unhöflich","Unkonzentriert",
+  "Unorganisiert","Unpräziser Griff","Unüberzeugend","Unsicherer Stand",
+  "Unaufmerksam","Vergesslich","Verwirrbar","Waffenunsicher",
+  "Wackliger Stand","Wasserfurcht","Wetterempfindlich","Willensschwach",
+  "Zerbrechlich","Ziellos","Schwindelanfällig","Geräuschüberempfindlich",
+  "Schwache Improvisation","Schwache Technikkenntnis","Schwache Logik",
+  "Schwache Intuition","Schwache Wahrnehmung","Schwache Motorik",
+  "Schwache Konzentration","Schwache Reaktion","Schwache Präzision",
+  "Schwache Koordination","Schwache Stabilität","Schwache Resistenz",
+  "Schwache Willenskraft"
+];
+
 function renderTraits() {
-  advList.innerHTML = "";
-  disList.innerHTML = "";
+  if (!elAdvList || !elDisList) return;
+
+  elAdvList.innerHTML = "";
+  elDisList.innerHTML = "";
 
   advPool.forEach(name => {
     const label = document.createElement("label");
     label.className = "trait-item";
     label.dataset.name = name.toLowerCase();
-    label.dataset.type = "adv";
 
     const input = document.createElement("input");
     input.type = "checkbox";
     input.value = name;
-    input.checked = identity.adv.includes(name);
+    input.checked = window.char.vorteile.includes(name);
 
     input.addEventListener("change", () => handleTraitChange("adv", name, input.checked));
 
     label.appendChild(input);
     label.appendChild(document.createTextNode(" " + name));
-    advList.appendChild(label);
+    elAdvList.appendChild(label);
   });
 
   disPool.forEach(name => {
     const label = document.createElement("label");
     label.className = "trait-item";
     label.dataset.name = name.toLowerCase();
-    label.dataset.type = "dis";
 
     const input = document.createElement("input");
     input.type = "checkbox";
     input.value = name;
-    input.checked = identity.dis.includes(name);
+    input.checked = window.char.nachteile.includes(name);
 
     input.addEventListener("change", () => handleTraitChange("dis", name, input.checked));
 
     label.appendChild(input);
     label.appendChild(document.createTextNode(" " + name));
-    disList.appendChild(label);
+    elDisList.appendChild(label);
   });
 
-  updateTraitStateAndChronik();
+  updateTraitState();
 }
 
-/* ---------- TRAIT LOGIK (2/3 FIX) ---------- */
 function handleTraitChange(type, name, checked) {
   if (type === "adv") {
     if (checked) {
-      if (identity.adv.length >= 2) {
+      if (window.char.vorteile.length >= TRAIT_MAX_ADV) {
         showMsg("Es dürfen genau 2 Vorteile gewählt werden.");
         const cb = findTraitCheckbox("adv", name);
         if (cb) cb.checked = false;
         return;
       }
-      identity.adv.push(name);
+      window.char.vorteile.push(name);
     } else {
-      identity.adv = identity.adv.filter(t => t !== name);
+      window.char.vorteile = window.char.vorteile.filter(t => t !== name);
     }
-  } else if (type === "dis") {
+  }
+
+  if (type === "dis") {
     if (checked) {
-      if (identity.dis.length >= 3) {
+      if (window.char.nachteile.length >= TRAIT_MAX_DIS) {
         showMsg("Es dürfen genau 3 Nachteile gewählt werden.");
         const cb = findTraitCheckbox("dis", name);
         if (cb) cb.checked = false;
         return;
       }
-      identity.dis.push(name);
+      window.char.nachteile.push(name);
     } else {
-      identity.dis = identity.dis.filter(t => t !== name);
+      window.char.nachteile = window.char.nachteile.filter(t => t !== name);
     }
   }
 
-  updateTraitStateAndChronik();
+  updateTraitState();
+  updateChronik();
+  updateErweckenButton();
 }
 
 function findTraitCheckbox(type, name) {
-  const container = type === "adv" ? advList : disList;
-  const inputs = container.querySelectorAll("input[type='checkbox']");
-  for (const cb of inputs) {
-    if (cb.value === name) return cb;
-  }
-  return null;
+  const container = type === "adv" ? elAdvList : elDisList;
+  if (!container) return null;
+  return [...container.querySelectorAll("input[type='checkbox']")]
+    .find(cb => cb.value === name) || null;
 }
 
-function updateTraitStateAndChronik() {
-  const advCount = identity.adv.length;
-  const disCount = identity.dis.length;
-  countAdvSpan.textContent = advCount;
-  countDisSpan.textContent = disCount;
+function updateTraitState() {
+  if (elCountAdv) elCountAdv.textContent = window.char.vorteile.length;
+  if (elCountDis) elCountDis.textContent = window.char.nachteile.length;
 
-  updateTraitDisabling("adv", advCount >= 2);
-  updateTraitDisabling("dis", disCount >= 3);
-
-  updateChronik();
-  updateNextButtonState();
-  updateErweckenButton(); // Orb-Button immer mitziehen
+  updateTraitDisabling("adv", window.char.vorteile.length >= TRAIT_MAX_ADV);
+  updateTraitDisabling("dis", window.char.nachteile.length >= TRAIT_MAX_DIS);
 }
 
-function updateTraitDisabling(type, shouldDisableOthers) {
-  const container = type === "adv" ? advList : disList;
-  const chosen = type === "adv" ? identity.adv : identity.dis;
-  const labels = container.querySelectorAll(".trait-item");
+function updateTraitDisabling(type, disableOthers) {
+  const container = type === "adv" ? elAdvList : elDisList;
+  const selected = type === "adv" ? window.char.vorteile : window.char.nachteile;
+  if (!container) return;
 
-  labels.forEach(label => {
-    const input = label.querySelector("input[type='checkbox']");
-    const isSelected = chosen.includes(input.value);
+  container.querySelectorAll(".trait-item").forEach(label => {
+    const input = label.querySelector("input");
+    const isSelected = selected.includes(input.value);
 
-    if (shouldDisableOthers && !isSelected) {
+    if (disableOthers && !isSelected) {
       label.classList.add("disabled");
       input.disabled = true;
     } else {
@@ -1888,485 +1946,415 @@ function updateTraitDisabling(type, shouldDisableOthers) {
   });
 }
 
-function resetTraits() {
-  identity.adv = [];
-  identity.dis = [];
-
-  advList.querySelectorAll("input[type='checkbox']").forEach(cb => {
-    cb.checked = false;
-    cb.disabled = false;
-  });
-  disList.querySelectorAll("input[type='checkbox']").forEach(cb => {
-    cb.checked = false;
-    cb.disabled = false;
-  });
-
-  searchAdv.value = "";
-  searchDis.value = "";
-  applyTraitSearch("adv", "");
-  applyTraitSearch("dis", "");
-
-  updateTraitStateAndChronik();
-}
-
-/* ---------- TRAIT SUCHE ---------- */
 function applyTraitSearch(type, term) {
-  const container = type === "adv" ? advList : disList;
-  const lowerTerm = term.trim().toLowerCase();
-  const items = container.querySelectorAll(".trait-item");
+  const container = type === "adv" ? elAdvList : elDisList;
+  if (!container) return;
+  const lower = term.trim().toLowerCase();
 
-  items.forEach(label => {
-    const name = label.dataset.name || "";
-    if (!lowerTerm || name.includes(lowerTerm)) {
-      label.style.display = "";
-    } else {
-      label.style.display = "none";
-    }
+  container.querySelectorAll(".trait-item").forEach(label => {
+    const name = label.dataset.name;
+    label.style.display = (!lower || name.includes(lower)) ? "" : "none";
   });
 }
 
-/* ---------- CHRONIK ---------- */
 function updateChronik() {
-  const advSelected = identity.adv;
-  const disSelected = identity.dis;
+  if (!elChronikTextBlock) return;
 
-  const name = char?.name || "Namenlos";
-  const title = char?.title || "";
+  const I = window.char.identity;
+  const c = window.char;
+
   const racePart = (() => {
-    if (!char) return "Unbekanntes Volk";
-    if (char.race && char.race2) return char.race + " / " + char.race2 + " (Mischwesen)";
-    if (char.race) return char.race;
-    if (char.race2) return char.race2;
+    if (c.race && c.race2) return `${c.race} / ${c.race2} (Mischwesen)`;
+    if (c.race) return c.race;
+    if (c.race2) return c.race2;
     return "Unbekanntes Volk";
   })();
-  const subPart = char?.sub ? " (" + char.sub + ")" : "";
-  const profPart = char?.prof || "Unbekannter Beruf";
 
-  chronikTextBlock.innerHTML = `
+  const subPart = c.sub ? ` (${c.sub})` : "";
+  const profPart = c.prof || "Unbekannter Beruf";
+
+  elChronikTextBlock.innerHTML = `
     <p>
-      <b>${name}</b>${title ? ", " + title : ""}<br>
+      <b>${c.name || "Namenlos"}</b>${c.title ? ", " + c.title : ""}<br>
       Volk: ${racePart}${subPart}<br>
       Beruf: ${profPart}
     </p>
+
     <div class="chronik-grid-small">
-      <div><span>Alter:</span> ${identity.age || "-"}</div>
-      <div><span>Größe:</span> ${identity.height || "-"}</div>
-      <div><span>Gewicht:</span> ${identity.weight || "-"}</div>
-      <div><span>Augenfarbe:</span> ${identity.eyes || "-"}</div>
-      <div><span>Haarfarbe:</span> ${identity.hair || "-"}</div>
-      <div><span>Stimme:</span> ${identity.voice || "-"}</div>
-      <div><span>Kleidung:</span> ${identity.clothes || "-"}</div>
-      <div><span>Merkmale:</span> ${identity.specialmarks || "-"}</div>
+      <div><span>Alter:</span> ${I.age || "-"}</div>
+      <div><span>Größe:</span> ${I.height || "-"}</div>
+      <div><span>Gewicht:</span> ${I.weight || "-"}</div>
+      <div><span>Augenfarbe:</span> ${I.eyes || "-"}</div>
+      <div><span>Haarfarbe:</span> ${I.hair || "-"}</div>
+      <div><span>Stimme:</span> ${I.voice || "-"}</div>
+      <div><span>Kleidung:</span> ${I.clothes || "-"}</div>
+      <div><span>Merkmale:</span> ${I.specialmarks || "-"}</div>
     </div>
-    <p style="margin-top:8px;"><b>Kurzbeschreibung:</b><br>${identity.shortdesc || "-"}</p>
-    <p style="margin-top:4px;"><b>Vorteile:</b> ${advSelected.join(", ") || "-"}</p>
-    <p style="margin-top:2px;"><b>Nachteile:</b> ${disSelected.join(", ") || "-"}</p>
+
+    <p style="margin-top:8px;"><b>Basisattribute:</b><br>${
+      ATTRIBUTES.map((full, i) => `${ATTR_SHORT[i]} ${window.char.attrs[full] ?? 0}`).join(", ")
+    }</p>
+    <p style="margin-top:4px;"><b>Vorteile:</b> ${window.char.vorteile.join(", ") || "-"}</p>
+    <p style="margin-top:2px;"><b>Nachteile:</b> ${window.char.nachteile.join(", ") || "-"}</p>
   `;
 }
-/* ---------- SYNC PAGE 2 → GLOBAL CHAR ---------- */
-function syncPage2ToChar() {
-  if (!char) char = {};
 
-  // Identität / Merkmale
-  char.identity = {
-    age: idAge.value.trim(),
-    height: idHeight.value.trim(),
-    weight: idWeight.value.trim(),
-    eyes: idEyes.value.trim(),
-    hair: idHair.value.trim(),
-    voice: idVoice.value.trim(),
-    clothes: idClothes.value.trim(),
-    specialmarks: idSpecialMarks.value.trim(),
-    shortdesc: idShortdesc.value.trim(),
-    story: idStory.value.trim()
-  };
+function updateCharacterPitchBox() {
+  const I = window.char.identity;
 
-  // Vor- und Nachteile
-  char.vorteile = [...identity.adv];
-  char.nachteile = [...identity.dis];
+  const allFilled =
+    I.age && I.height && I.weight &&
+    I.eyes && I.hair && I.voice &&
+    I.clothes && I.specialmarks;
 
-  // Portrait (falls vorhanden)
-  if (previewImg && previewImg.src) {
-    char.portrait = previewImg.src;
-  }
-}
-/* ---------- SYNC IDENTITY → UNDRA.STATE ---------- */
-function undraSyncIdentityFromPage2() {
-    undra.state.merkmale = {
-        age: identity.age,
-        height: identity.height,
-        weight: identity.weight,
-        eyes: identity.eyes,
-        hair: identity.hair,
-        voice: identity.voice,
-        armor: identity.clothes,
-        special: identity.specialmarks
-    };
-
-    undra.state.shortdesc = identity.shortdesc;
-    undra.state.story = identity.story;
-    undra.state.vorteile = [...identity.adv];
-    undra.state.nachteile = [...identity.dis];
-}
-
-/* ---------- SAVE / LOAD IDENTITY ---------- */
-function saveIdentity() {
-  syncPage2ToChar();
-
-  const data = {
-    age: idAge.value.trim(),
-    height: idHeight.value.trim(),
-    weight: idWeight.value.trim(),
-    eyes: idEyes.value.trim(),
-    hair: idHair.value.trim(),
-    voice: idVoice.value.trim(),
-    clothes: idClothes.value.trim(),
-    specialmarks: idSpecialMarks.value.trim(),
-    shortdesc: idShortdesc.value.trim(),
-    story: idStory.value.trim(),
-    adv: identity.adv,
-    dis: identity.dis
-  };
-
-  identity = data;
-
-  try {
-    localStorage.setItem(KEY_ID, JSON.stringify(data));
-    showMsg("Identität & Chronik gespeichert.");
-  } catch (e) {
-    console.error(e);
-    showMsg("Fehler beim Speichern der Identität.");
+  if (allFilled && elMaybePitch) {
+    elMaybePitch.textContent = generateCharacterPitch();
   }
 }
 
-/* ---------- NAVIGATION → SEITE 3 ---------- */
-function goToPage3() {
-  syncPage2ToChar();
-  saveIdentity();
+function attachIdentityListeners() {
+  const fields = [
+    elAge, elHeight, elWeight, elEyes, elHair,
+    elVoice, elClothes, elSpecialMarks
+  ];
 
-  // Merkmale, Story, Kurzbeschreibung, Vor-/Nachteile in undra.state schreiben
-  undraSyncIdentityFromPage2();
+  fields.forEach(el => {
+    if (!el) return;
+    el.addEventListener("input", () => {
+      updateIdentityFromInputs();
+      updateChronik();
+      updateErweckenButton();
+      updateCharacterPitchBox();
+    });
+  });
 
-  window.location.href = "https://djdrear.github.io/Seite-3/";
+  if (elStory) {
+    elStory.addEventListener("input", () => {
+      updateIdentityFromInputs();
+      updateChronik();
+      updateErweckenButton();
+    });
+  }
 }
 
-/* ---------- NAVIGATION → SEITE 1 ---------- */
-function goBackToPage1() {
-  syncPage2ToChar();
-  saveIdentity();
+function isPage1Complete() {
+  const c = window.char;
 
-  // Optional: auch hier synchronisieren, damit Seite 1 alles hat
-  undraSyncIdentityFromPage2();
-
-  window.location.href = "UNDRA-ENGINE-1.5-Seite1.html";
+  return (
+    c.name &&
+    c.title &&
+    (c.race || c.race2) &&
+    c.sub &&
+    c.prof &&
+    c.raceAbility &&
+    c.subAbility &&
+    c.attrBonusNote &&
+    c.bonusApplied &&
+    c.bonusApplied[c.attrBonusNote]
+  );
 }
+
+function isIdentityCoreComplete() {
+  const I = window.char.identity;
+  return (
+    I.age && I.height && I.weight &&
+    I.eyes && I.hair && I.voice &&
+    I.clothes && I.specialmarks
+  );
+}
+
+function isPage2Complete() {
+  const I = window.char.identity;
+  const fieldsValid =
+    I.age && I.height && I.weight &&
+    I.eyes && I.hair && I.voice &&
+    I.clothes && I.specialmarks &&
+    I.story;
+
+  const traitsValid =
+    window.char.vorteile.length === 2 &&
+    window.char.nachteile.length === 3;
+
+  return fieldsValid && traitsValid;
+}
+
+function generateCharacterPitch() {
+  const c = window.char;
+  const I = c.identity;
+
+  const name = c.name || "Dieser Charakter";
+  const title = c.title ? `, ${c.title}` : "";
+  const race = c.race || "Unbekanntes Volk";
+  const sub = c.sub ? ` (${c.sub})` : "";
+  const prof = c.prof || "Wanderer";
+
+  const gabe = c.raceAbility || null;
+  const subAbility = c.subAbility || c.sub || null;
+  const bonus = c.attrBonusNote || null;
+
+  const vorteile = c.vorteile.length ? c.vorteile.join(", ") : null;
+  const nachteile = c.nachteile.length ? c.nachteile.join(", ") : null;
+
+  const merkmale = [
+    I.eyes && `${I.eyes} strahlende Augen`,
+    I.hair && `glänzendes Haar in ${I.hair}`,
+    I.voice && `seine Stimme, ${I.voice} und einzigartig`,
+    I.specialmarks && `gekennzeichnet durch ${I.specialmarks}`,
+    I.clothes && `sein Kleidungsstil besteht hauptsächlich aus ${I.clothes} und ist sehr prägnant.`
+  ].filter(Boolean);
+
+  let pitch = `${name}${title} ist ein${race.match(/^[aeiou]/i) ? "n" : ""} ${race}${sub}, `
+             + `der als ${prof} seinen Weg durch UNDRA sucht. `;
+
+  if (gabe) pitch += `Seine Gabe „${gabe}“ verleiht ihm eine besondere Aura. `;
+  if (subAbility) pitch += `Die Fähigkeit „${subAbility}“ deutet auf ein verborgenes Potenzial hin. `;
+  if (bonus) pitch += `Ein natürlicher Bonus auf ${bonus} stärkt seine innere Essenz. `;
+
+  if (merkmale.length) {
+    pitch += `Seine Erscheinung wird geprägt durch ${merkmale.join(", ")}. `;
+  }
+
+  if (vorteile) pitch += `Zu seinen Stärken zählen ${vorteile}. `;
+  if (nachteile) pitch += `Doch auch ${nachteile} formen seinen Weg. `;
+
+  pitch += `Etwas in seinem Schicksal scheint darauf zu warten, endlich erwacht zu werden.`;
+
+  return pitch;
+}
+function updateErweckenButton() {
+  const hasAllTraits =
+    window.char.vorteile.length === TRAIT_MAX_ADV &&
+    window.char.nachteile.length === TRAIT_MAX_DIS;
+
+  const identityOk = isIdentityCoreComplete();
+
+  const canAwaken = hasAllTraits && identityOk;
+
+  if (elBtnErwecken) {
+    if (canAwaken) {
+      elBtnErwecken.disabled = false;
+      elBtnErwecken.classList.add("active");
+      elBtnErwecken.style.opacity = "1";
+      elBtnErwecken.style.pointerEvents = "auto";
+    } else {
+      elBtnErwecken.disabled = true;
+      elBtnErwecken.classList.remove("active");
+      elBtnErwecken.style.opacity = "0.4";
+      elBtnErwecken.style.pointerEvents = "none";
+    }
+  }
+}
+
+function triggerOrbAwakening() {
+  updateIdentityFromInputs();
+
+  if (elOrbFlatline) elOrbFlatline.style.display = "none";
+
+  if (elOrbArea) {
+    const flash = document.createElement("div");
+    flash.className = "flash-explosion";
+    elOrbArea.appendChild(flash);
+  }
+
+  setTimeout(() => {
+    if (elOrbContainer) elOrbContainer.classList.remove("orb-hidden");
+  }, 300);
+
+  if (elBtnErwecken) {
+    elBtnErwecken.style.display = "none";
+    elBtnErwecken.style.opacity = "0";
+    elBtnErwecken.style.pointerEvents = "none";
+  }
+
+  if (elBtnToPage3) {
+    elBtnToPage3.style.display = "none";
+    elBtnToPage3.style.opacity = "0";
+    elBtnToPage3.style.pointerEvents = "none";
+  }
+
+  setTimeout(() => {
+    if (elBtnNext) {
+      elBtnNext.disabled = false;
+      elBtnNext.classList.add("active");
+      elBtnNext.style.opacity = "1";
+      elBtnNext.style.pointerEvents = "auto";
+    }
+  }, 800);
+}
+
 function openLeaveModal() {
-  const name = char?.name || "Namenlos";
-  const title = char?.title ? " – " + char.title : "";
-  const racePart = (() => {
-    if (!char) return "Unbekanntes Volk";
-    if (char.race && char.race2) return char.race + " / " + char.race2 + " (Mischwesen)";
-    if (char.race) return char.race;
-    if (char.race2) return char.race2;
-    return "Unbekanntes Volk";
-  })();
-  const subPart = char?.sub ? " (" + char.sub + ")" : "";
-  const profPart = char?.prof || "Unbekannter Beruf";
+  if (!elLeaveModal || !elLeaveSummary) return;
+
+  const c = window.char;
 
   const summary = [
-    name + title,
-    "Volk: " + racePart + subPart,
-    "Profession: " + profPart,
-    "Vorteile: " + (identity.adv.join(", ") || "-"),
-    "Nachteile: " + (identity.dis.join(", ") || "-")
+    `${c.name || "Namenlos"}${c.title ? " – " + c.title : ""}`,
+    `Volk: ${elPreviewRace ? elPreviewRace.textContent : "-"}`,
+    `Profession: ${c.prof || "-"}`,
+    `Vorteile: ${c.vorteile.join(", ") || "-"}`,
+    `Nachteile: ${c.nachteile.join(", ") || "-"}`
   ].join(" • ");
 
-  leaveSummary.textContent = summary;
-  leaveModal.style.display = "flex";
+  elLeaveSummary.textContent = summary;
+  elLeaveModal.style.display = "flex";
 }
 
 function closeLeaveModal() {
-  leaveModal.style.display = "none";
+  if (!elLeaveModal) return;
+  elLeaveModal.style.display = "none";
 }
 
-/* ---------- BUTTON-STATE (Seite 2 intern) ---------- */
-function updateNextButtonState() {
-  const traitsValid = (identity.adv.length === 2 && identity.dis.length === 3);
-
-  const fieldsValid =
-    identity.age &&
-    identity.height &&
-    identity.weight &&
-    identity.eyes &&
-    identity.hair &&
-    identity.voice &&
-    identity.clothes &&
-    identity.specialmarks &&
-    identity.shortdesc &&
-    identity.story;
-
-  const page2Complete = traitsValid && fieldsValid;
-
-  // Weiter-Button bleibt deaktiviert, bis der Orb erwacht ist
-  if (btnNext) btnNext.disabled = true;
-
-  // Wenn Seite 2 vollständig ist → Awakening-Button (Seite-2-Gimmick) aktivieren
-  if (page2Complete) {
-    enableAwakening();
-  }
+function openUebernehmenPopup() {
+  if (!elPopupUebernehmen) return;
+  elPopupUebernehmen.style.display = "flex";
 }
 
-/* ---------- PORTRAIT FIX ---------- */
-function setPortrait(src) {
-  if (!previewImg) return;
+function closeUebernehmenPopup() {
+  if (!elPopupUebernehmen) return;
+  elPopupUebernehmen.style.display = "none";
+}
 
-  if (!src) {
-    previewImg.style.display = "none";
-    placeholder.style.display = "block";
+async function handleUebernehmenLaden() {
+  const vor = elUebernehmenVorname.value.trim();
+  const zu  = elUebernehmenZuname.value.trim();
+
+  if (!vor || !zu) {
+    showMsg("Bitte Vorname und Zuname eingeben.");
     return;
   }
 
-  previewImg.onload = () => {
-    previewImg.style.display = "block";
-    placeholder.style.display = "none";
-  };
-
-  previewImg.onerror = () => {
-    previewImg.style.display = "none";
-    placeholder.style.display = "block";
-    console.warn("Portrait konnte nicht geladen werden:", src);
-  };
-
-  previewImg.src = src;
-}
-
-/* ---------- RADAR FIX ---------- */
-(function patchRadar() {
-  const oldDraw = drawChronikRadar;
-  drawChronikRadar = function () {
-    chronikRadarCanvas.width = 180;
-    chronikRadarCanvas.height = 180;
-
-    if (!char) char = {};
-    if (!char.attrs || typeof char.attrs !== "object") {
-      char.attrs = {};
-      ATTRIBUTES.forEach(k => char.attrs[k] = 0);
-    }
-
-    oldDraw();
-  };
-})();
-
-function triggerOrbAwakening() {
-  const flat = document.getElementById("orb-flatline");
-  const orb = document.getElementById("orb-container");
-  const btnErw = document.getElementById("btn-erwecken");
-  const btnNext = document.getElementById("btn-next"); // Footer-Button (WEITER ZUR SPIELOBERFLÄCHE)
-  const btnPage3 = document.getElementById("btn-to-page3"); // Gelber Button (Weiter zu Seite 3)
-
-  // Explosionseffekt
-  const flash = document.createElement("div");
-  flash.className = "flash-explosion";
-  document.getElementById("orb-ritual-area").appendChild(flash);
-
-  if (flat) flat.style.display = "none";
-
-  // Orb erscheint
-  setTimeout(() => {
-    if (orb) orb.classList.remove("orb-hidden");
-  }, 300);
-
-  // Erwecken-Button vollständig verstecken
-  if (btnErw) {
-    btnErw.style.opacity = "0";
-    btnErw.style.pointerEvents = "none";
-    btnErw.style.visibility = "hidden";
+  const loaded = await loadCharByName(vor, zu);
+  if (!loaded) {
+    showMsg("Charakter nicht gefunden.");
+    return;
   }
 
-  // Gelben Button ausblenden
-  if (btnPage3) {
-    btnPage3.style.opacity = "0";
-    btnPage3.style.pointerEvents = "none";
-    btnPage3.style.visibility = "hidden";
-  }
-
-  // Footer-Button aktivieren
-  setTimeout(() => {
-    if (btnNext) {
-      btnNext.disabled = false;
-      btnNext.classList.add("active");
-    }
-  }, 800);
-}
-
-/* ---------- SEITE 1 PRÜFUNG ---------- */
-function isPage1Complete() {
-  if (!char) return false;
-  return (
-    char.name &&
-    char.title &&
-    char.pool > 0 &&
-    char.used === char.pool &&
-    (char.race || char.race2) &&
-    char.sub &&
-    char.prof &&
-    char.raceAbility &&
-    char.subAbility &&
-    char.attrBonusNote &&
-    char.bonusApplied?.[char.attrBonusNote]
-  );
-}
-
-/* ---------- SEITE 2 PRÜFUNG (nur Vorteile/Nachteile für Orb) ---------- */
-function isPage2Complete() {
-  return (
-    identity.adv.length === 2 &&
-    identity.dis.length === 3
-  );
-}
-
-/* ---------- TRAITS → CHAR SPIEGELN ---------- */
-function syncTraitsToChar() {
-  if (!char) char = {};
-  char.vorteile = [...identity.adv];
-  char.nachteile = [...identity.dis];
-}
-
-/* ---------- ERWECKEN-BUTTON (Orb auf Seite 2) ---------- */
-function updateErweckenButton() {
-  const btn = document.getElementById("btn-erwecken");
-  if (!btn) return;
-
-  const ready = isPage1Complete() && isPage2Complete();
-
-  btn.disabled = !ready;
-  btn.classList.toggle("active", ready);
-  btn.textContent = ready ? "Erwecken" : "Erwecken (nicht bereit)";
-}
-
-/* ---------- SEITE 2 SPEICHERN (für Seite 3 / Gesamtstatus) ---------- */
-function übernehmenSeite2() {
-  saveIdentity();       // Identity (inkl. Traits) sichern
-  syncTraitsToChar();   // Traits in char spiegeln
-  char["Seite 2"] = isPage2Complete();
-
-  try {
-    localStorage.setItem(KEY_CHAR, JSON.stringify(char));
-  } catch (e) {
-    console.error("Fehler beim Speichern von Seite 2:", e);
-  }
-
+  closeUebernehmenPopup();
+  initIdentityFields();
+  renderTraits();
+  updateChronik();
   updateErweckenButton();
 }
 
-function triggerOrbAwakening() {
-    syncPage2ToChar();
-  const flat = document.getElementById("orb-flatline");
-  const orb = document.getElementById("orb-container");
-  const btnErw = document.getElementById("btn-erwecken");
-  const btnNext = document.getElementById("btn-next"); // Footer-Button
-  const btnPage3 = document.getElementById("btn-to-page3"); // Gelber Button
-
-  // Explosionseffekt
-  const flash = document.createElement("div");
-  flash.className = "flash-explosion";
-  document.getElementById("orb-ritual-area").appendChild(flash);
-
-  if (flat) flat.style.display = "none";
-
-  // Orb erscheint
-  setTimeout(() => {
-    if (orb) orb.classList.remove("orb-hidden");
-  }, 300);
-
-  // Erwecken-Button vollständig verstecken
-  if (btnErw) {
-    btnErw.style.display = "none";
-    btnErw.style.opacity = "0";
-    btnErw.style.pointerEvents = "none";
-    btnErw.style.visibility = "hidden";
+function initTraitSearchListeners() {
+  if (elSearchAdv) {
+    elSearchAdv.addEventListener("input", () => {
+      applyTraitSearch("adv", elSearchAdv.value);
+    });
   }
 
-  // Gelben Button ausblenden
-  if (btnPage3) {
-    btnPage3.style.display = "none";
-    btnPage3.style.opacity = "0";
-    btnPage3.style.pointerEvents = "none";
-    btnPage3.style.visibility = "hidden";
+  if (elSearchDis) {
+    elSearchDis.addEventListener("input", () => {
+      applyTraitSearch("dis", elSearchDis.value);
+    });
   }
-
-  // Footer-Button aktivieren und sichtbar machen
-  setTimeout(() => {
-    if (btnNext) {
-      btnNext.disabled = false;
-      btnNext.classList.add("active");
-      btnNext.style.opacity = "1";
-      btnNext.style.pointerEvents = "auto";
-      btnNext.style.visibility = "visible";
-    }
-  }, 800);
 }
 
-/* ---------- INIT ---------- */
-document.addEventListener("DOMContentLoaded", async () => {
-  // Charakter laden (lokal, optional Cloud)
-  loadCharacterFromStorage();
-  if (!char) {
-    const id = getCharacterId();
-    if (id) {
-      const cloudChar = await loadCharacterFromCloud(id);
-      if (cloudChar) {
-        char = cloudChar;
-        try {
-          localStorage.setItem(KEY_CHAR, JSON.stringify(char));
-        } catch (e) {
-          console.warn("Konnte Cloud-Char nicht lokal cachen:", e);
-        }
-      }
-    }
+async function initPage2() {
+  initDomRefs();
+
+  /* -----------------------------
+     POPUP: Werte übernehmen
+  ----------------------------- */
+  if (elBtnWerteUebernehmen) {
+    elBtnWerteUebernehmen.addEventListener("click", openUebernehmenPopup);
+  }
+  if (elBtnUebernehmenAbbrechen) {
+    elBtnUebernehmenAbbrechen.addEventListener("click", closeUebernehmenPopup);
+  }
+  if (elBtnUebernehmenLaden) {
+    elBtnUebernehmenLaden.addEventListener("click", handleUebernehmenLaden);
   }
 
-  // Identity laden
-  loadIdentityFromStorage();
+  /* -----------------------------
+     Traits zurücksetzen
+  ----------------------------- */
+  if (elBtnResetTraits) {
+    elBtnResetTraits.addEventListener("click", () => {
+      window.char.vorteile = [];
+      window.char.nachteile = [];
+      renderTraits();
+      updateChronik();
+      updateErweckenButton();
+      showMsg("Traits zurückgesetzt.");
+    });
+  }
 
-  // UI initialisieren
+  /* -----------------------------
+     Weiter zu Seite 3
+  ----------------------------- */
+  if (elBtnNext) {
+    elBtnNext.addEventListener("click", () => {
+      window.location.href = "seite3.html";
+    });
+  }
+
+  /* -----------------------------
+     Erwecken
+  ----------------------------- */
+  if (elBtnErwecken) {
+    elBtnErwecken.addEventListener("click", () => {
+      if (!isPage1Complete() || !isPage2Complete()) {
+        showMsg("Charakter ist noch nicht vollständig.");
+        return;
+      }
+      triggerOrbAwakening();
+    });
+  }
+
+  /* -----------------------------
+     Leave Modal
+  ----------------------------- */
+  if (elBtnLeaveCancel) {
+    elBtnLeaveCancel.addEventListener("click", closeLeaveModal);
+  }
+
+  if (elBtnLeaveConfirm) {
+    elBtnLeaveConfirm.addEventListener("click", () => {
+      window.location.href = "seite3.html";
+    });
+  }
+
+  /* -----------------------------
+     WICHTIGER FIX:
+     URL-Parameter nur übernehmen,
+     wenn sie existieren!
+  ----------------------------- */
+  readNameFromURL();   // überschreibt NICHT mehr, wenn leer
+
+  ensureCharStructure();
+
+  /* -----------------------------
+     WICHTIGER FIX:
+     Charakter nur automatisch laden,
+     wenn Name existiert.
+     (Lokal sonst NICHT überschreiben!)
+  ----------------------------- */
+  if (window.char.name) {
+    await loadCharFromCloudActive();
+  }
+
+  ensureCharStructure();
+
+  /* -----------------------------
+     Seite 2 initialisieren
+  ----------------------------- */
   initIdentityFields();
   initCharacterPreview();
   renderTraits();
   updateChronik();
   drawChronikRadar();
-  updateNextButtonState();
+  attachIdentityListeners();
+  initTraitSearchListeners();
   updateErweckenButton();
+}
 
-  // Events
-  if (btnBack) btnBack.addEventListener("click", goBackToPage1);
-  if (btnNext) btnNext.addEventListener("click", openLeaveModal);
-  if (btnSaveLocal) btnSaveLocal.addEventListener("click", () => {
-    saveIdentity();
-    übernehmenSeite2();
-  });
-
-  if (btnResetTraits) btnResetTraits.addEventListener("click", resetTraits);
-
-  if (searchAdv) searchAdv.addEventListener("input", () => {
-    applyTraitSearch("adv", searchAdv.value);
-  });
-  if (searchDis) searchDis.addEventListener("input", () => {
-    applyTraitSearch("dis", searchDis.value);
-  });
-
-  if (btnLeaveCancel) btnLeaveCancel.addEventListener("click", closeLeaveModal);
-  if (btnLeaveConfirm) btnLeaveConfirm.addEventListener("click", () => {
-    closeLeaveModal();
-    goToPage3();
-  });
-
-  const btnErw = document.getElementById("btn-erwecken");
-  if (btnErw) btnErw.addEventListener("click", triggerOrbAwakening);
-
-  window.addEventListener("resize", drawChronikRadar);
-});
+/* -----------------------------
+   EINZIGER Startpunkt
+----------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  initPage2();
+});;
 </script>
-
 </body>
 </html>
