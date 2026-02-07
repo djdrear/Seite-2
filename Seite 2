@@ -2283,11 +2283,11 @@ async function initPage2() {
   /* -----------------------------
      Weiter zu Seite 3
   ----------------------------- */
-  if (elBtnNext) {
-    elBtnNext.addEventListener("click", () => {
-      window.location.href = "seite3.html";
-    });
-  }
+if (elBtnNext) {
+  elBtnNext.addEventListener("click", () => {
+    window.location.href = "https://djdrear.github.io/Seite-3/";
+  });
+}
 
   /* -----------------------------
      Erwecken
@@ -2309,11 +2309,11 @@ async function initPage2() {
     elBtnLeaveCancel.addEventListener("click", closeLeaveModal);
   }
 
-  if (elBtnLeaveConfirm) {
-    elBtnLeaveConfirm.addEventListener("click", () => {
-      window.location.href = "seite3.html";
-    });
-  }
+if (elBtnLeaveConfirm) {
+  elBtnLeaveConfirm.addEventListener("click", () => {
+    window.location.href = "https://djdrear.github.io/Seite-3/";
+  });
+}
 
   /* -----------------------------
      WICHTIGER FIX:
